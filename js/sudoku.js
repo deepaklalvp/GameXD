@@ -88,6 +88,7 @@ onAuthStateChanged(auth, async (user) => {
             for (let c = 0; c < 9; c++) {
 
                 const input = document.createElement("input");
+                input.classList.add("cell");
                 input.value = data[r][c];
 
                 if (data[r][c] !== "") {
