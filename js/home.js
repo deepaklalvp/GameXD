@@ -21,15 +21,23 @@ onAuthStateChanged(auth, async (user) => {
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-            const userData = docSnap.data();
+       if (docSnap.exists()) {
 
-            // ✅ THIS is what shows username
-            document.getElementById("userName").textContent =
-                `Hi, ${userData.name}`;
+            const data = docSnap.data();
+
+                document.getElementById("userName").textContent =
+                    `Hi, ${data.name}`;
+
+                document.getElementById("userPoints").textContent =
+                    ` | ⭐ ${data.points} pts`;
+
         } else {
+
             document.getElementById("userName").textContent =
                 "Hi, Player";
+
+            document.getElementById("userPoints").textContent =
+                " | ⭐ 0 pts";
         }
 
     } catch (error) {
