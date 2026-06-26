@@ -29,8 +29,16 @@ function getEmpty(){
     return board.map((v,i)=>v===""?i:null).filter(v=>v!==null);
 }
 
-function checkWin(b,p){
-    return winPatterns.some(pattern=>pattern.every(i=>b[i]===p));
+function getWinningPattern(b, p){
+
+    for(let pattern of winPatterns){
+
+        if(pattern.every(i => b[i] === p)){
+            return pattern;
+        }
+    }
+
+    return null;
 }
 
 function updateStatus(msg){
@@ -66,7 +74,9 @@ function aiMove(){
     board[move] = "O";
     document.querySelectorAll(".cell")[move].textContent = "O";
 
-    if(checkWin(board,"O")){
+    if(getWinningPattern(board,"O")){
+        let winPattern = getWinningPattern(board,"O");
+        highlightWin(winPattern);
         endGame("😔 AI Wins!", -5);
         return;
     }
@@ -150,7 +160,9 @@ function playerMove(i,cell){
     board[i]="X";
     cell.textContent="X";
 
-    if(checkWin(board,"X")){
+    if(getWinningPattern(board,"X")){
+        let winPattern = getWinningPattern(board,"X");
+        highlightWin(winPattern);
         endGame("🎉 You Win!",10);
         return;
     }
@@ -226,3 +238,14 @@ document.addEventListener("DOMContentLoaded",()=>{
         signOut(auth).then(()=>location.href="index.html");
     };
 });
+
+function highlightWin(pattern){
+
+    const cells = document.querySelectorAll(".cell");
+
+    pattern.forEach(i => {
+        cells[i].classList.add("win");
+    });
+}
+
+
