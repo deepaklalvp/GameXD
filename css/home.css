@@ -88,3 +88,9 @@ body{
     transform:translateY(-5px);
     background:rgba(255,255,255,0.12);
 }
+
+#userPoints {
+    margin-left: 10px;
+    color: gold;
+    font-weight: bold;
+}
