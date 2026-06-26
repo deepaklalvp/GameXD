@@ -18,10 +18,43 @@ document.addEventListener("DOMContentLoaded", () => {
     let solution = [];
     let puzzle = [];
 
-    // Generate simple valid sudoku row base (for demo)
-    function generateSolution() {
+    // ---------------- AUTH + USER DATA ----------------
+    onAuthStateChanged(auth, async (user) => {
 
-        const base = [
+        if (!user) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        const snap = await getDoc(doc(db, "users", user.uid));
+
+        if (snap.exists()) {
+
+            const data = snap.data();
+
+            const nameEl = document.getElementById("userName");
+            const pointsEl = document.getElementById("userPoints");
+
+            if (nameEl) nameEl.textContent = `Hi, ${data.name}`;
+            if (pointsEl) pointsEl.textContent = ` | ⭐ ${data.points} pts`;
+        }
+    });
+
+    // ---------------- LOGOUT ----------------
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            signOut(auth).then(() => {
+                window.location.href = "index.html";
+            });
+        });
+    }
+
+    // ---------------- SUDOKU LOGIC ----------------
+
+    function generateSolution() {
+        return [
             [1,2,3,4,5,6,7,8,9],
             [4,5,6,7,8,9,1,2,3],
             [7,8,9,1,2,3,4,5,6],
@@ -32,13 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
             [6,4,5,9,7,8,3,1,2],
             [9,7,8,3,1,2,6,4,5]
         ];
-
-        return base;
     }
 
-    // Remove numbers to create puzzle
     function createPuzzle(sol) {
-
         return sol.map(row =>
             row.map(num => Math.random() > 0.5 ? num : "")
         );
@@ -52,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
             for (let c = 0; c < 9; c++) {
 
                 const input = document.createElement("input");
-
                 input.value = data[r][c];
 
                 if (data[r][c] !== "") {
@@ -71,7 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const inputs = document.querySelectorAll("input");
 
-        let grid = Array.from({ length: 9 }, () => Array(9).fill(0));
+        let grid = Array.from({ length: 9 }, () =>
+            Array(9).fill(0)
+        );
 
         inputs.forEach(input => {
 
@@ -99,43 +129,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         message.textContent = "🎉 Correct! You solved it!";
-
-        // ⭐ FUTURE: add points here
-        // updatePoints(10);
     }
 
-    onAuthStateChanged(auth, async (user) => {
-
-    if (!user) {
-        window.location.href = "index.html";
-        return;
-    }
-
-    const snap = await getDoc(doc(db, "users", user.uid));
-
-    if (snap.exists()) {
-
-        const data = snap.data();
-
-        document.getElementById("userName").textContent =
-            `Hi, ${data.name}`;
-
-        document.getElementById("userPoints").textContent =
-            ` | ⭐ ${data.points} pts`;
-    }
-});
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-    signOut(auth).then(() => {
-        window.location.href = "index.html";
-    });
-});
     function newGame() {
-
         solution = generateSolution();
         puzzle = createPuzzle(solution);
-
         drawBoard(puzzle);
-
         message.textContent = "";
     }
 
