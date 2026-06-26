@@ -1,65 +1,71 @@
-import { auth } from "./firebase.js"; 
+import { auth } from "./firebase.js";
 
 import {
     signInWithEmailAndPassword,
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-// If already logged in, go directly to home
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        window.location.href = "home.html";
+document.addEventListener("DOMContentLoaded", () => {
+
+    // Redirect if already logged in
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            window.location.href = "home.html";
+        }
+    });
+
+    const togglePassword = document.getElementById("togglePassword");
+    const password = document.getElementById("password");
+    const form = document.getElementById("loginForm");
+    const error = document.getElementById("error");
+
+    // Prevent crash
+    if (togglePassword && password) {
+        togglePassword.addEventListener("click", () => {
+            password.type =
+                password.type === "password" ? "text" : "password";
+        });
     }
-});
 
-// Show/Hide password
-const togglePassword = document.getElementById("togglePassword");
-const password = document.getElementById("password");
+    form.addEventListener("submit", async (e) => {
 
-togglePassword.addEventListener("click", () => {
-    password.type =
-        password.type === "password" ? "text" : "password";
-});
+        e.preventDefault();
 
-// Login form
-const form = document.getElementById("loginForm");
-const error = document.getElementById("error");
+        const email = document.getElementById("email").value.trim();
+        const pass = password.value;
 
-form.addEventListener("submit", async (e) => {
+        error.textContent = "";
 
-    e.preventDefault();
+        try {
 
-    const email = document.getElementById("email").value.trim();
-    const pass = password.value;
+            await signInWithEmailAndPassword(auth, email, pass);
 
-    error.textContent = "";
+            window.location.href = "home.html";
 
-    try {
+        } catch (err) {
 
-        await signInWithEmailAndPassword(auth, email, pass);
+            console.log(err);
 
-        window.location.href = "home.html";
+            switch (err.code) {
 
-    } catch (err) {
+                case "auth/invalid-email":
+                    error.textContent = "Invalid email address.";
+                    break;
 
-        switch (err.code) {
+                case "auth/invalid-credential":
+                    error.textContent = "Incorrect email or password.";
+                    break;
 
-            case "auth/invalid-email":
-                error.textContent = "Invalid email address.";
-                break;
+                case "auth/user-disabled":
+                    error.textContent = "Account has been disabled.";
+                    break;
 
-            case "auth/invalid-credential":
-                error.textContent = "Incorrect email or password.";
-                break;
+                default:
+                    error.textContent = err.message;
+            }
 
-            case "auth/user-disabled":
-                error.textContent = "Account has been disabled.";
-                break;
-
-            default:
-                error.textContent = err.message;
         }
 
-    }
+    });
 
 });
