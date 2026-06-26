@@ -1,4 +1,4 @@
-import { auth, db } from "./js/firebase.js";
+import { auth, db } from "./firebase.js";
 
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
