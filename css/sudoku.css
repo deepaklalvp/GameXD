@@ -39,7 +39,7 @@ h1{
     margin:20px auto;
 }
 
-input{
+.cell{
     width:40px;
     height:40px;
     text-align:center;
@@ -48,6 +48,33 @@ input{
     background:rgba(255,255,255,0.08);
     color:white;
     outline:none;
+}
+/* THICK GRID LINES FOR 3x3 BLOCKS */
+
+/* Right border thick after col 3 and 6 */
+.cell:nth-child(3n){
+    border-right:3px solid white;
+}
+
+/* Left border thick for first column of each block */
+.cell:nth-child(9n + 1),
+.cell:nth-child(9n + 4),
+.cell:nth-child(9n + 7){
+    border-left:3px solid white;
+}
+
+/* Top border thick after row 3 and 6 */
+.cell:nth-child(n + 19):nth-child(-n + 27),
+.cell:nth-child(n + 46):nth-child(-n + 54),
+.cell:nth-child(n + 73):nth-child(-n + 81){
+    border-top:3px solid white;
+}
+
+/* Bottom border thick */
+.cell:nth-child(n + 1):nth-child(-n + 9),
+.cell:nth-child(n + 28):nth-child(-n + 36),
+.cell:nth-child(n + 55):nth-child(-n + 63){
+    border-bottom:3px solid white;
 }
 
 input:disabled{
