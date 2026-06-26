@@ -46,9 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const user = userCredential.user;
 
-            await setDoc(doc(db, "users", user.uid), {
+           await setDoc(doc(db, "users", user.uid), {
                 name,
                 email,
+                points: 100, // ⭐ default points
                 createdAt: serverTimestamp()
             });
 
