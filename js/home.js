@@ -10,7 +10,6 @@ import {
     getDoc
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-// Protect route
 onAuthStateChanged(auth, async (user) => {
 
     if (!user) {
@@ -18,24 +17,31 @@ onAuthStateChanged(auth, async (user) => {
         return;
     }
 
-    // Get user data from Firestore
-    const docRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(docRef);
+    try {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-        document.getElementById("userName").textContent =
-            "Hi, " + docSnap.data().name;
-    } else {
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+
+            // ✅ THIS is what shows username
+            document.getElementById("userName").textContent =
+                `Hi, ${userData.name}`;
+        } else {
+            document.getElementById("userName").textContent =
+                "Hi, Player";
+        }
+
+    } catch (error) {
+        console.log(error);
         document.getElementById("userName").textContent =
             "Hi, Player";
     }
 });
 
-// Logout
+// logout
 document.getElementById("logoutBtn").addEventListener("click", () => {
-
     signOut(auth).then(() => {
         window.location.href = "index.html";
     });
-
 });
