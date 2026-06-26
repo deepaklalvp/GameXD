@@ -130,10 +130,10 @@ onAuthStateChanged(auth, async (user) => {
 
             if (user[r][c] !== solution[r][c]) {
 
-                message.textContent = "❌ Wrong solution. -10 points!";
+                message.textContent = "❌ Wrong solution. -5 points!";
 
                 // ❌ deduct points
-                updatePoints(-10);
+                updatePoints(-5);
 
                 return;
             }
