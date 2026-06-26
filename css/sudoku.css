@@ -81,3 +81,36 @@ button:hover{
     color:gold;
     font-weight:bold;
 }
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 30px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,0.1);
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+}
+
+.navbar h2{
+    font-size:20px;
+}
+
+.navbar .right{
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+#userPoints{
+    color:gold;
+    font-weight:bold;
+}
+
+body{
+    padding-top:70px; /* IMPORTANT so navbar doesn't overlap */
+}
