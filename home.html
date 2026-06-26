@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameXD | Home</title>
+
+    <link rel="stylesheet" href="css/home.css">
+    <script type="module" src="./js/home.js" defer></script>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<!-- Navbar -->
+<div class="navbar">
+
+    <h2>🎮 GameXD</h2>
+
+    <div class="right">
+        <span id="userName">Loading...</span>
+        <button id="logoutBtn">Logout</button>
+    </div>
+
+</div>
+
+<!-- Main Content -->
+<div class="container">
+
+    <h1>Choose Your Game</h1>
+    <p>Have fun playing!</p>
+
+    <div class="games">
+
+        <div class="card" onclick="location.href='sudoku.html'">
+            <h3>Sudoku</h3>
+            <p>Test your brain</p>
+        </div>
+
+        <div class="card" onclick="location.href='tictactoe.html'">
+            <h3>Tic Tac Toe</h3>
+            <p>Play with friends</p>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
