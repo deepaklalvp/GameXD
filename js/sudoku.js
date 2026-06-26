@@ -7,7 +7,9 @@ import {
 
 import {
     doc,
-    getDoc
+    getDoc,
+    updateDoc,
+    increment
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -18,27 +20,32 @@ document.addEventListener("DOMContentLoaded", () => {
     let solution = [];
     let puzzle = [];
 
-    // ---------------- AUTH + USER DATA ----------------
-    onAuthStateChanged(auth, async (user) => {
+   let currentUserUID = null;
 
-        if (!user) {
-            window.location.href = "index.html";
-            return;
-        }
+// ---------------- AUTH + USER DATA ----------------
+onAuthStateChanged(auth, async (user) => {
 
-        const snap = await getDoc(doc(db, "users", user.uid));
+    if (!user) {
+        window.location.href = "index.html";
+        return;
+    }
 
-        if (snap.exists()) {
+    // ⭐ ADD THIS LINE HERE
+    currentUserUID = user.uid;
 
-            const data = snap.data();
+    const snap = await getDoc(doc(db, "users", user.uid));
 
-            const nameEl = document.getElementById("userName");
-            const pointsEl = document.getElementById("userPoints");
+    if (snap.exists()) {
 
-            if (nameEl) nameEl.textContent = `Hi, ${data.name}`;
-            if (pointsEl) pointsEl.textContent = ` | ⭐ ${data.points} pts`;
-        }
-    });
+        const data = snap.data();
+
+        const nameEl = document.getElementById("userName");
+        const pointsEl = document.getElementById("userPoints");
+
+        if (nameEl) nameEl.textContent = `Hi, ${data.name}`;
+        if (pointsEl) pointsEl.textContent = ` | ⭐ ${data.points} pts`;
+    }
+});
 
     // ---------------- LOGOUT ----------------
     const logoutBtn = document.getElementById("logoutBtn");
@@ -114,22 +121,30 @@ document.addEventListener("DOMContentLoaded", () => {
         return grid;
     }
 
-    function checkBoard() {
+   function checkBoard() {
 
-        const user = getUserBoard();
+    const user = getUserBoard();
 
-        for (let r = 0; r < 9; r++) {
-            for (let c = 0; c < 9; c++) {
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
 
-                if (user[r][c] !== solution[r][c]) {
-                    message.textContent = "❌ Wrong solution. Try again!";
-                    return;
-                }
+            if (user[r][c] !== solution[r][c]) {
+
+                message.textContent = "❌ Wrong solution. -10 points!";
+
+                // ❌ deduct points
+                updatePoints(-10);
+
+                return;
             }
         }
-
-        message.textContent = "🎉 Correct! You solved it!";
     }
+
+    message.textContent = "🎉 Correct! +10 points!";
+
+    // 🎉 reward points
+    updatePoints(10);
+}
 
     function newGame() {
         solution = generateSolution();
@@ -143,3 +158,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     newGame();
 });
+
+async function updatePoints(value) {
+
+    if (!currentUserUID) return;
+
+    const userRef = doc(db, "users", currentUserUID);
+
+    await updateDoc(userRef, {
+        points: increment(value)
+    });
+
+    // update UI instantly
+    const snap = await getDoc(userRef);
+
+    if (snap.exists()) {
+        document.getElementById("userPoints").textContent =
+            ` | ⭐ ${snap.data().points} pts`;
+    }
+}
