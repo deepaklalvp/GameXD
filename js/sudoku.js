@@ -1,4 +1,5 @@
 let currentUserUID = null;
+let currentPoints = 0;
 import { auth, db } from "./firebase.js";
 
 import {
@@ -21,8 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let solution = [];
     let puzzle = [];
 
-   let currentUserUID = null;
-
 // ---------------- AUTH + USER DATA ----------------
 onAuthStateChanged(auth, async (user) => {
 
@@ -43,8 +42,10 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById("userName").textContent =
             `Hi, ${data.name}`;
 
-        document.getElementById("userPoints").textContent =
-            ` | ⭐ ${data.points} pts`;
+        currentPoints = data.points;
+
+document.getElementById("userPoints").textContent =
+    ` | ⭐ ${currentPoints} pts`;
     }
 });
     // ---------------- LOGOUT ----------------
@@ -177,11 +178,9 @@ async function updatePoints(value) {
         points: increment(value)
     });
 
-    // update UI instantly
-    const snap = await getDoc(userRef);
+    // Update local points and UI immediately
+    currentPoints += value;
 
-    if (snap.exists()) {
-        document.getElementById("userPoints").textContent =
-            ` | ⭐ ${snap.data().points} pts`;
-    }
+    document.getElementById("userPoints").textContent =
+        ` | ⭐ ${currentPoints} pts`;
 }
