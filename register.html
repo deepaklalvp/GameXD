@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Hub | Register</title>
+
+    <link rel="stylesheet" href="css/register.css">
+
+    <script type="module" src="js/register.js" defer></script>
+</head>
+<body>
+
+<div class="background"></div>
+
+<div class="register-container">
+
+    <div class="card">
+
+        <h1>🎮 Game Hub</h1>
+        <p>Create your account</p>
+
+        <form id="registerForm">
+
+            <div class="input-group">
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Full Name"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Email Address"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    required>
+
+                <span id="togglePassword">👁</span>
+            </div>
+
+            <div class="input-group">
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Confirm Password"
+                    required>
+            </div>
+
+            <button type="submit">
+                Create Account
+            </button>
+
+        </form>
+
+        <div id="error"></div>
+
+        <p class="login">
+
+            Already have an account?
+
+            <a href="index.html">
+                Login
+            </a>
+
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>
