@@ -1,3 +1,4 @@
+let currentUserUID = null;
 import { auth, db } from "./firebase.js";
 
 import {
@@ -30,7 +31,7 @@ onAuthStateChanged(auth, async (user) => {
         return;
     }
 
-    // ⭐ ADD THIS LINE HERE
+    // ⭐ IMPORTANT FIX
     currentUserUID = user.uid;
 
     const snap = await getDoc(doc(db, "users", user.uid));
@@ -39,14 +40,13 @@ onAuthStateChanged(auth, async (user) => {
 
         const data = snap.data();
 
-        const nameEl = document.getElementById("userName");
-        const pointsEl = document.getElementById("userPoints");
+        document.getElementById("userName").textContent =
+            `Hi, ${data.name}`;
 
-        if (nameEl) nameEl.textContent = `Hi, ${data.name}`;
-        if (pointsEl) pointsEl.textContent = ` | ⭐ ${data.points} pts`;
+        document.getElementById("userPoints").textContent =
+            ` | ⭐ ${data.points} pts`;
     }
 });
-
     // ---------------- LOGOUT ----------------
     const logoutBtn = document.getElementById("logoutBtn");
 
