@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameXD | Memory Game</title>
+
+    <link rel="stylesheet" href="css/memory.css">
+    <script type="module" src="./js/memory.js" defer></script>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div class="navbar">
+
+    <h2 onclick="location.href='home.html'" style="cursor:pointer;">
+        🎮 GameXD
+    </h2>
+
+    <div class="right">
+        <span id="userName">Loading...</span>
+        <span id="userPoints"> | ⭐ 0 pts</span>
+        <button id="logoutBtn">Logout</button>
+    </div>
+
+</div>
+
+<div class="container">
+
+    <h1>Memory Game 🧠</h1>
+
+    <p id="status">Match all pairs!</p>
+
+    <div id="grid" class="grid"></div>
+
+    <button id="restart">Restart</button>
+
+</div>
+
+</body>
+</html>
