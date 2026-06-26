@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Hub - Login</title>
+
+    <link rel="stylesheet" href="css/login.css">
+
+    <script type="module" src="js/login.js" defer></script>
+</head>
+<body>
+
+<div class="background"></div>
+
+<div class="login-container">
+
+    <div class="card">
+
+        <h1>🎮 Game Hub</h1>
+        <p>Login to continue</p>
+
+        <form id="loginForm">
+
+            <div class="input-group">
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Email Address"
+                    required>
+            </div>
+
+            <div class="input-group">
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    required>
+
+                <span id="togglePassword">👁</span>
+
+            </div>
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <div id="error"></div>
+
+        <p class="register">
+
+            Don't have an account?
+
+            <a href="register.html">
+                Register
+            </a>
+
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>
