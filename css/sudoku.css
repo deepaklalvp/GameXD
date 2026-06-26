@@ -34,11 +34,12 @@ h1{
     display:grid;
     grid-template-columns:repeat(9,40px);
     grid-template-rows:repeat(9,40px);
-    gap:2px;
+    gap:0; /* IMPORTANT */
     justify-content:center;
     margin:20px auto;
 }
 
+/* normal cell */
 .cell{
     width:40px;
     height:40px;
@@ -49,34 +50,23 @@ h1{
     color:white;
     outline:none;
 }
-/* THICK GRID LINES FOR 3x3 BLOCKS */
 
-/* Right border thick after col 3 and 6 */
-.cell:nth-child(3n){
-    border-right:3px solid white;
+/* 3x3 thick borders */
+.top-border{
+    border-top:3px solid white !important;
 }
 
-/* Left border thick for first column of each block */
-.cell:nth-child(9n + 1),
-.cell:nth-child(9n + 4),
-.cell:nth-child(9n + 7){
-    border-left:3px solid white;
+.left-border{
+    border-left:3px solid white !important;
 }
 
-/* Top border thick after row 3 and 6 */
-.cell:nth-child(n + 19):nth-child(-n + 27),
-.cell:nth-child(n + 46):nth-child(-n + 54),
-.cell:nth-child(n + 73):nth-child(-n + 81){
-    border-top:3px solid white;
+.right-border{
+    border-right:3px solid white !important;
 }
 
-/* Bottom border thick */
-.cell:nth-child(n + 1):nth-child(-n + 9),
-.cell:nth-child(n + 28):nth-child(-n + 36),
-.cell:nth-child(n + 55):nth-child(-n + 63){
-    border-bottom:3px solid white;
+.bottom-border{
+    border-bottom:3px solid white !important;
 }
-
 input:disabled{
     background:rgba(255,255,255,0.2);
     font-weight:bold;
