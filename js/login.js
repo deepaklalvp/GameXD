@@ -7,23 +7,21 @@ import {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Redirect if already logged in
     onAuthStateChanged(auth, (user) => {
         if (user) {
             window.location.href = "home.html";
         }
     });
 
-    const togglePassword = document.getElementById("togglePassword");
-    const password = document.getElementById("password");
     const form = document.getElementById("loginForm");
     const error = document.getElementById("error");
+    const togglePassword = document.getElementById("togglePassword");
+    const password = document.getElementById("password");
 
-    // Prevent crash
+    // SAFE check (VERY IMPORTANT)
     if (togglePassword && password) {
         togglePassword.addEventListener("click", () => {
-            password.type =
-                password.type === "password" ? "text" : "password";
+            password.type = password.type === "password" ? "text" : "password";
         });
     }
 
@@ -56,14 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     error.textContent = "Incorrect email or password.";
                     break;
 
-                case "auth/user-disabled":
-                    error.textContent = "Account has been disabled.";
-                    break;
-
                 default:
                     error.textContent = err.message;
             }
-
         }
 
     });
