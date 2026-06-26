@@ -86,3 +86,9 @@ button{
     display:flex;
     gap:20px;
 }
+
+.win {
+    background: rgba(0, 255, 120, 0.35) !important;
+    box-shadow: 0 0 20px rgba(0, 255, 120, 0.8);
+    transform: scale(1.05);
+}
