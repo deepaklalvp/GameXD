@@ -82,26 +82,33 @@ onAuthStateChanged(auth, async (user) => {
 
     function drawBoard(data) {
 
-        board.innerHTML = "";
+    board.innerHTML = "";
 
-        for (let r = 0; r < 9; r++) {
-            for (let c = 0; c < 9; c++) {
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
 
-                const input = document.createElement("input");
-                input.classList.add("cell");
-                input.value = data[r][c];
+            const input = document.createElement("input");
+            input.classList.add("cell");
 
-                if (data[r][c] !== "") {
-                    input.disabled = true;
-                }
+            input.value = data[r][c];
 
-                input.dataset.row = r;
-                input.dataset.col = c;
-
-                board.appendChild(input);
+            if (data[r][c] !== "") {
+                input.disabled = true;
             }
+
+            input.dataset.row = r;
+            input.dataset.col = c;
+
+            // ⭐ THIS IS STEP 1 (NOT getUserBoard)
+            if (c % 3 === 0) input.classList.add("left-border");
+            if (r % 3 === 0) input.classList.add("top-border");
+            if (c === 8) input.classList.add("right-border");
+            if (r === 8) input.classList.add("bottom-border");
+
+            board.appendChild(input);
         }
     }
+}
 
     function getUserBoard() {
 
