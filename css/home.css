@@ -1,0 +1,90 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins, sans-serif;
+}
+
+body{
+    background:#0f172a;
+    color:white;
+    min-height:100vh;
+}
+
+/* Background */
+.background{
+    position:fixed;
+    inset:0;
+    background: radial-gradient(circle at top left,#3b82f6,transparent),
+                radial-gradient(circle at bottom right,#9333ea,transparent);
+    z-index:-1;
+}
+
+/* Navbar */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 40px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.navbar h2{
+    font-size:22px;
+}
+
+.navbar .right{
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+#logoutBtn{
+    padding:8px 15px;
+    border:none;
+    border-radius:8px;
+    background:#ef4444;
+    color:white;
+    cursor:pointer;
+}
+
+/* Container */
+.container{
+    text-align:center;
+    margin-top:60px;
+}
+
+.container h1{
+    font-size:32px;
+}
+
+.container p{
+    color:#cbd5e1;
+    margin-top:10px;
+}
+
+/* Games */
+.games{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin-top:40px;
+    flex-wrap:wrap;
+}
+
+.card{
+    width:200px;
+    padding:20px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:15px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    background:rgba(255,255,255,0.12);
+}
