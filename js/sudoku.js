@@ -1,3 +1,15 @@
+import { auth, db } from "./firebase.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+import {
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const board = document.getElementById("sudoku-board");
@@ -92,6 +104,31 @@ document.addEventListener("DOMContentLoaded", () => {
         // updatePoints(10);
     }
 
+    onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    const snap = await getDoc(doc(db, "users", user.uid));
+
+    if (snap.exists()) {
+
+        const data = snap.data();
+
+        document.getElementById("userName").textContent =
+            `Hi, ${data.name}`;
+
+        document.getElementById("userPoints").textContent =
+            ` | ⭐ ${data.points} pts`;
+    }
+});
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+    signOut(auth).then(() => {
+        window.location.href = "index.html";
+    });
+});
     function newGame() {
 
         solution = generateSolution();
