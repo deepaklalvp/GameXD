@@ -147,3 +147,7 @@ body{
     align-items: center;
     gap: 8px;
 }
+.conflict {
+    background: rgba(255, 70, 70, 0.45) !important;
+    border: 2px solid #ff4d4d !important;
+}
