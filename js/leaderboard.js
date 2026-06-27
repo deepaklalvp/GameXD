@@ -11,13 +11,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     const board = document.getElementById("board");
 
     const q = query(collection(db, "users"), orderBy("points", "desc"));
-    const snap = await getDocs(q);
+   const snap = await getDocs(q);
 
-    let users = [];
+let users = [];
 
-    snap.forEach(doc => {
-        users.push(doc.data());
+snap.forEach(doc => {
+    const data = doc.data();
+
+    users.push({
+        name: data.name || "Unknown",
+        points: data.points ?? 0
     });
+});
 
     board.innerHTML = "";
 
