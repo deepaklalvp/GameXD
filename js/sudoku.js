@@ -139,20 +139,28 @@ function generateSolution() {
     return board;
 }
 
-  function createPuzzle(solution) {
+ function createPuzzle(solution) {
 
     let puzzle = solution.map(row => [...row]);
 
-    let cellsToRemove = 45;   // Easy = 35, Medium = 45, Hard = 55
+    let cellsToRemove = 45;
 
     while (cellsToRemove > 0) {
 
         let row = Math.floor(Math.random() * 9);
         let col = Math.floor(Math.random() * 9);
 
-        if (puzzle[row][col] !== "") {
+        if (puzzle[row][col] !== 0) {
 
-            puzzle[row][col] = "";
+            let backup = puzzle[row][col];
+            puzzle[row][col] = 0;
+
+            let copy = puzzle.map(r => [...r]);
+
+            if (countSolutions(copy) !== 1) {
+                puzzle[row][col] = backup; // revert
+                continue;
+            }
 
             cellsToRemove--;
         }
@@ -180,7 +188,14 @@ function generateSolution() {
             input.dataset.row = r;
             input.dataset.col = c;
 
-            // ⭐ THIS IS STEP 1 (NOT getUserBoard)
+            // ⭐ INPUT VALIDATION (ADD THIS)
+            input.addEventListener("input", () => {
+                input.value = input.value
+                    .replace(/[^1-9]/g, "") // only 1-9 allowed
+                    .slice(0, 1);           // only single digit
+            });
+
+            // borders
             if (c % 3 === 0) input.classList.add("left-border");
             if (r % 3 === 0) input.classList.add("top-border");
             if (c === 8) input.classList.add("right-border");
@@ -190,7 +205,38 @@ function generateSolution() {
         }
     }
 }
+    function countSolutions(board, limit = 2) {
+    let count = 0;
 
+    function solve() {
+        for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+
+                if (board[r][c] === 0) {
+
+                    for (let num = 1; num <= 9; num++) {
+                        if (isSafe(board, r, c, num)) {
+
+                            board[r][c] = num;
+                            solve();
+
+                            board[r][c] = 0;
+
+                            if (count >= limit) return;
+                        }
+                    }
+
+                    return;
+                }
+            }
+        }
+
+        count++;
+    }
+
+    solve();
+    return count;
+}
     function getUserBoard() {
 
         const inputs = document.querySelectorAll("input");
