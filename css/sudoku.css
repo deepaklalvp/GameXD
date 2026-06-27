@@ -131,3 +131,13 @@ button:hover{
 body{
     padding-top:70px; /* IMPORTANT so navbar doesn't overlap */
 }
+
+.navbar button i {
+    margin-right: 6px;
+}
+
+.navbar button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
