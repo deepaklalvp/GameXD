@@ -1,37 +1,155 @@
-.container{
-    width:420px;
-    margin:auto;
-    text-align:center;
-    margin-top:80px;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins, sans-serif;
 }
 
-input{
-    width:200px;
-    padding:12px;
-    font-size:22px;
-    text-align:center;
-    border-radius:8px;
-    margin:20px;
+body{
+    background:#0f172a;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding-top:70px;
 }
+
+.background{
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at top left,#3b82f6,transparent),
+        radial-gradient(circle at bottom right,#9333ea,transparent);
+    z-index:-1;
+}
+
+/* Navbar */
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 30px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,0.1);
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+}
+
+.navbar h2{
+    font-size:20px;
+}
+
+.navbar .right{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+#userPoints{
+    color:gold;
+    font-weight:bold;
+}
+
+.navbar button{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+/* Container */
+
+.container{
+    text-align:center;
+    width:420px;
+}
+
+.container h1{
+    margin-bottom:10px;
+}
+
+.container p{
+    margin-bottom:20px;
+}
+
+/* Attempts */
+
+#attempts{
+    color:#facc15;
+    margin-bottom:20px;
+}
+
+/* Input */
+
+#guessInput{
+    width:220px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    outline:none;
+    font-size:24px;
+    text-align:center;
+    background:rgba(255,255,255,0.1);
+    color:white;
+}
+
+#guessInput::placeholder{
+    color:#cbd5e1;
+}
+
+/* Buttons */
 
 .buttons{
+    margin-top:25px;
     display:flex;
     justify-content:center;
     gap:15px;
 }
 
 button{
-    padding:12px 20px;
-    font-size:16px;
+    padding:10px 18px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
     cursor:pointer;
+    transition:.3s;
+    display:flex;
+    align-items:center;
+    gap:8px;
 }
+
+button:hover{
+    background:#1d4ed8;
+}
+
+/* Message */
 
 #message{
-    margin-top:30px;
-    font-size:22px;
+    margin-top:25px;
+    font-size:20px;
     font-weight:bold;
+    min-height:30px;
 }
 
-#attempts{
-    color:orange;
+/* Success */
+
+.success{
+    color:#22c55e;
+}
+
+/* Error */
+
+.error{
+    color:#ef4444;
+}
+
+/* Hint */
+
+.hint{
+    color:#facc15;
 }
