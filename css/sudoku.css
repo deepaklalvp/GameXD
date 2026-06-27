@@ -8,11 +8,9 @@
 body{
     background:#0f172a;
     color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
     min-height:100vh;
-    padding-top:70px; /* IMPORTANT for navbar */
+    padding-top:70px; /* IMPORTANT so navbar doesn't overlap */
+    overflow-x:hidden;
 }
 
 /* BACKGROUND */
@@ -20,12 +18,12 @@ body{
     position:fixed;
     inset:0;
     background:
-    radial-gradient(circle at top left,#8b5cf6,transparent),
-    radial-gradient(circle at bottom right,#ec4899,transparent);
+        radial-gradient(circle at top left,#3b82f6,transparent),
+        radial-gradient(circle at bottom right,#9333ea,transparent);
     z-index:-1;
 }
 
-/* NAVBAR (SAME AS SUDOKU) */
+/* ================= NAVBAR ================= */
 .navbar{
     display:flex;
     justify-content:space-between;
@@ -38,6 +36,7 @@ body{
     top:0;
     left:0;
     width:100%;
+    z-index:1000;
 }
 
 .navbar h2{
@@ -50,61 +49,122 @@ body{
     align-items:center;
 }
 
+.navbar button{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 12px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#2563eb;
+    color:white;
+    transition:0.3s;
+}
+
+.navbar button:hover{
+    background:#1d4ed8;
+}
+
 #userPoints{
     color:gold;
     font-weight:bold;
 }
 
-.navbar button{
-    display:flex;
-    align-items:center;
-    gap:6px;
-}
-
-/* CONTAINER */
+/* ================= MAIN CONTAINER ================= */
 .container{
     text-align:center;
     margin-top:20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
+/* TITLE */
 h1{
     margin-bottom:10px;
 }
 
-/* INPUT */
-input{
-    padding:12px;
-    font-size:18px;
-    border-radius:8px;
-    border:none;
-    margin:10px;
+/* ================= SUDOKU BOARD ================= */
+#sudoku-board{
+    display:grid;
+    grid-template-columns:repeat(9,40px);
+    grid-template-rows:repeat(9,40px);
+    gap:0;
+    justify-content:center;
+    margin:20px auto;
+}
+
+/* CELL */
+.cell{
+    width:40px;
+    height:40px;
     text-align:center;
+    font-size:18px;
+    border:1px solid #334155;
+    background:rgba(255,255,255,0.08);
+    color:white;
+    outline:none;
+}
+
+/* 3x3 GRID BORDERS */
+.top-border{
+    border-top:3px solid white !important;
+}
+
+.left-border{
+    border-left:3px solid white !important;
+}
+
+.right-border{
+    border-right:3px solid white !important;
+}
+
+.bottom-border{
+    border-bottom:3px solid white !important;
+}
+
+/* FIXED CELLS */
+input:disabled{
+    background:rgba(255,255,255,0.2);
+    font-weight:bold;
 }
 
 /* BUTTONS */
+.buttons{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
 button{
     padding:10px 15px;
-    margin:10px;
     border:none;
     border-radius:8px;
+    cursor:pointer;
     background:#2563eb;
     color:white;
-    cursor:pointer;
     transition:0.3s;
+    display:flex;
+    align-items:center;
+    gap:8px;
 }
 
 button:hover{
     background:#1d4ed8;
 }
 
-/* GAME BOX */
-#roleBox{
-    margin-top:20px;
-    font-size:28px;
+/* MESSAGE */
+#message{
+    margin-top:15px;
+    color:gold;
     font-weight:bold;
 }
 
-/* HIDE CLASS */
-.hidden{
-    display:none;
+/* CONFLICT HIGHLIGHT */
+.conflict{
+    background:rgba(255,70,70,0.45) !important;
+    border:2px solid #ff4d4d !important;
 }
