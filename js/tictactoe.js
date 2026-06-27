@@ -158,8 +158,6 @@ function minimax(newBoard, player){
 // ---------- PLAYER ----------
 function playerMove(i,cell){
 
-    function playerMove(i, cell){
-
     if(gameOver || !playerTurn || board[i] !== "") return;
 
     playerTurn = false; // Lock player immediately
@@ -258,6 +256,12 @@ function highlightWin(pattern){
     pattern.forEach(i => {
         cells[i].classList.add("win");
     });
+}
+
+function checkWin(board, player) {
+    return winPatterns.some(pattern =>
+        pattern.every(index => board[index] === player)
+    );
 }
 
 
