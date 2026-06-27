@@ -33,13 +33,15 @@ snap.forEach(doc => {
     podium.classList.add("podium");
 
     podium.innerHTML = `
-        <div class="podium-row silver">
-            🥈 <span>${top3[0]?.name || "-"}</span>
+        
+
+        <div class="podium-row gold">
+            🥇 <span>${top3[0]?.name || "-"}</span>
             <b>${top3[0]?.points || 0}</b>
         </div>
 
-        <div class="podium-row gold">
-            🥇 <span>${top3[1]?.name || "-"}</span>
+        <div class="podium-row silver">
+            🥈 <span>${top3[1]?.name || "-"}</span>
             <b>${top3[1]?.points || 0}</b>
         </div>
 
