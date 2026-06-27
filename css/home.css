@@ -104,3 +104,31 @@ body{
     color: gold;
     font-weight: bold;
 }
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.right i {
+    color: #60a5fa;
+}
+
+#userName {
+    font-weight: 500;
+}
+
+#userPoints {
+    color: gold;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#logoutBtn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
