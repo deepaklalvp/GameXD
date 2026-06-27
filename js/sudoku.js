@@ -204,7 +204,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     highlightConflicts();
 });
-                });
 
                 if (c % 3 === 0) input.classList.add("left-border");
                 if (r % 3 === 0) input.classList.add("top-border");
