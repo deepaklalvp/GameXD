@@ -1,7 +1,7 @@
 let currentUserUID = null;
 let currentPoints = 0;
-import { auth, db } from "./firebase.js";
 
+import { auth, db } from "./firebase.js";
 import {
     onAuthStateChanged,
     signOut
@@ -22,231 +22,199 @@ document.addEventListener("DOMContentLoaded", () => {
     let solution = [];
     let puzzle = [];
 
-// ---------------- AUTH + USER DATA ----------------
-onAuthStateChanged(auth, async (user) => {
+    // ---------------- AUTH ----------------
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+            window.location.href = "index.html";
+            return;
+        }
 
-    if (!user) {
-        window.location.href = "index.html";
-        return;
-    }
+        currentUserUID = user.uid;
 
-    // ⭐ IMPORTANT FIX
-    currentUserUID = user.uid;
+        const snap = await getDoc(doc(db, "users", user.uid));
 
-    const snap = await getDoc(doc(db, "users", user.uid));
+        if (snap.exists()) {
+            const data = snap.data();
 
-    if (snap.exists()) {
+            document.getElementById("userName").textContent = `Hi, ${data.name}`;
 
-        const data = snap.data();
+            currentPoints = data.points || 0;
 
-        document.getElementById("userName").textContent =
-            `Hi, ${data.name}`;
+            document.getElementById("userPoints").textContent =
+                ` | ⭐ ${currentPoints} pts`;
+        }
+    });
 
-        currentPoints = data.points;
-
-document.getElementById("userPoints").textContent =
-    ` | ⭐ ${currentPoints} pts`;
-    }
-});
     // ---------------- LOGOUT ----------------
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-            signOut(auth).then(() => {
-                window.location.href = "index.html";
-            });
+    document.getElementById("logoutBtn")?.addEventListener("click", () => {
+        signOut(auth).then(() => {
+            window.location.href = "index.html";
         });
-    }
+    });
 
-    // ---------------- SUDOKU LOGIC ----------------
+    // ---------------- SUDOKU CORE ----------------
 
-  function isSafe(board, row, col, num) {
-
-    // Row
-    for (let x = 0; x < 9; x++) {
-        if (board[row][x] === num) return false;
-    }
-
-    // Column
-    for (let x = 0; x < 9; x++) {
-        if (board[x][col] === num) return false;
-    }
-
-    // 3x3 Box
-    const startRow = row - row % 3;
-    const startCol = col - col % 3;
-
-    for (let r = 0; r < 3; r++) {
-        for (let c = 0; c < 3; c++) {
-            if (board[startRow + r][startCol + c] === num)
-                return false;
+    function isSafe(board, row, col, num) {
+        for (let x = 0; x < 9; x++) {
+            if (board[row][x] === num) return false;
+            if (board[x][col] === num) return false;
         }
-    }
 
-    return true;
-}
+        const sr = row - row % 3;
+        const sc = col - col % 3;
 
-function shuffle(arr) {
-
-    for (let i = arr.length - 1; i > 0; i--) {
-
-        let j = Math.floor(Math.random() * (i + 1));
-
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-
-    return arr;
-}
-
-function fillBoard(board) {
-
-    for (let row = 0; row < 9; row++) {
-
-        for (let col = 0; col < 9; col++) {
-
-            if (board[row][col] === 0) {
-
-                let numbers = shuffle([1,2,3,4,5,6,7,8,9]);
-
-                for (let num of numbers) {
-
-                    if (isSafe(board,row,col,num)) {
-
-                        board[row][col] = num;
-
-                        if (fillBoard(board))
-                            return true;
-
-                        board[row][col] = 0;
-                    }
-                }
-
-                return false;
+        for (let r = 0; r < 3; r++) {
+            for (let c = 0; c < 3; c++) {
+                if (board[sr + r][sc + c] === num) return false;
             }
         }
+
+        return true;
     }
 
-    return true;
-}
-
-function generateSolution() {
-
-    let board = Array.from({length:9},()=>Array(9).fill(0));
-
-    fillBoard(board);
-
-    return board;
-}
-
- function createPuzzle(solution) {
-
-    let puzzle = solution.map(row => [...row]);
-
-    let cellsToRemove = 45;
-
-    while (cellsToRemove > 0) {
-
-        let row = Math.floor(Math.random() * 9);
-        let col = Math.floor(Math.random() * 9);
-
-        if (puzzle[row][col] !== 0) {
-
-            let backup = puzzle[row][col];
-            puzzle[row][col] = 0;
-
-            let copy = puzzle.map(r => [...r]);
-
-            if (countSolutions(copy) !== 1) {
-                puzzle[row][col] = backup; // revert
-                continue;
-            }
-
-            cellsToRemove--;
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
         }
+        return arr;
     }
 
-    return puzzle;
-}
-
-    function drawBoard(data) {
-
-    board.innerHTML = "";
-
-    for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
-
-            const input = document.createElement("input");
-            input.classList.add("cell");
-
-            input.value = data[r][c];
-
-            if (data[r][c] !== "") {
-                input.disabled = true;
-            }
-
-            input.dataset.row = r;
-            input.dataset.col = c;
-
-            // ⭐ INPUT VALIDATION (ADD THIS)
-            input.addEventListener("input", () => {
-                input.value = input.value
-                    .replace(/[^1-9]/g, "") // only 1-9 allowed
-                    .slice(0, 1);           // only single digit
-            });
-
-            // borders
-            if (c % 3 === 0) input.classList.add("left-border");
-            if (r % 3 === 0) input.classList.add("top-border");
-            if (c === 8) input.classList.add("right-border");
-            if (r === 8) input.classList.add("bottom-border");
-
-            board.appendChild(input);
-        }
-    }
-}
-    function countSolutions(board, limit = 2) {
-    let count = 0;
-
-    function solve() {
+    function fillBoard(board) {
         for (let r = 0; r < 9; r++) {
             for (let c = 0; c < 9; c++) {
 
                 if (board[r][c] === 0) {
 
-                    for (let num = 1; num <= 9; num++) {
+                    let nums = shuffle([1,2,3,4,5,6,7,8,9]);
+
+                    for (let num of nums) {
                         if (isSafe(board, r, c, num)) {
 
                             board[r][c] = num;
-                            solve();
+
+                            if (fillBoard(board)) return true;
 
                             board[r][c] = 0;
-
-                            if (count >= limit) return;
                         }
                     }
 
-                    return;
+                    return false;
                 }
             }
         }
-
-        count++;
+        return true;
     }
 
-    solve();
-    return count;
-}
+    function generateSolution() {
+        let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+        fillBoard(board);
+        return board;
+    }
+
+    function countSolutions(board, limit = 2) {
+        let count = 0;
+
+        function solve() {
+
+            if (count >= limit) return;
+
+            for (let r = 0; r < 9; r++) {
+                for (let c = 0; c < 9; c++) {
+
+                    if (board[r][c] === 0) {
+
+                        for (let num = 1; num <= 9; num++) {
+                            if (isSafe(board, r, c, num)) {
+
+                                board[r][c] = num;
+                                solve();
+                                board[r][c] = 0;
+                            }
+                        }
+
+                        return;
+                    }
+                }
+            }
+
+            count++;
+        }
+
+        solve();
+        return count;
+    }
+
+    function createPuzzle(solution) {
+
+        let puzzle = solution.map(r => [...r]);
+
+        let cellsToRemove = 45;
+
+        while (cellsToRemove > 0) {
+
+            let r = Math.floor(Math.random() * 9);
+            let c = Math.floor(Math.random() * 9);
+
+            if (puzzle[r][c] !== 0) {
+
+                let backup = puzzle[r][c];
+                puzzle[r][c] = 0;
+
+                let copy = puzzle.map(row => [...row]);
+
+                if (countSolutions(copy) !== 1) {
+                    puzzle[r][c] = backup;
+                    continue;
+                }
+
+                cellsToRemove--;
+            }
+        }
+
+        return puzzle;
+    }
+
+    // ---------------- UI ----------------
+
+    function drawBoard(data) {
+
+        board.innerHTML = "";
+
+        for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+
+                const input = document.createElement("input");
+                input.classList.add("cell");
+
+                input.value = data[r][c] === 0 ? "" : data[r][c];
+
+                if (data[r][c] !== 0) {
+                    input.disabled = true;
+                }
+
+                input.dataset.row = r;
+                input.dataset.col = c;
+
+                input.addEventListener("input", () => {
+                    input.value = input.value.replace(/[^1-9]/g, "").slice(0, 1);
+                });
+
+                if (c % 3 === 0) input.classList.add("left-border");
+                if (r % 3 === 0) input.classList.add("top-border");
+                if (c === 8) input.classList.add("right-border");
+                if (r === 8) input.classList.add("bottom-border");
+
+                board.appendChild(input);
+            }
+        }
+    }
+
     function getUserBoard() {
 
-        const inputs = document.querySelectorAll("input");
+        let grid = Array.from({ length: 9 }, () => Array(9).fill(0));
 
-        let grid = Array.from({ length: 9 }, () =>
-            Array(9).fill(0)
-        );
-
-        inputs.forEach(input => {
-
+        document.querySelectorAll("input").forEach(input => {
             let r = input.dataset.row;
             let c = input.dataset.col;
 
@@ -256,30 +224,24 @@ function generateSolution() {
         return grid;
     }
 
-   function checkBoard() {
+    function checkBoard() {
 
-    const user = getUserBoard();
+        const user = getUserBoard();
 
-    for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
+        for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
 
-            if (user[r][c] !== solution[r][c]) {
-
-                message.textContent = "❌ Wrong solution. -5 points!";
-
-                // ❌ deduct points
-                updatePoints(-5);
-
-                return;
+                if (user[r][c] !== solution[r][c]) {
+                    message.textContent = "❌ Wrong solution. -5 points!";
+                    updatePoints(-5);
+                    return;
+                }
             }
         }
+
+        message.textContent = "🎉 Correct! +10 points!";
+        updatePoints(10);
     }
-
-    message.textContent = "🎉 Correct! +10 points!";
-
-    // 🎉 reward points
-    updatePoints(10);
-}
 
     function newGame() {
         solution = generateSolution();
@@ -292,19 +254,21 @@ function generateSolution() {
     document.getElementById("check").addEventListener("click", checkBoard);
 
     newGame();
+
 });
+
+// ---------------- FIRESTORE ----------------
 
 async function updatePoints(value) {
 
     if (!currentUserUID) return;
 
-    const userRef = doc(db, "users", currentUserUID);
+    const ref = doc(db, "users", currentUserUID);
 
-    await updateDoc(userRef, {
+    await updateDoc(ref, {
         points: increment(value)
     });
 
-    // Update local points and UI immediately
     currentPoints += value;
 
     document.getElementById("userPoints").textContent =
