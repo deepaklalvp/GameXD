@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <title>GameXD | Number Guessing</title>
+
+    <link rel="stylesheet" href="css/guess.css">
+    <script type="module" src="./js/guess.js" defer></script>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div class="navbar">
+
+    <h2>🎮 GameXD</h2>
+
+    <div class="right">
+
+        <span id="userName">Loading...</span>
+        <span id="userPoints"> | ⭐ 0 pts</span>
+
+        <button onclick="location.href='home.html'">
+            <i class="fa-solid fa-house"></i>
+            Home
+        </button>
+
+        <button id="logoutBtn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </button>
+
+    </div>
+
+</div>
+
+<div class="container">
+
+    <h1>🎯 Number Guessing</h1>
+
+    <p>Guess a number between <b>1</b> and <b>100</b></p>
+
+    <h2 id="attempts">Attempts Left : 10</h2>
+
+    <input
+        type="number"
+        id="guessInput"
+        min="1"
+        max="100"
+        placeholder="Enter number">
+
+    <div class="buttons">
+
+        <button id="guessBtn">
+            <i class="fa-solid fa-check"></i>
+            Guess
+        </button>
+
+        <button id="newGame">
+            <i class="fa-solid fa-dice"></i>
+            New Game
+        </button>
+
+    </div>
+
+    <p id="message"></p>
+
+</div>
+
+</body>
+</html>
