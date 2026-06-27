@@ -20,8 +20,8 @@ body{
     position:fixed;
     inset:0;
     background:
-        radial-gradient(circle at top left,#f97316,transparent),
-        radial-gradient(circle at bottom right,#ef4444,transparent);
+    radial-gradient(circle at top left,#8b5cf6,transparent),
+    radial-gradient(circle at bottom right,#ec4899,transparent);
     z-index:-1;
 }
 
