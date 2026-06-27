@@ -196,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 input.dataset.row = r;
                 input.dataset.col = c;
 
-                input.addEventListener("input", () => {
+               input.addEventListener("input", () => {
 
     input.value = input.value
         .replace(/[^1-9]/g, "")
@@ -204,7 +204,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     highlightConflicts();
 });
-
                 if (c % 3 === 0) input.classList.add("left-border");
                 if (r % 3 === 0) input.classList.add("top-border");
                 if (c === 8) input.classList.add("right-border");
