@@ -53,10 +53,6 @@ function endGame(msg, points){
 
     if(points !== 0) updatePoints(points);
 }
-    updateStatus(msg);
-    gameOver = true;
-    if(points !== 0) updatePoints(points);
-}
 
 // ---------- AI ----------
 function aiMove(){
