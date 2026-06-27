@@ -40,6 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const roleBox = document.getElementById("roleBox");
     const playerText = document.getElementById("playerText");
 
+    // 🛑 safety check (IMPORTANT)
+    if (!startBtn || !playersInput || !revealBtn || !nextBtn) {
+        console.error("Missing HTML elements. Check IDs in imposter.html");
+        return;
+    }
+
     // ---------------- AUTH ----------------
 
     onAuthStateChanged(auth, async (user) => {
@@ -69,14 +75,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ---------------- LOGOUT ----------------
 
-    document.getElementById("logoutBtn")
-        ?.addEventListener("click", () => {
+    const logoutBtn = document.getElementById("logoutBtn");
 
-        signOut(auth).then(() => {
-            window.location.href = "index.html";
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            signOut(auth).then(() => {
+                window.location.href = "index.html";
+            });
         });
-
-    });
+    }
 
     // ---------------- GAME START ----------------
 
