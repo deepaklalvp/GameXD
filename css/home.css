@@ -82,13 +82,23 @@ body{
     border-radius:15px;
     cursor:pointer;
     transition:0.3s;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
 .card:hover{
-    transform:translateY(-5px);
-    background:rgba(255,255,255,0.12);
+    transform: translateY(-8px) scale(1.03);
+    background: rgba(255,255,255,0.12);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 }
 
+.card i {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #60a5fa;
+    display: block;
+}
 #userPoints {
     margin-left: 10px;
     color: gold;
