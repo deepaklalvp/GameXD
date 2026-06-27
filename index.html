@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>GameXD - Login</title>
 
     <link rel="stylesheet" href="css/login.css">
@@ -22,27 +23,19 @@
 
         <form id="loginForm">
 
-            <div class="input-group">
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Email Address"
-                    required>
+           <div class="input-group">
+            <i class="fa fa-envelope icon"></i>
+            <input type="email" id="email" placeholder="Email Address" required>
             </div>
 
             <div class="input-group">
-
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Password"
-                    required>
-
+                <i class="fa fa-lock icon"></i>
+                <input type="password" id="password" placeholder="Password" required>
                 <span id="togglePassword">👁</span>
-
             </div>
 
             <button type="submit">
+                <i class="fa fa-right-to-bracket"></i>
                 Login
             </button>
 
