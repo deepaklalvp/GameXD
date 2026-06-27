@@ -1,73 +1,143 @@
+let currentUserUID = null;
+let currentPoints = 0;
+
+import { auth, db } from "./firebase.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+import {
+    doc,
+    getDoc,
+    updateDoc,
+    increment
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+// ---------------- WORD LIST ----------------
+
+const words = [
+    "Apple","Banana","Car","Laptop","Mountain","River","Ocean","Phone","Table","Chair",
+    "School","Doctor","Police","Teacher","Airport","Train","Bus","Rocket","Space","Planet",
+    "Lion","Tiger","Elephant","Dog","Cat","Fish","Bird","Snake","Monkey",
+    "Cricket","Football","Basketball","Volcano","Forest","Desert","Rain","Cloud","Sun",
+    "Moon","Star","Galaxy","Robot","Camera","Watch","Bottle","Shoes","Book"
+];
+
 let players = [];
 let roles = [];
 let impostorIndex = 0;
-let currentPlayer = 0;
+let current = 0;
+let word = "";
 
-let word = "Apple"; // you can later randomize this
+document.addEventListener("DOMContentLoaded", () => {
 
-document.getElementById("startGame").addEventListener("click", startGame);
+    const playersInput = document.getElementById("players");
+    const startBtn = document.getElementById("startBtn");
+    const revealBtn = document.getElementById("revealBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const roleBox = document.getElementById("roleBox");
+    const playerText = document.getElementById("playerText");
 
-function startGame() {
+    // ---------------- AUTH ----------------
 
-    const count = parseInt(document.getElementById("players").value);
+    onAuthStateChanged(auth, async (user) => {
 
-    if (!count || count < 2) {
-        alert("Enter at least 2 players");
-        return;
+        if (!user) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        currentUserUID = user.uid;
+
+        const snap = await getDoc(doc(db, "users", user.uid));
+
+        if (snap.exists()) {
+
+            const data = snap.data();
+
+            document.getElementById("userName").textContent =
+                `Hi, ${data.name}`;
+
+            currentPoints = data.points || 0;
+
+            document.getElementById("userPoints").textContent =
+                ` | ⭐ ${currentPoints} pts`;
+        }
+    });
+
+    // ---------------- LOGOUT ----------------
+
+    document.getElementById("logoutBtn")
+        ?.addEventListener("click", () => {
+
+        signOut(auth).then(() => {
+            window.location.href = "index.html";
+        });
+
+    });
+
+    // ---------------- GAME START ----------------
+
+    startBtn.addEventListener("click", () => {
+
+        const count = parseInt(playersInput.value);
+
+        if (!count || count < 2) {
+            alert("Enter at least 2 players");
+            return;
+        }
+
+        word = words[Math.floor(Math.random() * words.length)];
+
+        players = Array(count).fill(0);
+        roles = Array(count).fill("civilian");
+
+        impostorIndex = Math.floor(Math.random() * count);
+        roles[impostorIndex] = "impostor";
+
+        current = 0;
+
+        document.getElementById("setup").style.display = "none";
+        document.getElementById("game").style.display = "block";
+
+        showPlayer();
+    });
+
+    function showPlayer() {
+
+        playerText.textContent = `Player ${current + 1}`;
+
+        roleBox.textContent = "";
+
+        revealBtn.style.display = "block";
+        nextBtn.style.display = "none";
     }
 
-    players = Array.from({ length: count });
+    revealBtn.addEventListener("click", () => {
 
-    roles = Array(count).fill("civilian");
+        if (roles[current] === "impostor") {
+            roleBox.textContent = "😈 You are the IMPOSTOR";
+        } else {
+            roleBox.textContent = `Word: ${word}`;
+        }
 
-    impostorIndex = Math.floor(Math.random() * count);
+        revealBtn.style.display = "none";
+        nextBtn.style.display = "block";
+    });
 
-    roles[impostorIndex] = "impostor";
+    nextBtn.addEventListener("click", () => {
 
-    currentPlayer = 0;
+        current++;
 
-    document.getElementById("setup").style.display = "none";
-    document.getElementById("game").classList.remove("hidden");
+        if (current >= players.length) {
+            alert("All players done!");
+            location.reload();
+            return;
+        }
 
-    showPlayer();
-}
+        showPlayer();
+    });
 
-function showPlayer() {
-
-    document.getElementById("playerText").textContent =
-        `Player ${currentPlayer + 1}`;
-
-    document.getElementById("roleBox").textContent = "";
-
-    document.getElementById("revealBtn").style.display = "block";
-    document.getElementById("nextBtn").classList.add("hidden");
-}
-
-document.getElementById("revealBtn").addEventListener("click", () => {
-
-    const role = roles[currentPlayer];
-
-    if (role === "impostor") {
-        document.getElementById("roleBox").textContent =
-            "😈 YOU ARE THE IMPOSTOR";
-    } else {
-        document.getElementById("roleBox").textContent =
-            `Word: ${word}`;
-    }
-
-    document.getElementById("revealBtn").style.display = "none";
-    document.getElementById("nextBtn").classList.remove("hidden");
-});
-
-document.getElementById("nextBtn").addEventListener("click", () => {
-
-    currentPlayer++;
-
-    if (currentPlayer >= players.length) {
-        alert("All players done. Start discussion outside app.");
-        location.reload();
-        return;
-    }
-
-    showPlayer();
 });
