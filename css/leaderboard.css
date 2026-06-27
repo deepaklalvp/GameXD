@@ -1,0 +1,60 @@
+body{
+    margin:0;
+    font-family:Poppins, sans-serif;
+    background:#0b1220;
+    color:white;
+}
+
+.background{
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at top left,#60a5fa33,transparent),
+        radial-gradient(circle at bottom right,#a78bfa33,transparent);
+    z-index:-1;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 20px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+}
+
+.container{
+    text-align:center;
+    margin-top:40px;
+}
+
+#board{
+    max-width:500px;
+    margin:20px auto;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 15px;
+    margin:10px 0;
+    border-radius:12px;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(10px);
+}
+
+.rank{
+    font-weight:bold;
+    color:#facc15;
+}
+
+.name{
+    flex:1;
+    text-align:left;
+    margin-left:10px;
+}
+
+.points{
+    color:#60a5fa;
+    font-weight:bold;
+}
