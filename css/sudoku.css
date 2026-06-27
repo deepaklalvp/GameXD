@@ -12,93 +12,20 @@ body{
     justify-content:center;
     align-items:center;
     min-height:100vh;
+    padding-top:70px; /* IMPORTANT for navbar */
 }
 
+/* BACKGROUND */
 .background{
     position:fixed;
     inset:0;
-    background: radial-gradient(circle at top left,#3b82f6,transparent),
-                radial-gradient(circle at bottom right,#9333ea,transparent);
+    background:
+        radial-gradient(circle at top left,#f97316,transparent),
+        radial-gradient(circle at bottom right,#ef4444,transparent);
     z-index:-1;
 }
 
-.container{
-    text-align:center;
-}
-
-h1{
-    margin-bottom:10px;
-}
-
-#sudoku-board{
-    display:grid;
-    grid-template-columns:repeat(9,40px);
-    grid-template-rows:repeat(9,40px);
-    gap:0; /* IMPORTANT */
-    justify-content:center;
-    margin:20px auto;
-}
-
-/* normal cell */
-.cell{
-    width:40px;
-    height:40px;
-    text-align:center;
-    font-size:18px;
-    border:1px solid #334155;
-    background:rgba(255,255,255,0.08);
-    color:white;
-    outline:none;
-}
-
-/* 3x3 thick borders */
-.top-border{
-    border-top:3px solid white !important;
-}
-
-.left-border{
-    border-left:3px solid white !important;
-}
-
-.right-border{
-    border-right:3px solid white !important;
-}
-
-.bottom-border{
-    border-bottom:3px solid white !important;
-}
-input:disabled{
-    background:rgba(255,255,255,0.2);
-    font-weight:bold;
-}
-
-.buttons{
-    margin-top:20px;
-    display:flex;
-    gap:10px;
-    justify-content:center;
-}
-
-button{
-    padding:10px 15px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    background:#2563eb;
-    color:white;
-    transition:0.3s;
-}
-
-button:hover{
-    background:#1d4ed8;
-}
-
-#message{
-    margin-top:15px;
-    color:gold;
-    font-weight:bold;
-}
-
+/* NAVBAR (SAME AS SUDOKU) */
 .navbar{
     display:flex;
     justify-content:space-between;
@@ -128,26 +55,56 @@ button:hover{
     font-weight:bold;
 }
 
-body{
-    padding-top:70px; /* IMPORTANT so navbar doesn't overlap */
+.navbar button{
+    display:flex;
+    align-items:center;
+    gap:6px;
 }
 
-.navbar button i {
-    margin-right: 6px;
+/* CONTAINER */
+.container{
+    text-align:center;
+    margin-top:20px;
 }
 
-.navbar button {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+h1{
+    margin-bottom:10px;
 }
 
-.buttons button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+/* INPUT */
+input{
+    padding:12px;
+    font-size:18px;
+    border-radius:8px;
+    border:none;
+    margin:10px;
+    text-align:center;
 }
-.conflict {
-    background: rgba(255, 70, 70, 0.45) !important;
-    border: 2px solid #ff4d4d !important;
+
+/* BUTTONS */
+button{
+    padding:10px 15px;
+    margin:10px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+/* GAME BOX */
+#roleBox{
+    margin-top:20px;
+    font-size:28px;
+    font-weight:bold;
+}
+
+/* HIDE CLASS */
+.hidden{
+    display:none;
 }
