@@ -1,0 +1,57 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins, sans-serif;
+}
+
+body{
+    background:#0f172a;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.background{
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at top left,#f97316,transparent),
+        radial-gradient(circle at bottom right,#ef4444,transparent);
+    z-index:-1;
+}
+
+.container{
+    text-align:center;
+}
+
+input{
+    padding:12px;
+    font-size:18px;
+    border-radius:8px;
+    border:none;
+    margin:10px;
+    text-align:center;
+}
+
+button{
+    padding:10px 15px;
+    margin:10px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    cursor:pointer;
+}
+
+.hidden{
+    display:none;
+}
+
+#roleBox{
+    margin-top:20px;
+    font-size:28px;
+    font-weight:bold;
+}
