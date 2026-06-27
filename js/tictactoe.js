@@ -18,6 +18,7 @@ let currentPoints = 0;
 let board = Array(9).fill("");
 let gameOver = false;
 let difficulty = "easy";
+let playerTurn = true;   // NEW
 
 const winPatterns = [
     [0,1,2],[3,4,5],[6,7,8],
@@ -48,6 +49,12 @@ function updateStatus(msg){
 function endGame(msg, points){
     updateStatus(msg);
     gameOver = true;
+    playerTurn = false;
+
+    if(points !== 0) updatePoints(points);
+}
+    updateStatus(msg);
+    gameOver = true;
     if(points !== 0) updatePoints(points);
 }
 
@@ -74,7 +81,7 @@ function aiMove(){
     board[move] = "O";
     document.querySelectorAll(".cell")[move].textContent = "O";
 
-    if(getWinningPattern(board,"O")){
+        if(getWinningPattern(board,"O")){
         let winPattern = getWinningPattern(board,"O");
         highlightWin(winPattern);
         endGame("😔 AI Wins!", -5);
@@ -86,9 +93,9 @@ function aiMove(){
         return;
     }
 
+    playerTurn = true; // Player can move again
     updateStatus("Your Turn");
 }
-
 function randomMove(){
     let empty = getEmpty();
     return empty[Math.floor(Math.random()*empty.length)];
@@ -155,12 +162,16 @@ function minimax(newBoard, player){
 // ---------- PLAYER ----------
 function playerMove(i,cell){
 
-    if(gameOver || board[i]!=="") return;
+    function playerMove(i, cell){
 
-    board[i]="X";
-    cell.textContent="X";
+    if(gameOver || !playerTurn || board[i] !== "") return;
 
-    if(getWinningPattern(board,"X")){
+    playerTurn = false; // Lock player immediately
+
+    board[i] = "X";
+    cell.textContent = "X";
+
+       if(getWinningPattern(board,"X")){
         let winPattern = getWinningPattern(board,"X");
         highlightWin(winPattern);
         endGame("🎉 You Win!",10);
@@ -172,19 +183,24 @@ function playerMove(i,cell){
         return;
     }
 
-    updateStatus("AI Thinking...");
+    updateStatus("🤖 AI Thinking...");
 
-    setTimeout(aiMove,400);
+    setTimeout(aiMove, 400);
 }
 
 // ---------- RESET ----------
 function restart(){
-    board=Array(9).fill("");
-    gameOver=false;
-    document.querySelectorAll(".cell").forEach(c=>c.textContent="");
+    board = Array(9).fill("");
+    gameOver = false;
+    playerTurn = true;
+
+    document.querySelectorAll(".cell").forEach(c=>{
+        c.textContent="";
+        c.classList.remove("win");
+    });
+
     updateStatus("Your Turn");
 }
-
 // ---------- FIREBASE ----------
 async function updatePoints(val){
 
