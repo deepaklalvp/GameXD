@@ -12,8 +12,10 @@ body{
     justify-content:center;
     align-items:center;
     min-height:100vh;
+    padding-top:70px; /* IMPORTANT for navbar */
 }
 
+/* BACKGROUND */
 .background{
     position:fixed;
     inset:0;
@@ -23,10 +25,63 @@ body{
     z-index:-1;
 }
 
+/* ================= NAVBAR ================= */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 30px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,0.1);
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:1000;
+}
+
+.navbar h2{
+    font-size:20px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.navbar .right{
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+.navbar button{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 12px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#2563eb;
+    color:white;
+    transition:0.3s;
+}
+
+.navbar button:hover{
+    background:#1d4ed8;
+}
+
+#userPoints{
+    color:gold;
+    font-weight:bold;
+}
+
+/* ================= MAIN CONTAINER ================= */
 .container{
     text-align:center;
 }
 
+/* INPUT */
 input{
     padding:12px;
     font-size:18px;
@@ -36,6 +91,7 @@ input{
     text-align:center;
 }
 
+/* BUTTONS */
 button{
     padding:10px 15px;
     margin:10px;
@@ -44,14 +100,21 @@ button{
     background:#2563eb;
     color:white;
     cursor:pointer;
+    transition:0.3s;
 }
 
-.hidden{
-    display:none;
+button:hover{
+    background:#1d4ed8;
 }
 
+/* ROLE DISPLAY */
 #roleBox{
     margin-top:20px;
     font-size:28px;
     font-weight:bold;
+}
+
+/* HIDE CLASS */
+.hidden{
+    display:none;
 }
