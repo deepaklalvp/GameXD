@@ -18,8 +18,8 @@ body{
     position:fixed;
     inset:0;
     background:
-        radial-gradient(circle at top left,#3b82f6,transparent),
-        radial-gradient(circle at bottom right,#9333ea,transparent);
+        radial-gradient(circle at top left,#0ea5e9,transparent),
+        radial-gradient(circle at bottom right,#8b5cf6,transparent);
     z-index:-1;
 }
 
