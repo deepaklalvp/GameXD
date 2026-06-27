@@ -26,8 +26,10 @@ const winPatterns = [
     [0,4,8],[2,4,6]
 ];
 
-function getEmpty(){
-    return board.map((v,i)=>v===""?i:null).filter(v=>v!==null);
+function getEmpty(b = board){
+    return b
+        .map((v, i) => v === "" ? i : null)
+        .filter(v => v !== null);
 }
 
 function getWinningPattern(b, p){
@@ -112,7 +114,7 @@ function findWin(player){
 // ---------- MINIMAX ----------
 function minimax(newBoard, player){
 
-    let empty = getEmpty();
+    let empty = getEmpty(newBoard);
 
     if(checkWin(newBoard,"X")) return {score:-10};
     if(checkWin(newBoard,"O")) return {score:10};
