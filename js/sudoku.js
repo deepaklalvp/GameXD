@@ -197,7 +197,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 input.dataset.col = c;
 
                 input.addEventListener("input", () => {
-                    input.value = input.value.replace(/[^1-9]/g, "").slice(0, 1);
+
+    input.value = input.value
+        .replace(/[^1-9]/g, "")
+        .slice(0, 1);
+
+    highlightConflicts();
+});
                 });
 
                 if (c % 3 === 0) input.classList.add("left-border");
@@ -223,6 +229,78 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return grid;
     }
+
+    function clearConflicts() {
+    document.querySelectorAll(".cell").forEach(cell => {
+        cell.classList.remove("conflict");
+    });
+}
+
+function highlightConflicts() {
+
+    clearConflicts();
+
+    const inputs = document.querySelectorAll(".cell");
+
+    const boardData = Array.from({ length: 9 }, () =>
+        Array(9).fill(0)
+    );
+
+    // Build board
+    inputs.forEach(input => {
+        const r = Number(input.dataset.row);
+        const c = Number(input.dataset.col);
+
+        boardData[r][c] = input.value
+            ? parseInt(input.value)
+            : 0;
+    });
+
+    inputs.forEach(input => {
+
+        if (!input.value) return;
+
+        const row = Number(input.dataset.row);
+        const col = Number(input.dataset.col);
+        const value = parseInt(input.value);
+
+        let conflict = false;
+
+        // Check row
+        for (let c = 0; c < 9; c++) {
+            if (c !== col && boardData[row][c] === value) {
+                conflict = true;
+            }
+        }
+
+        // Check column
+        for (let r = 0; r < 9; r++) {
+            if (r !== row && boardData[r][col] === value) {
+                conflict = true;
+            }
+        }
+
+        // Check 3x3 box
+        const startRow = Math.floor(row / 3) * 3;
+        const startCol = Math.floor(col / 3) * 3;
+
+        for (let r = startRow; r < startRow + 3; r++) {
+            for (let c = startCol; c < startCol + 3; c++) {
+
+                if (
+                    (r !== row || c !== col) &&
+                    boardData[r][c] === value
+                ) {
+                    conflict = true;
+                }
+            }
+        }
+
+        if (conflict) {
+            input.classList.add("conflict");
+        }
+    });
+}
 
     function checkBoard() {
 
