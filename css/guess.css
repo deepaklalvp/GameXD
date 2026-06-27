@@ -18,9 +18,8 @@ body{
 .background{
     position:fixed;
     inset:0;
-    background:
-        radial-gradient(circle at top left,#3b82f6,transparent),
-        radial-gradient(circle at bottom right,#9333ea,transparent);
+    background: radial-gradient(circle at top left,#22c55e,transparent),
+            radial-gradient(circle at bottom right,#14b8a6,transparent);
     z-index:-1;
 }
 
