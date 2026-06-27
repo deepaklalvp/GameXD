@@ -78,6 +78,25 @@ body{
     transform:scale(1.05);
 }
 
+.navbar .right button{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 12px;
+    border:none;
+    border-radius:12px;
+    background:rgba(255,255,255,0.08);
+    color:white;
+    cursor:pointer;
+    transition:0.2s;
+    backdrop-filter:blur(10px);
+}
+
+.navbar .right button:hover{
+    transform:scale(1.05);
+    background:rgba(255,255,255,0.15);
+}
+
 /* 🧭 Page container */
 .container{
     text-align:center;
