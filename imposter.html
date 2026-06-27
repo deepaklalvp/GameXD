@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/imposter.css">
+    <script type="module" src="./js/imposter.js" defer></script>
+
+    <title>GameXD | Impostor</title>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div class="container">
+
+    <h1>🕵️ Impostor Game</h1>
+
+    <div id="setup">
+
+        <input type="number" id="players"
+               placeholder="Number of Players (2-10)">
+
+        <button id="startGame">Start Game</button>
+
+    </div>
+
+    <div id="game" class="hidden">
+
+        <h2 id="playerText"></h2>
+
+        <button id="revealBtn">Reveal</button>
+
+        <div id="roleBox"></div>
+
+        <button id="nextBtn" class="hidden">Pass Device</button>
+
+    </div>
+
+</div>
+
+</body>
+</html>
