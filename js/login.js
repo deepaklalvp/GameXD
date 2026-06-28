@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const error = document.getElementById("error");
     const togglePassword = document.getElementById("togglePassword");
     const password = document.getElementById("password");
+    const emailInput = document.getElementById("email");
 
     // SAFE check (VERY IMPORTANT)
     if (togglePassword && password) {
