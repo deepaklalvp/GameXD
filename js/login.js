@@ -2,16 +2,25 @@ import { auth } from "./firebase.js";
 
 import {
     signInWithEmailAndPassword,
-    onAuthStateChanged
+    onAuthStateChanged,
+    signOut
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            window.location.href = "home.html";
-        }
-    });
+    onAuthStateChanged(auth, async (user) => {
+
+    if (!user) return;
+
+    await user.reload();
+
+    if (user.emailVerified) {
+        window.location.href = "home.html";
+    } else {
+        await signOut(auth);
+    }
+
+});
 
     const form = document.getElementById("loginForm");
     const error = document.getElementById("error");
@@ -36,9 +45,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
-            await signInWithEmailAndPassword(auth, email, pass);
+            const userCredential = await signInWithEmailAndPassword(auth, email, pass);
 
-            window.location.href = "home.html";
+const user = userCredential.user;
+
+// Reload latest user information
+await user.reload();
+
+if (!user.emailVerified) {
+
+    await signOut(auth);
+
+    error.textContent = "Please verify your email before logging in.";
+
+    return;
+}
+
+window.location.href = "home.html";
 
         } catch (err) {
 
