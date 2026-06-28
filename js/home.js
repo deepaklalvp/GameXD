@@ -35,6 +35,11 @@ document.getElementById("userPoints").textContent =
 document.getElementById("profileName").textContent = data.name;
 document.getElementById("profileEmail").textContent = data.email;
 
+// ⭐ Avatar from first letter
+const firstLetter = data.name.charAt(0).toUpperCase();
+
+document.getElementById("profileAvatar").textContent = firstLetter;;
+
         } else {
 
             document.getElementById("userName").textContent =
