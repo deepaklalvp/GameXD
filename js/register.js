@@ -1,6 +1,9 @@
 import { auth, db } from "./firebase.js";
 
-import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {
+    createUserWithEmailAndPassword,
+    sendEmailVerification
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
@@ -42,18 +45,43 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
 
             const userCredential =
-                await createUserWithEmailAndPassword(auth, email, pass);
+    await createUserWithEmailAndPassword(auth, email, pass);
 
-            const user = userCredential.user;
+const user = userCredential.user;
 
-           await setDoc(doc(db, "users", user.uid), {
-                name,
-                email,
-                points: 100, // ⭐ default points
-                createdAt: serverTimestamp()
-            });
+// Send verification email
+await sendEmailVerification(user);
 
-            window.location.href = "home.html";
+// Save user data
+await setDoc(doc(db, "users", user.uid), {
+    name,
+    email,
+    points: 100,
+    createdAt: serverTimestamp()
+});
+
+// Sign out so user must verify first
+await auth.signOut();
+
+// Replace form with success message
+document.querySelector(".card").innerHTML = `
+    <h1>📧 Verify Your Email</h1>
+
+    <p>
+        A verification email has been sent to
+        <strong>${email}</strong>.
+    </p>
+
+    <p>
+        Please verify your email before logging in.
+    </p>
+
+    <a href="index.html">
+        <button style="margin-top:20px;">
+            Go to Login
+        </button>
+    </a>
+`;
 
         } catch (err) {
 
