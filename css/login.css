@@ -259,3 +259,20 @@ font-size:28px;
 #togglePassword {
     right: 15px;
 }
+
+.forgot-password {
+    text-align: right;
+    margin: 10px 0 18px;
+}
+
+.forgot-password a {
+    color: #6ea8fe;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.forgot-password a:hover {
+    color: #9cc3ff;
+    text-decoration: underline;
+}
