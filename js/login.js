@@ -3,7 +3,8 @@ import { auth } from "./firebase.js";
 import {
     signInWithEmailAndPassword,
     onAuthStateChanged,
-    signOut
+    signOut,
+    sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -34,6 +35,48 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    forgotPassword.addEventListener("click", async (e) => {
+
+    e.preventDefault();
+
+    const email = emailInput.value.trim();
+
+    error.style.color = "#ff4d4d";
+    error.textContent = "";
+
+    if (!email) {
+        error.textContent = "Please enter your email address first.";
+        return;
+    }
+
+    try {
+
+        await sendPasswordResetEmail(auth, email);
+
+        error.style.color = "#4CAF50";
+        error.textContent = "Password reset email has been sent. Check your inbox.";
+
+    } catch (err) {
+
+        error.style.color = "#ff4d4d";
+
+        switch (err.code) {
+
+            case "auth/invalid-email":
+                error.textContent = "Invalid email address.";
+                break;
+
+            case "auth/user-not-found":
+                error.textContent = "No account found with this email.";
+                break;
+
+            default:
+                error.textContent = err.message;
+        }
+    }
+
+});
+    
     form.addEventListener("submit", async (e) => {
 
         e.preventDefault();
