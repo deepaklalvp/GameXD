@@ -26,10 +26,14 @@ onAuthStateChanged(auth, async (user) => {
             const data = docSnap.data();
 
                 document.getElementById("userName").textContent =
-                    `Hi, ${data.name}`;
+    `Hi, ${data.name}`;
 
-                document.getElementById("userPoints").textContent =
-                    ` | ⭐ ${data.points} pts`;
+document.getElementById("userPoints").textContent =
+    `⭐ ${data.points} pts`;
+
+// Profile Drawer
+document.getElementById("profileName").textContent = data.name;
+document.getElementById("profileEmail").textContent = data.email;
 
         } else {
 
@@ -45,6 +49,25 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById("userName").textContent =
             "Hi, Player";
     }
+});
+
+const profileBtn = document.getElementById("profileBtn");
+const profileMenu = document.getElementById("profileMenu");
+
+profileBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    profileMenu.classList.toggle("show");
+});
+
+document.addEventListener("click", (e) => {
+
+    if (
+        !profileMenu.contains(e.target) &&
+        !profileBtn.contains(e.target)
+    ) {
+        profileMenu.classList.remove("show");
+    }
+
 });
 
 // logout
