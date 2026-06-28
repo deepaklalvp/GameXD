@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <title>GameXD | Home</title>
 
     <link rel="stylesheet" href="css/home.css">
     <script type="module" src="./js/home.js" defer></script>
 </head>
 
-    
 <body>
 
 <div class="background"></div>
 
-<!-- Navbar -->
 <!-- Navbar -->
 <div class="navbar">
 
@@ -24,22 +24,22 @@
     <div class="right">
 
         <i class="fa-solid fa-user"></i>
+
         <span id="userName">Loading...</span>
 
         <span id="userPoints">
             <i class="fa-solid fa-star"></i> 0 pts
         </span>
 
-        <!-- 🏆 Leaderboard Button -->
         <button onclick="location.href='leaderboard.html'">
             <i class="fa-solid fa-trophy"></i>
             Leaderboard
         </button>
 
-        <button id="logoutBtn">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            Logout
-        </button>
+        <!-- Profile Icon -->
+        <div class="profile-btn" id="profileBtn">
+            <i class="fa-solid fa-circle-user"></i>
+        </div>
 
     </div>
 
@@ -53,49 +53,96 @@
 
     <div class="games">
 
-   <div class="card" onclick="location.href='sudoku.html'">
-    <i class="fa-solid fa-table-cells-large"></i>
-    <h3>Sudoku</h3>
-    <p>Test your brain</p>
+        <div class="card" onclick="location.href='sudoku.html'">
+            <i class="fa-solid fa-table-cells-large"></i>
+            <h3>Sudoku</h3>
+            <p>Test your brain</p>
+        </div>
+
+        <div class="card" onclick="location.href='tictactoe.html'">
+            <i class="fa-solid fa-xmark"></i>
+            <h3>Tic Tac Toe</h3>
+            <p>Play with friends or AI</p>
+        </div>
+
+        <div class="card" onclick="location.href='memory.html'">
+            <i class="fa-solid fa-clone"></i>
+            <h3>Memory Game</h3>
+            <p>Match the pairs</p>
+        </div>
+
+        <div class="card" onclick="location.href='guess.html'">
+            <i class="fa-solid fa-question"></i>
+            <h3>Number Guessing</h3>
+            <p>Guess the hidden number</p>
+        </div>
+
+        <div class="card" onclick="location.href='snake.html'">
+            <i class="fa-solid fa-staff-snake"></i>
+            <h3>Snake Game</h3>
+            <p>Eat and grow</p>
+        </div>
+
+        <div class="card" onclick="location.href='imposter.html'">
+            <i class="fa-solid fa-user-secret"></i>
+            <h3>Impostor</h3>
+            <p>Find the hidden impostor among players</p>
+        </div>
+
+        <div class="card" onclick="location.href='flappy.html'">
+            <i class="fa-solid fa-dove"></i>
+            <h3>Flappy Bird</h3>
+            <p>Tap to fly, avoid pipes</p>
+        </div>
+
+    </div>
+
 </div>
 
-<div class="card" onclick="location.href='tictactoe.html'">
-    <i class="fa-solid fa-xmark"></i>
-    <h3>Tic Tac Toe</h3>
-    <p>Play with friends or AI</p>
-</div>
+<!-- Profile Drawer -->
+<div class="profile-menu" id="profileMenu">
 
-<div class="card" onclick="location.href='memory.html'">
-    <i class="fa-solid fa-clone"></i>
-    <h3>Memory Game</h3>
-    <p>Match the pairs</p>
-</div>
+    <div class="profile-header">
 
-<div class="card" onclick="location.href='guess.html'">
-    <i class="fa-solid fa-question"></i>
-    <h3>Number Guessing</h3>
-    <p>Guess the hidden number</p>
-</div>
+        <img
+            id="profileImage"
+            src="images/default-avatar.png"
+            alt="Profile">
 
-<div class="card" onclick="location.href='snake.html'">
-    <i class="fa-solid fa-staff-snake"></i>
-    <h3>Snake Game</h3>
-    <p>Eat and grow</p>
-</div>
-    
-<div class="card" onclick="location.href='imposter.html'">
-    <i class="fa-solid fa-user-secret"></i>
-    <h3>Impostor</h3>
-    <p>Find the hidden impostor among players</p>
-</div>   
+        <h3 id="profileName">Loading...</h3>
 
-<div class="card" onclick="location.href='flappy.html'">
-    <i class="fa-solid fa-dove"></i>
-    <h3>Flappy Bird</h3>
-    <p>Tap to fly, avoid pipes</p>
-</div>
+        <p id="profileEmail">Loading...</p>
 
-</div>
+    </div>
+
+    <hr>
+
+    <button id="editProfileBtn">
+        <i class="fa-solid fa-user-pen"></i>
+        Edit Profile
+    </button>
+
+    <button onclick="location.href='terms.html'">
+        <i class="fa-solid fa-file-contract"></i>
+        Terms & Conditions
+    </button>
+
+    <button onclick="location.href='privacy.html'">
+        <i class="fa-solid fa-shield-halved"></i>
+        Privacy Policy
+    </button>
+
+    <button onclick="location.href='help.html'">
+        <i class="fa-solid fa-circle-question"></i>
+        Help & Support
+    </button>
+
+    <hr>
+
+    <button id="logoutBtn" class="logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+    </button>
 
 </div>
 
