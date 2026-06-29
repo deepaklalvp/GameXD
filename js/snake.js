@@ -25,6 +25,7 @@ let direction = "RIGHT";
 let food = randomFood();
 let score = 0;
 let game;
+let speed = 150;
 
 function randomFood(){
     return {
