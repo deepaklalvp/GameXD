@@ -147,7 +147,7 @@ async function updatePoints(val){
 // ---------- INIT ----------
 document.addEventListener("DOMContentLoaded",()=>{
 
-    game = setInterval(draw, 150);
+    startCountdown();
 
     document.getElementById("restart").onclick = ()=>{
         location.reload();
@@ -182,3 +182,29 @@ document.addEventListener("DOMContentLoaded",()=>{
     };
 
 });
+
+function startCountdown(){
+
+    const cd = document.getElementById("countdown");
+
+    let count = 3;
+
+    cd.textContent = count;
+
+    const timer = setInterval(()=>{
+
+        count--;
+
+        if(count>0){
+            cd.textContent = count;
+        }else if(count===0){
+            cd.textContent = "GO!";
+        }else{
+            clearInterval(timer);
+            cd.textContent = "";
+            game = setInterval(draw,speed);
+        }
+
+    },1000);
+
+}
