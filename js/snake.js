@@ -134,13 +134,28 @@ else if(score >= 5){
 }
 
 updatePoints(reward);
-        alert("Game Over! Score: " + score);
+        showGameOver(score,reward);
         return;
     }
 
     snake.unshift(head);
 
     document.getElementById("score").textContent = "Score: " + score;
+}
+
+function showGameOver(score,reward){
+
+    document.getElementById("finalScore").textContent =
+        "Score: " + score;
+
+    document.getElementById("rewardEarned").textContent =
+        "Reward: ⭐ " + reward + " pts";
+
+    document
+        .getElementById("gameOverModal")
+        .classList
+        .remove("hidden");
+
 }
 
 // ---------- FIREBASE ----------
@@ -196,6 +211,9 @@ document.addEventListener("DOMContentLoaded",()=>{
     document.getElementById("logoutBtn").onclick = ()=>{
         signOut(auth).then(()=>location.href="index.html");
     };
+       // ✅ ADD THIS HERE (after DOM is ready)
+    document.getElementById("playAgain").onclick = ()=>{
+        location.reload();
 
 });
 
