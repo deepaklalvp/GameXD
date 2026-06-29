@@ -20,37 +20,40 @@ const ctx = canvas.getContext("2d");
 
 const box = 20;
 
-let snake = [{x:9*box, y:10*box}];
+let snake = [{ x: 9 * box, y: 10 * box }];
 let direction = "RIGHT";
 let food = randomFood();
 let score = 0;
-let game;
-let speed = 150;
 
-function randomFood(){
+let game = null;
+let speed = 150;
+let gameStarted = false;
+
+// ---------------- FOOD ----------------
+function randomFood() {
     return {
-        x: Math.floor(Math.random()*19)*box,
-        y: Math.floor(Math.random()*19)*box
+        x: Math.floor(Math.random() * 19) * box,
+        y: Math.floor(Math.random() * 19) * box
     };
 }
 
-function changeDirection(dir){
-
-    if(dir==="LEFT" && direction!=="RIGHT") direction="LEFT";
-    if(dir==="RIGHT" && direction!=="LEFT") direction="RIGHT";
-    if(dir==="UP" && direction!=="DOWN") direction="UP";
-    if(dir==="DOWN" && direction!=="UP") direction="DOWN";
-
+// ---------------- DIRECTION ----------------
+function changeDirection(dir) {
+    if (dir === "LEFT" && direction !== "RIGHT") direction = "LEFT";
+    if (dir === "RIGHT" && direction !== "LEFT") direction = "RIGHT";
+    if (dir === "UP" && direction !== "DOWN") direction = "UP";
+    if (dir === "DOWN" && direction !== "UP") direction = "DOWN";
 }
 
-document.addEventListener("keydown", (e)=>{
-
-    if(e.key==="ArrowLeft") changeDirection("LEFT");
-    if(e.key==="ArrowRight") changeDirection("RIGHT");
-    if(e.key==="ArrowUp") changeDirection("UP");
-    if(e.key==="ArrowDown") changeDirection("DOWN");
-
+// ---------------- KEYBOARD ----------------
+document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") changeDirection("LEFT");
+    if (e.key === "ArrowRight") changeDirection("RIGHT");
+    if (e.key === "ArrowUp") changeDirection("UP");
+    if (e.key === "ArrowDown") changeDirection("DOWN");
 });
+
+// ---------------- TOUCH CONTROLS ----------------
 let startX = 0;
 let startY = 0;
 
@@ -59,20 +62,17 @@ canvas.addEventListener("touchstart", (e) => {
     startY = e.touches[0].clientY;
 });
 
-// Prevent page scrolling while swiping on the canvas
 canvas.addEventListener("touchmove", (e) => {
     e.preventDefault();
 }, { passive: false });
 
 canvas.addEventListener("touchend", (e) => {
-
     const endX = e.changedTouches[0].clientX;
     const endY = e.changedTouches[0].clientY;
 
     const dx = endX - startX;
     const dy = endY - startY;
 
-    // Ignore tiny swipes
     if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return;
 
     if (Math.abs(dx) > Math.abs(dy)) {
@@ -84,76 +84,76 @@ canvas.addEventListener("touchend", (e) => {
     }
 });
 
-function draw(){
+// ---------------- GAME LOOP ----------------
+function draw() {
 
-    ctx.fillStyle="rgba(0,0,0,0.3)";
-    ctx.fillRect(0,0,400,400);
+    ctx.fillStyle = "rgba(0,0,0,0.3)";
+    ctx.fillRect(0, 0, 400, 400);
 
-    for(let i=0;i<snake.length;i++){
-        ctx.fillStyle = i===0 ? "#00ff88" : "#00cc66";
-        ctx.fillRect(snake[i].x,snake[i].y,box,box);
+    // snake
+    for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = i === 0 ? "#00ff88" : "#00cc66";
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
     }
 
-    ctx.fillStyle="red";
-    ctx.fillRect(food.x,food.y,box,box);
+    // food
+    ctx.fillStyle = "red";
+    ctx.fillRect(food.x, food.y, box, box);
 
-    let head = {...snake[0]};
+    // head
+    let head = { ...snake[0] };
 
-    if(direction==="LEFT") head.x -= box;
-    if(direction==="RIGHT") head.x += box;
-    if(direction==="UP") head.y -= box;
-    if(direction==="DOWN") head.y += box;
+    if (direction === "LEFT") head.x -= box;
+    if (direction === "RIGHT") head.x += box;
+    if (direction === "UP") head.y -= box;
+    if (direction === "DOWN") head.y += box;
 
-   if(head.x === food.x && head.y === food.y){
+    // move snake FIRST
+    snake.unshift(head);
 
-    score++;
-    food = randomFood();
+    // food collision
+    if (head.x === food.x && head.y === food.y) {
 
-    // ⭐ SPEED INCREASE LOGIC (ADD HERE)
-    if(score % 5 === 0 && speed > 70){
+        score++;
+        food = randomFood();
 
-        speed -= 10;
+        // SPEED INCREASE
+        if (score % 5 === 0 && speed > 70) {
+            speed -= 10;
+            clearInterval(game);
+            game = setInterval(draw, speed);
+        }
 
-        clearInterval(game);
-        game = setInterval(draw, speed);
-    }
-}else {
+    } else {
         snake.pop();
     }
 
+    // collision check
     let collision =
-        head.x<0 || head.y<0 ||
-        head.x>=400 || head.y>=400 ||
-        snake.some(s=>s.x===head.x && s.y===head.y);
+        head.x < 0 || head.y < 0 ||
+        head.x >= 400 || head.y >= 400 ||
+        snake.slice(1).some(s => s.x === head.x && s.y === head.y);
 
-    if(collision){
+    if (collision) {
         clearInterval(game);
+
         let reward = 0;
 
-if(score >= 30){
-    reward = 100;
-}
-else if(score >= 20){
-    reward = 50;
-}
-else if(score >= 10){
-    reward = 25;
-}
-else if(score >= 5){
-    reward = 10;
-}
+        if (score >= 30) reward = 100;
+        else if (score >= 20) reward = 50;
+        else if (score >= 10) reward = 25;
+        else if (score >= 5) reward = 10;
 
-updatePoints(reward);
-        showGameOver(score,reward);
+        updatePoints(reward);
+        showGameOver(score, reward);
         return;
     }
-
-    snake.unshift(head);
 
     document.getElementById("score").textContent = "Score: " + score;
 }
 
-function showGameOver(score,reward){
+// ---------------- GAME OVER UI ----------------
+function showGameOver(score, reward) {
 
     document.getElementById("finalScore").textContent =
         "Score: " + score;
@@ -161,21 +161,18 @@ function showGameOver(score,reward){
     document.getElementById("rewardEarned").textContent =
         "Reward: ⭐ " + reward + " pts";
 
-    document
-        .getElementById("gameOverModal")
-        .classList
-        .remove("hidden");
-
+    document.getElementById("gameOverModal")
+        .classList.remove("hidden");
 }
 
-// ---------- FIREBASE ----------
-async function updatePoints(val){
+// ---------------- FIREBASE ----------------
+async function updatePoints(val) {
 
-    if(!currentUserUID) return;
+    if (!currentUserUID) return;
 
-    const ref = doc(db,"users",currentUserUID);
+    const ref = doc(db, "users", currentUserUID);
 
-    await updateDoc(ref,{
+    await updateDoc(ref, {
         points: increment(val)
     });
 
@@ -185,27 +182,61 @@ async function updatePoints(val){
         ` | ⭐ ${currentPoints} pts`;
 }
 
-// ---------- INIT ----------
-document.addEventListener("DOMContentLoaded",()=>{
+// ---------------- COUNTDOWN ----------------
+function startCountdown() {
+
+    const cd = document.getElementById("countdown");
+
+    let count = 3;
+
+    cd.textContent = count;
+
+    const timer = setInterval(() => {
+
+        count--;
+
+        if (count > 0) {
+            cd.textContent = count;
+        } else if (count === 0) {
+            cd.textContent = "GO!";
+        } else {
+            clearInterval(timer);
+            cd.textContent = "";
+
+            if (!gameStarted) {
+                gameStarted = true;
+                game = setInterval(draw, speed);
+            }
+        }
+
+    }, 1000);
+}
+
+// ---------------- INIT ----------------
+document.addEventListener("DOMContentLoaded", () => {
 
     startCountdown();
 
-    document.getElementById("restart").onclick = ()=>{
+    document.getElementById("restart").onclick = () => {
         location.reload();
     };
 
-    onAuthStateChanged(auth, async(user)=>{
+    document.getElementById("playAgain").onclick = () => {
+        location.reload();
+    };
 
-        if(!user){
-            location.href="index.html";
+    onAuthStateChanged(auth, async (user) => {
+
+        if (!user) {
+            location.href = "index.html";
             return;
         }
 
         currentUserUID = user.uid;
 
-        const snap = await getDoc(doc(db,"users",user.uid));
+        const snap = await getDoc(doc(db, "users", user.uid));
 
-        if(snap.exists()){
+        if (snap.exists()) {
             const data = snap.data();
 
             currentPoints = data.points;
@@ -218,37 +249,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         }
     });
 
-    document.getElementById("logoutBtn").onclick = ()=>{
-        signOut(auth).then(()=>location.href="index.html");
+    document.getElementById("logoutBtn").onclick = () => {
+        signOut(auth).then(() => location.href = "index.html");
     };
-       // ✅ ADD THIS HERE (after DOM is ready)
-    document.getElementById("playAgain").onclick = ()=>{
-        location.reload();
-
 });
-
-function startCountdown(){
-
-    const cd = document.getElementById("countdown");
-
-    let count = 3;
-
-    cd.textContent = count;
-
-    const timer = setInterval(()=>{
-
-        count--;
-
-        if(count>0){
-            cd.textContent = count;
-        }else if(count===0){
-            cd.textContent = "GO!";
-        }else{
-            clearInterval(timer);
-            cd.textContent = "";
-            game = setInterval(draw,speed);
-        }
-
-    },1000);
-
-}
