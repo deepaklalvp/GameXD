@@ -33,12 +33,54 @@ function randomFood(){
     };
 }
 
+function changeDirection(dir){
+
+    if(dir==="LEFT" && direction!=="RIGHT") direction="LEFT";
+    if(dir==="RIGHT" && direction!=="LEFT") direction="RIGHT";
+    if(dir==="UP" && direction!=="DOWN") direction="UP";
+    if(dir==="DOWN" && direction!=="UP") direction="DOWN";
+
+}
+
 document.addEventListener("keydown", (e)=>{
 
-    if(e.key==="ArrowLeft" && direction!=="RIGHT") direction="LEFT";
-    if(e.key==="ArrowRight" && direction!=="LEFT") direction="RIGHT";
-    if(e.key==="ArrowUp" && direction!=="DOWN") direction="UP";
-    if(e.key==="ArrowDown" && direction!=="UP") direction="DOWN";
+    if(e.key==="ArrowLeft") changeDirection("LEFT");
+    if(e.key==="ArrowRight") changeDirection("RIGHT");
+    if(e.key==="ArrowUp") changeDirection("UP");
+    if(e.key==="ArrowDown") changeDirection("DOWN");
+
+});
+let startX = 0;
+let startY = 0;
+
+canvas.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+});
+
+// Prevent page scrolling while swiping on the canvas
+canvas.addEventListener("touchmove", (e) => {
+    e.preventDefault();
+}, { passive: false });
+
+canvas.addEventListener("touchend", (e) => {
+
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+
+    const dx = endX - startX;
+    const dy = endY - startY;
+
+    // Ignore tiny swipes
+    if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return;
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 0) changeDirection("RIGHT");
+        else changeDirection("LEFT");
+    } else {
+        if (dy > 0) changeDirection("DOWN");
+        else changeDirection("UP");
+    }
 });
 
 function draw(){
