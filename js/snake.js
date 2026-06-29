@@ -118,7 +118,22 @@ function draw(){
 
     if(collision){
         clearInterval(game);
-        updatePoints(score >= 5 ? 10 : 0);
+        let reward = 0;
+
+if(score >= 30){
+    reward = 100;
+}
+else if(score >= 20){
+    reward = 50;
+}
+else if(score >= 10){
+    reward = 25;
+}
+else if(score >= 5){
+    reward = 10;
+}
+
+updatePoints(reward);
         alert("Game Over! Score: " + score);
         return;
     }
