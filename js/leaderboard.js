@@ -67,7 +67,7 @@ snap.forEach(doc => {
 
     <div class="name">${u.name}</div>
 
-    <div class="points">⭐ ${u.points}</div>
+    <div class="points"> ${u.points}</div>
 `;
 
         board.appendChild(row);
