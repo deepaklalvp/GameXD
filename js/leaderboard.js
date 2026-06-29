@@ -61,10 +61,14 @@ snap.forEach(doc => {
         row.classList.add("row");
 
         row.innerHTML = `
-            <div class="rank">#${i + 4}</div>
-            <div class="name">${u.name}</div>
-            <div class="points">${u.points || 0}</div>
-        `;
+    <div class="rank">
+        ${getRankBadge(i + 4)}
+    </div>
+
+    <div class="name">${u.name}</div>
+
+    <div class="points">⭐ ${u.points}</div>
+`;
 
         board.appendChild(row);
     });
