@@ -181,18 +181,15 @@ body{
     position:fixed;
     top:0;
     right:0;
-    width:min(320px,85vw);
+    width:min(280px,80vw);
     height:100vh;
     background:rgba(20,20,20,.95);
     backdrop-filter:blur(20px);
-
     transform:translateX(100%);
     transition:.3s ease;
-
     z-index:2000;
-    padding-top:80px;
+    box-shadow:-10px 0 25px rgba(0,0,0,.35);
 }
-
 .profile-menu.show{
     transform:translateX(0);
 }
@@ -367,7 +364,4 @@ body{
         font-size:12px;
     }
 
-    .profile-menu{
-        width:100%;
-    }
 }
