@@ -5,13 +5,19 @@
     font-family:Poppins, sans-serif;
 }
 
+html,
+body{
+    width:100%;
+    overflow-x:hidden;
+}
+
 body{
     background:#0b1220;
     color:white;
     min-height:100vh;
 }
 
-/* 🌈 Soft animated-style background */
+/* 🌈 Background */
 .background{
     position:fixed;
     inset:0;
@@ -21,48 +27,53 @@ body{
     z-index:-1;
 }
 
-/* 🧊 Flutter-style AppBar */
+/* ===========================
+   Navbar
+=========================== */
+
 .navbar{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
     padding:18px 20px;
     background:rgba(255,255,255,0.06);
     backdrop-filter:blur(18px);
     border-bottom:1px solid rgba(255,255,255,0.08);
     position:sticky;
     top:0;
+    z-index:1000;
 }
 
-/* App title */
 .navbar h2{
     font-size:20px;
     font-weight:600;
-    letter-spacing:0.5px;
+    letter-spacing:.5px;
 }
 
-/* Right section */
 .navbar .right{
     display:flex;
     align-items:center;
-    gap:12px;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+    gap:10px;
 }
 
-/* 👤 user + points pill */
-#userName, #userPoints{
+#userName,
+#userPoints{
     font-size:13px;
     padding:6px 10px;
     border-radius:20px;
     background:rgba(255,255,255,0.08);
     backdrop-filter:blur(10px);
+    white-space:nowrap;
 }
 
-/* ⭐ points highlight */
 #userPoints{
     color:#facc15;
     font-weight:600;
 }
-
 
 .navbar .right button{
     display:flex;
@@ -74,111 +85,118 @@ body{
     background:rgba(255,255,255,0.08);
     color:white;
     cursor:pointer;
-    transition:0.2s;
+    transition:.25s;
     backdrop-filter:blur(10px);
 }
 
 .navbar .right button:hover{
     transform:scale(1.05);
-    background:rgba(255,255,255,0.15);
+    background:rgba(255,255,255,.15);
 }
 
-/* 🧭 Page container */
+/* ===========================
+   Main Container
+=========================== */
+
 .container{
     text-align:center;
-    margin-top:40px;
-    padding:0 15px;
+    padding:30px 15px;
 }
 
 .container h1{
-    font-size:26px;
+    font-size:28px;
     font-weight:600;
 }
 
 .container p{
-    color:#94a3b8;
     margin-top:8px;
+    color:#94a3b8;
 }
 
-/* 🎮 GRID like Flutter cards */
+/* ===========================
+   Game Grid
+=========================== */
+
 .games{
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
-    gap:16px;
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    gap:18px;
     margin-top:35px;
-    padding:0 20px;
+    padding:0 20px 30px;
 }
 
-/* 🧱 Flutter Card */
 .card{
-    padding:18px;
+    padding:20px;
     border-radius:18px;
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.08);
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);
     backdrop-filter:blur(15px);
     cursor:pointer;
-    transition:0.25s ease;
+    transition:.25s ease;
 
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:8px;
+    gap:10px;
 }
 
 .card:hover{
-    transform:translateY(-6px) scale(1.02);
-    background:rgba(255,255,255,0.1);
+    transform:translateY(-6px);
+    background:rgba(255,255,255,.1);
 }
 
-/* 🎯 Icon style */
 .card i{
-    font-size:26px;
+    font-size:28px;
     color:#60a5fa;
 }
 
-/* Game title */
 .card h3{
-    font-size:16px;
+    font-size:17px;
     font-weight:600;
 }
 
-/* Description */
 .card p{
-    font-size:12px;
+    font-size:13px;
     color:#94a3b8;
     text-align:center;
+    line-height:1.4;
 }
+
+/* ===========================
+   Profile Button
+=========================== */
 
 .profile-btn{
-    font-size:34px;
+    font-size:30px;
     color:white;
     cursor:pointer;
-    margin-left:15px;
+    margin-left:5px;
 }
 
-/* 🌑 Dark overlay background */
+/* ===========================
+   Profile Menu
+=========================== */
+
 .profile-menu{
     position:fixed;
     top:0;
     right:0;
+    width:min(320px,85vw);
     height:100vh;
-    width:320px;
-    background:rgba(20,20,20,0.95);
+    background:rgba(20,20,20,.95);
     backdrop-filter:blur(20px);
 
     transform:translateX(100%);
-    transition:0.3s ease;
+    transition:.3s ease;
 
     z-index:2000;
     padding-top:80px;
 }
 
-/* open state */
 .profile-menu.show{
     transform:translateX(0);
 }
 
-/* header */
 .profile-header{
     text-align:center;
     padding:20px;
@@ -194,7 +212,6 @@ body{
 
 .profile-header h3{
     margin-top:12px;
-    color:white;
 }
 
 .profile-header p{
@@ -202,43 +219,42 @@ body{
     font-size:13px;
 }
 
-/* separator */
 .profile-menu hr{
     border:none;
     border-top:1px solid #333;
     margin:10px 0;
 }
 
-/* menu buttons */
 .profile-menu button{
     width:100%;
     background:none;
     border:none;
     color:white;
-    padding:14px 20px;
+    padding:15px 20px;
     text-align:left;
     cursor:pointer;
     font-size:15px;
     display:flex;
     align-items:center;
     gap:10px;
-    transition:0.2s;
+    transition:.2s;
 }
 
 .profile-menu button:hover{
     background:#2a2a2a;
 }
 
-/* icons spacing */
 .profile-menu button i{
     width:20px;
 }
 
-/* logout */
 .logout{
     color:#ff5c5c;
 }
-}
+
+/* ===========================
+   Avatar Circle
+=========================== */
 
 .avatar-circle{
     width:90px;
@@ -254,4 +270,104 @@ body{
     margin:0 auto;
     text-transform:uppercase;
     box-shadow:0 8px 20px rgba(0,0,0,.3);
+}
+
+/* ===========================
+   Tablet
+=========================== */
+
+@media (max-width:768px){
+
+    .navbar{
+        padding:15px;
+    }
+
+    .navbar h2{
+        width:100%;
+        text-align:center;
+        font-size:20px;
+    }
+
+    .navbar .right{
+        width:100%;
+        justify-content:center;
+    }
+
+    .games{
+        grid-template-columns:repeat(2,1fr);
+        gap:15px;
+        padding:15px;
+    }
+
+    .container h1{
+        font-size:24px;
+    }
+}
+
+/* ===========================
+   Mobile
+=========================== */
+
+@media (max-width:480px){
+
+    .navbar{
+        padding:12px;
+    }
+
+    .navbar h2{
+        font-size:18px;
+    }
+
+    .navbar .right{
+        gap:8px;
+    }
+
+    #userName,
+    #userPoints{
+        font-size:11px;
+        padding:5px 8px;
+    }
+
+    .navbar .right button{
+        padding:7px 10px;
+        font-size:12px;
+    }
+
+    .container{
+        padding:20px 12px;
+    }
+
+    .container h1{
+        font-size:22px;
+    }
+
+    .container p{
+        font-size:14px;
+    }
+
+    .games{
+        grid-template-columns:1fr;
+        padding:12px;
+        gap:12px;
+    }
+
+    .card{
+        padding:18px;
+    }
+
+    .card i{
+        font-size:24px;
+    }
+
+    .card h3{
+        font-size:16px;
+    }
+
+    .card p{
+        font-size:12px;
+    }
+
+    .profile-menu{
+        width:100%;
+    }
 }
