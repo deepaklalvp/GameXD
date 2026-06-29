@@ -167,3 +167,38 @@ body{
 .podium-row:hover{
     transform:scale(1.03);
 }
+
+.rank{
+    width:60px;
+}
+
+.badge{
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    min-width:42px;
+    height:34px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:14px;
+}
+
+.badge.normal{
+    background:rgba(255,255,255,.08);
+    color:#fff;
+}
+
+.badge.gold{
+    background:#FFD700;
+    color:#222;
+}
+
+.badge.silver{
+    background:#C0C0C0;
+    color:#222;
+}
+
+.badge.bronze{
+    background:#CD7F32;
+    color:white;
+}
