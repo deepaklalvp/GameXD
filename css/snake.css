@@ -41,3 +41,13 @@ button{
     cursor:pointer;
     font-weight:bold;
 }
+
+.countdown{
+    font-size:70px;
+    font-weight:bold;
+    color:#00ff88;
+    height:80px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
