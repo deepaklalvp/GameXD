@@ -104,10 +104,20 @@ function draw(){
     if(direction==="UP") head.y -= box;
     if(direction==="DOWN") head.y += box;
 
-    if(head.x===food.x && head.y===food.y){
-        score++;
-        food = randomFood();
-    } else {
+   if(head.x === food.x && head.y === food.y){
+
+    score++;
+    food = randomFood();
+
+    // ⭐ SPEED INCREASE LOGIC (ADD HERE)
+    if(score % 5 === 0 && speed > 70){
+
+        speed -= 10;
+
+        clearInterval(game);
+        game = setInterval(draw, speed);
+    }
+}else {
         snake.pop();
     }
 
