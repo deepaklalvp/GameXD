@@ -110,8 +110,7 @@ body{
 /* 👤 name */
 .name{
     flex:1;
-    text-align:left;
-    margin-left:10px;
+    text-align:center;
     font-weight:500;
 }
 
