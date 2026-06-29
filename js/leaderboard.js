@@ -69,3 +69,16 @@ snap.forEach(doc => {
         board.appendChild(row);
     });
 });
+
+function getRankBadge(rank) {
+    switch (rank) {
+        case 1:
+            return `<span class="badge gold">🥇</span>`;
+        case 2:
+            return `<span class="badge silver">🥈</span>`;
+        case 3:
+            return `<span class="badge bronze">🥉</span>`;
+        default:
+            return `<span class="badge normal">#${rank}</span>`;
+    }
+}
