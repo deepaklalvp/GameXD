@@ -349,6 +349,41 @@ body{
 .footer-links a:hover{
     color:#60a5fa;
 }
+.footer-online{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    margin:20px 0;
+    color:#fff;
+    font-size:15px;
+    font-weight:500;
+}
+
+.footer-online i{
+    color:#22c55e;
+    font-size:10px;
+    animation:pulse 1.8s infinite;
+}
+
+@keyframes pulse{
+
+    0%{
+        opacity:.4;
+        transform:scale(1);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(1.4);
+    }
+
+    100%{
+        opacity:.4;
+        transform:scale(1);
+    }
+
+}
 
 .footer-social{
     display:flex;
