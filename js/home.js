@@ -81,3 +81,5 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
         window.location.href = "index.html";
     });
 });
+document.getElementById("onlinePlayers").textContent = 124;
+
