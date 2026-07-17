@@ -23,6 +23,12 @@ let secondCard = null;
 let lock = false;
 
 let matches = 0;
+let seconds = 0;
+let moves = 0;
+
+let timerInterval;
+let timerStarted = false;
+
 
 // shuffle
 cards.sort(()=>Math.random()-0.5);
@@ -46,22 +52,44 @@ function createBoard(){
 
 function flip(card){
 
-    if(lock || card.classList.contains("flipped") || card.classList.contains("matched"))
+    if (
+        lock ||
+        card.classList.contains("flipped") ||
+        card.classList.contains("matched")
+    ) {
         return;
+    }
 
+    // Start timer on first flip
+    if (!timerStarted) {
+        timerStarted = true;
+        startTimer();
+    }
+
+    // Show card
     card.textContent = card.dataset.emoji;
     card.classList.add("flipped");
 
-    if(!firstCard){
+    // First selected card
+    if (!firstCard) {
         firstCard = card;
         return;
     }
 
+    // Second selected card
     secondCard = card;
+
+    // Count one move
+    moves++;
+
+    document.getElementById("moves").textContent =
+        `🔄 Moves: ${moves}`;
+
     lock = true;
 
     checkMatch();
 }
+
 
 function checkMatch(){
 
@@ -75,9 +103,17 @@ function checkMatch(){
         reset();
 
         if(matches === emojis.length){
-            document.getElementById("status").textContent = "🎉 You Win!";
-            updatePoints(10);
-        }
+
+    clearInterval(timerInterval);
+
+    document.getElementById("status").innerHTML =
+    `🎉 You Win!<br>
+    ⏱ Time: ${document.getElementById("timer").textContent.replace("⏱ Time: ","")}<br>
+    🔄 Moves: ${moves}`;
+
+    updatePoints(10);
+}
+
 
     } else {
 
@@ -101,6 +137,23 @@ function reset(){
     lock = false;
 }
 
+function startTimer(){
+
+    timerInterval = setInterval(()=>{
+
+        seconds++;
+
+        const min = String(Math.floor(seconds / 60)).padStart(2,"0");
+        const sec = String(seconds % 60).padStart(2,"0");
+
+        document.getElementById("timer").textContent =
+            `⏱ Time: ${min}:${sec}`;
+
+    },1000);
+
+}
+
+
 // ---------- FIREBASE ----------
 async function updatePoints(val){
 
@@ -123,9 +176,13 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     createBoard();
 
-    document.getElementById("restart").onclick = ()=>{
-        location.reload();
-    };
+    document.getElementById("restart").onclick = () => {
+
+    clearInterval(timerInterval);
+
+    location.reload();
+};
+
 
     onAuthStateChanged(auth,async(user)=>{
 
