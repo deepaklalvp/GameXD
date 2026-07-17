@@ -119,27 +119,40 @@ function addPipe() {
 
 function startCountdown(){
 
-    const timer =
-    setInterval(()=>{
-
-        document.getElementById("countdown")
-        .textContent = countdown;
+    const countElement =
+    document.getElementById("countdown");
 
 
-        countdown--;
+    let count = 3;
 
 
-        if(countdown < 0){
+    countElement.textContent = count;
+
+
+    const timer = setInterval(()=>{
+
+        count--;
+
+
+        if(count > 0){
+
+            countElement.textContent = count;
+
+        }
+
+        else if(count === 0){
+
+            countElement.textContent = "GO!";
+
+        }
+
+        else{
 
             clearInterval(timer);
 
-            document.getElementById("countdown")
-            .style.display="none";
+            countElement.style.display="none";
 
-
-            gameStarted=true;
-
-            loop();
+            gameStarted = true;
 
         }
 
@@ -295,17 +308,26 @@ function draw(){
 
 }
 
-function loop() {
+function loop(){
 
-    if (gameOver)
+    if(gameOver)
         return;
 
-    update();
+
+    if(gameStarted){
+
+        update();
+
+    }
+
+
     draw();
+
 
     requestAnimationFrame(loop);
 
 }
+
 
 function flap(){
 
@@ -418,5 +440,7 @@ document.getElementById("restartBtn").addEventListener("click", () => {
 
 // Start game
 
+loop();
 startCountdown();
+
 
