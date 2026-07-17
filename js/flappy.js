@@ -97,10 +97,12 @@ const gap = 160;
 
 const pipeInterval = setInterval(() => {
 
-    if (!gameOver)
+    if(gameStarted && !gameOver){
         addPipe();
+    }
 
-}, 1800);
+},1800);
+
 
 function addPipe() {
 
