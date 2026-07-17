@@ -82,6 +82,27 @@ body{
     margin-bottom:12px;
 }
 
+#countdown{
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    font-size:70px;
+
+    color:white;
+
+    font-weight:bold;
+
+    text-shadow:
+    0 0 20px black;
+
+}
+
+
 /* ===========================
    Canvas
 =========================== */
