@@ -25,13 +25,21 @@ let lock = false;
 let matches = 0;
 let seconds = 0;
 let moves = 0;
+let gameWon = false;
+
 
 let timerInterval;
 let timerStarted = false;
 
 
 // shuffle
-cards.sort(()=>Math.random()-0.5);
+for(let i = cards.length - 1; i > 0; i--){
+
+    const j = Math.floor(Math.random() * (i + 1));
+
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+}
+
 
 function createBoard(){
 
@@ -44,13 +52,16 @@ function createBoard(){
         card.classList.add("card");
         card.dataset.emoji = emoji;
 
-        card.addEventListener("click",()=>flip(card));
+        card.addEventListener("click",async()=>flip(card));
+
 
         grid.appendChild(card);
     });
 }
 
 function flip(card){
+    if (gameWon) return;
+
 
     if (
         lock ||
@@ -87,11 +98,13 @@ function flip(card){
 
     lock = true;
 
-    checkMatch();
+    await checkMatch();
+
 }
 
 
-function checkMatch(){
+async function checkMatch(){
+
 
     if(firstCard.dataset.emoji === secondCard.dataset.emoji){
 
@@ -102,16 +115,27 @@ function checkMatch(){
 
         reset();
 
-        if(matches === emojis.length){
+        if(matches === emojis.length && !gameWon){
+
+    gameWon = true;
+
+    const reward = getReward(seconds, moves);
 
     clearInterval(timerInterval);
 
-    document.getElementById("status").innerHTML =
-    `🎉 You Win!<br>
-    ⏱ Time: ${document.getElementById("timer").textContent.replace("⏱ Time: ","")}<br>
-    🔄 Moves: ${moves}`;
+    document.getElementById("status").innerHTML = `
+    <h2>🎉 Congratulations!</h2>
 
-    updatePoints(10);
+    <p>⏱ Time : ${formatTime(seconds)}</p>
+
+    <p>🔄 Moves : ${moves}</p>
+
+    <p>${"⭐".repeat(reward.stars)} ${reward.title}</p>
+
+    <p>🏅 +${reward.points} GameXD Points</p>
+    `;
+
+    await updatePoints(reward.points);
 }
 
 
@@ -130,6 +154,17 @@ function checkMatch(){
         },700);
     }
 }
+
+function formatTime(seconds){
+
+    const min = String(Math.floor(seconds / 60)).padStart(2,"0");
+
+    const sec = String(seconds % 60).padStart(2,"0");
+
+    return `${min}:${sec}`;
+
+}
+
 
 function reset(){
     firstCard = null;
@@ -153,8 +188,40 @@ function startTimer(){
 
 }
 
+function getReward(time, moves){
+
+    if(time <= 45 && moves <= 16){
+
+        return {
+            stars: 3,
+            points: 20,
+            title: "Excellent!"
+        };
+
+    }
+
+    if(time <= 75 && moves <= 22){
+
+        return {
+            stars: 2,
+            points: 15,
+            title: "Great!"
+        };
+
+    }
+
+    return {
+        stars: 1,
+        points: 10,
+        title: "Good Job!"
+    };
+
+}
+
 
 // ---------- FIREBASE ----------
+// ---------- FIREBASE ----------
+
 async function updatePoints(val){
 
     if(!currentUserUID) return;
@@ -170,6 +237,7 @@ async function updatePoints(val){
     document.getElementById("userPoints").textContent =
         ` | ⭐ ${currentPoints} pts`;
 }
+
 
 // ---------- INIT ----------
 document.addEventListener("DOMContentLoaded",()=>{
