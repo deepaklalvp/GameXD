@@ -59,7 +59,8 @@ function createBoard(){
     });
 }
 
-function flip(card){
+async function flip(card){
+
     if (gameWon) return;
 
 
