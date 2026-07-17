@@ -73,7 +73,13 @@ const gravity = 0.45;
 const jump = -8;
 
 let score = 0;
-let gameOver = false;
+let gameStarted = false;
+let countdown = 3;
+
+let bgX = 0;
+let cloudX = 420;
+let groundX = 0;
+
 
 const bird = {
 
@@ -109,6 +115,38 @@ function addPipe() {
 
 }
 
+function startCountdown(){
+
+    const timer =
+    setInterval(()=>{
+
+        document.getElementById("countdown")
+        .textContent = countdown;
+
+
+        countdown--;
+
+
+        if(countdown < 0){
+
+            clearInterval(timer);
+
+            document.getElementById("countdown")
+            .style.display="none";
+
+
+            gameStarted=true;
+
+            loop();
+
+        }
+
+
+    },1000);
+
+}
+
+
 function drawBird() {
 
     ctx.fillStyle = "yellow";
@@ -143,6 +181,49 @@ function drawPipes() {
     });
 
 }
+
+function drawBackground(){
+
+    // Sky
+    ctx.fillStyle = "#6fd6ff";
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    // Clouds
+    ctx.fillStyle = "rgba(255,255,255,0.8)";
+
+    ctx.beginPath();
+    ctx.arc(cloudX,100,25,0,Math.PI*2);
+    ctx.arc(cloudX+30,100,35,0,Math.PI*2);
+    ctx.arc(cloudX+70,100,25,0,Math.PI*2);
+    ctx.fill();
+
+
+    // Ground
+    ctx.fillStyle="#7ac943";
+
+    ctx.fillRect(
+        0,
+        canvas.height-40,
+        canvas.width,
+        40
+    );
+
+
+    // Move clouds
+    cloudX -= 1;
+
+    if(cloudX < -100){
+        cloudX = canvas.width;
+    }
+
+}
+
 
 function update() {
 
@@ -197,10 +278,16 @@ function update() {
 
 }
 
-function draw() {
+function draw(){
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
 
+    drawBackground();
     drawPipes();
     drawBird();
 
@@ -218,14 +305,16 @@ function loop() {
 
 }
 
-function flap() {
+function flap(){
 
-    if (gameOver)
+    if(!gameStarted || gameOver)
         return;
+
 
     bird.velocity = jump;
 
 }
+
 
 document.addEventListener("keydown", e => {
 
@@ -327,4 +416,5 @@ document.getElementById("restartBtn").addEventListener("click", () => {
 
 // Start game
 
-loop();
+startCountdown();
+
