@@ -57,3 +57,20 @@ body{
     background:#00ff88;
     color:black;
 }
+
+.game-info{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+#timer{
+    color:#ffd54f;
+}
+
+#moves{
+    color:#7CFC00;
+}
