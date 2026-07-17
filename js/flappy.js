@@ -369,7 +369,6 @@ canvas.addEventListener("touchstart", e => {
 // --------------------
 
 function calculatePoints(score) {
-
     if (score >= 100) return 50;
     if (score >= 75) return 40;
     if (score >= 50) return 30;
@@ -377,11 +376,11 @@ function calculatePoints(score) {
     if (score >= 30) return 15;
     if (score >= 20) return 10;
     if (score >= 10) return 5;
-    if (score >= 5) return 0;
+    if (score >= 5) return 2;
 
     return 0;
-
 }
+
 
 async function savePoints() {
 
