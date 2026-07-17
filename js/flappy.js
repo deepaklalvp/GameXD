@@ -75,6 +75,8 @@ const jump = -8;
 let score = 0;
 let gameStarted = false;
 let countdown = 3;
+let gameOver = false;
+
 
 let bgX = 0;
 let cloudX = 420;
