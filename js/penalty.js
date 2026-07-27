@@ -230,31 +230,6 @@ canvas.addEventListener("click",function(e){
 // Move Ball
 // -----------------------
 
-function updateBall(){
-
-    if(!ball.moving)
-        return;
-
-    const dx = ball.targetX - ball.x;
-    const dy = ball.targetY - ball.y;
-
-    const dist = Math.sqrt(dx*dx + dy*dy);
-
-    if(dist < ball.speed){
-
-        ball.moving = false;
-
-        // Result handled in Part 2
-
-        return;
-
-    }
-
-    ball.x += dx/dist * ball.speed;
-    ball.y += dy/dist * ball.speed;
-
-}
-
 // -----------------------
 // Reset Ball
 // -----------------------
@@ -354,11 +329,11 @@ function checkShot(){
 // Game Over
 // ===========================
 
-function gameOver() {
+function gameOver(){
+
+    showMessage("💀 GAME OVER!", "#ff4444");
 
     restartBtn.style.display = "inline-block";
-
-    alert("Game Over!\nFinal Score : " + score);
 
 }
 
