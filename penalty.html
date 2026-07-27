@@ -1,30 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <div class="background"></div>
 
-<div class="navbar">
-
-    <h2 onclick="location.href='home.html'" style="cursor:pointer;">
-        🎮 GameXD
-    </h2>
-
-    <div class="right">
-
-        <span id="userName">
-            Loading...
-        </span>
-
-        <span id="userPoints">
-            ⭐ 0 pts
-        </span>
-
-        <button id="logoutBtn">
-            Logout
-        </button>
-
-    </div>
-
-</div>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,29 +8,58 @@
 
     <link rel="stylesheet" href="css/penalty.css">
 </head>
+
 <body>
 
-<div class="game">
+    <div class="background"></div>
 
-    <h1>⚽ Penalty Kick</h1>
+    <div class="navbar">
 
-    <div class="scoreboard">
-        <span>Score: <b id="score">0</b></span>
-        <span>Lives: <b id="lives">3</b></span>
+        <h2 onclick="location.href='home.html'" style="cursor:pointer;">
+            🎮 GameXD
+        </h2>
+
+        <div class="right">
+
+            <span id="userName">
+                Loading...
+            </span>
+
+            <span id="userPoints">
+                ⭐ 0 pts
+            </span>
+
+            <button id="logoutBtn">
+                Logout
+            </button>
+
+        </div>
+
     </div>
 
-    <canvas id="gameCanvas" width="800" height="500"></canvas>
-    <div id="message"></div>
+    <div class="game">
 
-    <p>Click anywhere inside the goal to shoot!</p>
+        <h1>⚽ Penalty Kick</h1>
 
-    <button id="restartBtn" style="display:none;">
-        Play Again
-    </button>
+        <div class="scoreboard">
+            <span>Score: <b id="score">0</b></span>
+            <span>Lives: <b id="lives">3</b></span>
+        </div>
 
-</div>
+        <canvas id="gameCanvas" width="800" height="500"></canvas>
 
-<script type="module" src="js/penalty.js"></script>
+        <div id="message"></div>
+
+        <p>Click anywhere inside the goal to shoot!</p>
+
+        <button id="restartBtn" style="display:none;">
+            Play Again
+        </button>
+
+    </div>
+
+    <script type="module" src="js/penalty.js"></script>
 
 </body>
+
 </html>
