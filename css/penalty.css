@@ -6,95 +6,12 @@
 }
 
 body{
-    background:#1e3c72;
-    background:linear-gradient(to bottom,#87ceeb 0%,#87ceeb 40%,#2e8b57 40%,#228b22 100%);
-    display:flex;
-    justify-content:center;
-    align-items:center;
     min-height:100vh;
-}
-
-.game{
-    text-align:center;
-    position:relative;
-}
-
-h1{
-    color:#fff;
-    margin-bottom:15px;
-}
-
-.scoreboard{
-    display:flex;
-    justify-content:center;
-    gap:40px;
-    margin-bottom:15px;
-    font-size:20px;
-    color:#fff;
-    font-weight:bold;
-}
-
-canvas{
-    background:#3cb043;
-    border:5px solid white;
-    border-radius:10px;
-    box-shadow:0 0 20px rgba(0,0,0,.4);
-}
-
-p{
-    margin-top:15px;
+    background:linear-gradient(to bottom,#87ceeb 0%,#87ceeb 40%,#2e8b57 40%,#228b22 100%);
     color:white;
-    font-size:18px;
 }
 
-button{
-    margin-top:20px;
-    padding:10px 20px;
-    font-size:18px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    background:#ff9800;
-    color:white;
-    transition:.3s;
-}
-
-button:hover{
-    background:#e68900;
-}
-
-@media(max-width:850px){
-
-    canvas{
-        width:95%;
-        height:auto;
-    }
-
-    .scoreboard{
-        gap:20px;
-        font-size:18px;
-    }
-
-}
-
-#message{
-    position:absolute;
-    top:120px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:40px;
-    font-weight:bold;
-    color:white;
-    text-shadow:2px 2px 8px black;
-    opacity:0;
-    transition:opacity .3s;
-    pointer-events:none;
-}
-
-#message.show{
-    opacity:1;
-}
-
+/* Background */
 .background{
     position:fixed;
     inset:0;
@@ -103,6 +20,7 @@ button:hover{
     z-index:-1;
 }
 
+/* Navbar */
 .navbar{
     display:flex;
     justify-content:space-between;
@@ -114,6 +32,7 @@ button:hover{
 
 .navbar h2{
     margin:0;
+    color:white;
 }
 
 .right{
@@ -123,6 +42,7 @@ button:hover{
 }
 
 .right span{
+    color:white;
     font-size:15px;
 }
 
@@ -139,4 +59,112 @@ button:hover{
 
 .right button:hover{
     background:#fb8c00;
+}
+
+/* Game Container */
+.game{
+    margin-top:30px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    position:relative;
+}
+
+h1{
+    margin-bottom:20px;
+    color:white;
+}
+
+/* Scoreboard */
+.scoreboard{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    margin-bottom:20px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+/* Canvas */
+canvas{
+    background:#3cb043;
+    border:5px solid white;
+    border-radius:12px;
+    box-shadow:0 0 20px rgba(0,0,0,.4);
+}
+
+/* Instructions */
+p{
+    margin-top:15px;
+    font-size:18px;
+}
+
+/* Buttons */
+button{
+    margin-top:20px;
+    padding:10px 20px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#ff9800;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+button:hover{
+    background:#e68900;
+}
+
+/* Goal / Save / Miss message */
+#message{
+    position:absolute;
+    top:130px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:42px;
+    font-weight:bold;
+    text-shadow:2px 2px 8px black;
+    opacity:0;
+    transition:.3s;
+    pointer-events:none;
+}
+
+#message.show{
+    opacity:1;
+}
+
+/* Mobile */
+@media(max-width:850px){
+
+    .navbar{
+        flex-direction:column;
+        gap:10px;
+        text-align:center;
+    }
+
+    .right{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    canvas{
+        width:95%;
+        height:auto;
+    }
+
+    .scoreboard{
+        gap:20px;
+        font-size:18px;
+    }
+
+    h1{
+        font-size:28px;
+    }
+
+    #message{
+        font-size:30px;
+    }
 }
