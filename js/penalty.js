@@ -46,20 +46,16 @@ const goal = {
 const keeper = {
     x: canvas.width / 2,
     y: 110,
-    width: 90,
+    width: goal.width * 0.25,
     height: 18,
-    speed: window.innerWidth < 768 ? 8 : 4,
+    speed: goal.width * 0.02,
     dir: 1
 };
-
-// -----------------------
-// Ball
-// -----------------------
 
 const ball = {
     x: canvas.width / 2,
     y: 430,
-    radius: 12,
+    radius: goal.width * 0.035,
     targetX: 0,
     targetY: 0,
     moving: false,
