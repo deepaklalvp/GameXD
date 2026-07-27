@@ -3,105 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>GameXD | Penalty Kick</title>
 
     <link rel="stylesheet" href="css/penalty.css">
 </head>
 <body>
 
-    <!-- Navbar -->
-    <div class="navbar">
+<div class="game">
 
-        <h2 onclick="location.href='home.html'">
-            🎮 GameXD
-        </h2>
+    <h1>⚽ Penalty Kick</h1>
 
-        <div class="right">
-
-            <span id="userName">
-                Loading...
-            </span>
-
-            <span id="userPoints">
-                ⭐ 0 pts
-            </span>
-
-            <button id="logoutBtn">
-                Logout
-            </button>
-
-        </div>
-
+    <div class="scoreboard">
+        <span>Score: <b id="score">0</b></span>
+        <span>Lives: <b id="lives">3</b></span>
     </div>
 
-    <!-- Game -->
-    <div class="game-container">
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
 
-        <h2>⚽ Penalty Kick</h2>
+    <p>Click anywhere inside the goal to shoot!</p>
 
-        <div class="stats">
+    <button id="restartBtn" style="display:none;">
+        Play Again
+    </button>
 
-            <div class="stat-box">
-                🏆 Score
-                <span id="score">0</span>
-            </div>
+</div>
 
-            <div class="stat-box">
-                ❤️ Lives
-                <span id="lives">5</span>
-            </div>
-
-            <div class="stat-box">
-                ⚽ Shots
-                <span id="shots">0</span>
-            </div>
-
-        </div>
-
-        <!-- Countdown -->
-        <div id="countdown">
-            3
-        </div>
-
-        <!-- Canvas -->
-        <canvas id="gameCanvas" width="900" height="600"></canvas>
-
-        <!-- Instructions -->
-        <div class="instructions">
-
-            <p>
-                🖱 Click anywhere inside the goal to shoot.
-            </p>
-
-            <p>
-                Score goals while avoiding the goalkeeper!
-            </p>
-
-        </div>
-
-        <!-- Game Over -->
-        <div id="gameOver" class="hide">
-
-            <h2>Game Over</h2>
-
-            <p id="finalScore">
-                Score : 0
-            </p>
-
-            <button id="restartBtn">
-                Play Again
-            </button>
-
-            <button onclick="location.href='home.html'">
-                Home
-            </button>
-
-        </div>
-
-    </div>
-
-    <script type="module" src="js/penalty.js"></script>
+<script src="js/penalty.js"></script>
 
 </body>
 </html>
