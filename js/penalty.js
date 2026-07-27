@@ -26,6 +26,7 @@ const message = document.getElementById("message");
 
 let score = 0;
 let lives = 3;
+let gameOverState = false;
 
 // -----------------------
 // Goal
@@ -207,9 +208,9 @@ function updateKeeper(){
 // Shoot Ball
 // -----------------------
 
-canvas.addEventListener("click",function(e){
+canvas.addEventListener("click", function(e){
 
-    if(ball.moving)
+    if(gameOverState || ball.moving)
         return;
 
     const rect = canvas.getBoundingClientRect();
@@ -273,6 +274,9 @@ gameLoop();
 // Check shot result
 function checkShot(){
 
+    if(gameOverState)
+        return;
+
     if(
         ball.x > goal.x &&
         ball.x < goal.x + goal.width &&
@@ -289,14 +293,14 @@ function checkShot(){
 
             lives--;
 
-            showMessage("🧤 SAVED!","#ff9800");
+            showMessage("🧤 SAVED!", "#ff9800");
 
         }
         else{
 
             score++;
 
-            showMessage("⚽ GOAL!","#00ff66");
+            showMessage("⚽ GOAL!", "#00ff66");
 
         }
 
@@ -305,7 +309,7 @@ function checkShot(){
 
         lives--;
 
-        showMessage("❌ MISS!","#ff4444");
+        showMessage("❌ MISS!", "#ff4444");
 
     }
 
@@ -314,12 +318,12 @@ function checkShot(){
 
     if(lives <= 0){
 
-        setTimeout(gameOver,1200);
+        gameOverState = true;   // Stop further clicks immediately
+        setTimeout(gameOver, 1200);
 
-    }
-    else{
+    }else{
 
-        setTimeout(resetBall,1200);
+        setTimeout(resetBall, 1200);
 
     }
 
@@ -331,12 +335,13 @@ function checkShot(){
 
 function gameOver(){
 
+    gameOverState = true;
+
     showMessage("💀 GAME OVER!", "#ff4444");
 
     restartBtn.style.display = "inline-block";
 
 }
-
 // ===========================
 // Restart
 // ===========================
@@ -345,6 +350,7 @@ restartBtn.addEventListener("click", () => {
 
     score = 0;
     lives = 3;
+    gameOverState = false;
 
     scoreEl.textContent = score;
     livesEl.textContent = lives;
