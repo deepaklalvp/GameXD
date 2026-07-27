@@ -374,6 +374,7 @@ restartBtn.addEventListener("click", () => {
     score = 0;
     lives = 3;
     gameOverState = false;
+    shotInProgress = false;
 
     scoreEl.textContent = score;
     livesEl.textContent = lives;
