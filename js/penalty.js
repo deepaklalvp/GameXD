@@ -30,6 +30,7 @@ const message = document.getElementById("message");
 let score = 0;
 let lives = 3;
 let gameOverState = false;
+let shotInProgress = false;
 
 // -----------------------
 // Goal
@@ -209,8 +210,8 @@ function updateKeeper(){
 
 canvas.addEventListener("click", function(e){
 
-    if(gameOverState || ball.moving)
-        return;
+    if(gameOverState || ball.moving || shotInProgress)
+    return;
 
     const rect = canvas.getBoundingClientRect();
 
@@ -223,6 +224,7 @@ canvas.addEventListener("click", function(e){
         (canvas.height / rect.height);
 
     ball.moving = true;
+    shotInProgress = true;
 
 });
 
@@ -236,12 +238,13 @@ canvas.addEventListener("click", function(e){
 
 function resetBall(){
 
-    ball.x = canvas.width/2;
+    ball.x = canvas.width / 2;
     ball.y = 430;
+
     ball.moving = false;
+    shotInProgress = false;
 
 }
-
 // -----------------------
 // Game Loop
 // -----------------------
@@ -334,7 +337,9 @@ function checkShot(){
 
 async function gameOver(){
 
-    gameOverState = true;
+   gameOverState = true;
+shotInProgress = false;
+    
 
     let reward = 0;
 
