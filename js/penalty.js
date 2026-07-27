@@ -48,7 +48,7 @@ const keeper = {
     y: 110,
     width: 90,
     height: 18,
-    speed: 4,
+    speed: window.innerWidth < 768 ? 8 : 4,
     dir: 1
 };
 
