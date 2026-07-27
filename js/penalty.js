@@ -8,6 +8,7 @@ const ctx = canvas.getContext("2d");
 const scoreEl = document.getElementById("score");
 const livesEl = document.getElementById("lives");
 const restartBtn = document.getElementById("restartBtn");
+const message = document.getElementById("message");
 
 let score = 0;
 let lives = 3;
@@ -113,7 +114,21 @@ function drawField(){
     }
 
 }
+function showMessage(text,color){
 
+    message.textContent = text;
+
+    message.style.color = color;
+
+    message.classList.add("show");
+
+    setTimeout(()=>{
+
+        message.classList.remove("show");
+
+    },1200);
+
+}
 // -----------------------
 // Draw Goalkeeper
 // -----------------------
@@ -267,58 +282,55 @@ gameLoop();
 // ===========================
 
 // Check shot result
-function checkShot() {
+function checkShot(){
 
-    let isGoal = false;
-
-    // Ball inside goal?
-    if (
+    if(
         ball.x > goal.x &&
         ball.x < goal.x + goal.width &&
         ball.y > goal.y &&
         ball.y < goal.y + goal.height
-    ) {
+    ){
 
-        // Did keeper save it?
-        if (
-            ball.x > keeper.x - keeper.width / 2 &&
-            ball.x < keeper.x + keeper.width / 2 &&
+        if(
+            ball.x > keeper.x - keeper.width/2 &&
+            ball.x < keeper.x + keeper.width/2 &&
             ball.y > keeper.y &&
-            ball.y < keeper.y + keeper.height + 10
-        ) {
-
-            alert("🧤 Saved!");
+            ball.y < keeper.y + keeper.height
+        ){
 
             lives--;
 
-        } else {
+            showMessage("🧤 SAVED!","#ff9800");
 
-            alert("⚽ GOAL!");
+        }
+        else{
 
             score++;
 
-            isGoal = true;
+            showMessage("⚽ GOAL!","#00ff66");
 
         }
 
-    } else {
-
-        alert("❌ Miss!");
+    }
+    else{
 
         lives--;
+
+        showMessage("❌ MISS!","#ff4444");
 
     }
 
     scoreEl.textContent = score;
     livesEl.textContent = lives;
 
-    if (lives <= 0) {
+    if(lives <= 0){
 
-        gameOver();
+        setTimeout(gameOver,1200);
 
-    } else {
+    }
+    else{
 
-        resetBall();
+        setTimeout(resetBall,1200);
 
     }
 
