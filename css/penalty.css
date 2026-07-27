@@ -16,6 +16,7 @@ body{
 
 .game{
     text-align:center;
+    position:relative;
 }
 
 h1{
@@ -74,4 +75,22 @@ button:hover{
         font-size:18px;
     }
 
+}
+
+#message{
+    position:absolute;
+    top:120px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:40px;
+    font-weight:bold;
+    color:white;
+    text-shadow:2px 2px 8px black;
+    opacity:0;
+    transition:opacity .3s;
+    pointer-events:none;
+}
+
+#message.show{
+    opacity:1;
 }
