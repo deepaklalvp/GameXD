@@ -94,3 +94,49 @@ button:hover{
 #message.show{
     opacity:1;
 }
+
+.background{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(135deg,#00c6ff,#0072ff);
+    filter:blur(120px);
+    z-index:-1;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 30px;
+    background:rgba(255,255,255,.1);
+    backdrop-filter:blur(10px);
+}
+
+.navbar h2{
+    margin:0;
+}
+
+.right{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.right span{
+    font-size:15px;
+}
+
+.right button{
+    padding:8px 18px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#ff9800;
+    color:white;
+    font-weight:bold;
+    transition:.25s;
+}
+
+.right button:hover{
+    background:#fb8c00;
+}
