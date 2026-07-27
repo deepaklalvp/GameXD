@@ -7,8 +7,11 @@ import {
 
 import {
     doc,
-    getDoc
+    getDoc,
+    updateDoc,
+    increment
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
 
 let currentUserUID = null;
 let currentPoints = 0;
@@ -329,11 +332,30 @@ function checkShot(){
 // Game Over
 // ===========================
 
-function gameOver(){
+async function gameOver(){
 
     gameOverState = true;
 
-    showMessage("💀 GAME OVER!", "#ff4444");
+    let reward = 0;
+
+    if(score >= 15)
+        reward = 100;
+    else if(score >= 11)
+        reward = 75;
+    else if(score >= 8)
+        reward = 50;
+    else if(score >= 5)
+        reward = 25;
+    else if(score >= 3)
+        reward = 10;
+
+    await updatePoints(reward);
+
+    alert(
+        `Game Over!\n\n` +
+        `Goals: ${score}\n` +
+        `Reward: ⭐ ${reward}`
+    );
 
     restartBtn.style.display = "inline-block";
 
@@ -425,3 +447,21 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
     });
 
 });
+
+async function updatePoints(points){
+
+    if(!currentUserUID || points === 0)
+        return;
+
+    const ref = doc(db, "users", currentUserUID);
+
+    await updateDoc(ref,{
+        points: increment(points)
+    });
+
+    currentPoints += points;
+
+    document.getElementById("userPoints").textContent =
+        `⭐ ${currentPoints} pts`;
+
+}
