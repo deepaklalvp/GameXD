@@ -2,262 +2,76 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Poppins,sans-serif;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
 body{
+    background:#1e3c72;
+    background:linear-gradient(to bottom,#87ceeb 0%,#87ceeb 40%,#2e8b57 40%,#228b22 100%);
+    display:flex;
+    justify-content:center;
+    align-items:center;
     min-height:100vh;
-    background:
-        radial-gradient(circle at top left,#16a34a55,transparent 35%),
-        radial-gradient(circle at bottom right,#0ea5e955,transparent 35%),
-        #071a0f;
-    color:#fff;
 }
 
-/* ==========================
-        Navbar
-========================== */
-
-.navbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:16px 24px;
-    background:rgba(255,255,255,.06);
-    backdrop-filter:blur(15px);
-    border-bottom:1px solid rgba(255,255,255,.08);
-    position:sticky;
-    top:0;
-    z-index:100;
-}
-
-.navbar h2{
-    cursor:pointer;
-    user-select:none;
-}
-
-.right{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.right span{
-    padding:8px 12px;
-    border-radius:20px;
-    background:rgba(255,255,255,.08);
-    font-size:14px;
-}
-
-.right button{
-    padding:10px 16px;
-    border:none;
-    border-radius:12px;
-    cursor:pointer;
-    background:#ef4444;
-    color:white;
-    transition:.25s;
-}
-
-.right button:hover{
-    background:#dc2626;
-}
-
-/* ==========================
-      Game Container
-========================== */
-
-.game-container{
-    width:min(1000px,95%);
-    margin:35px auto;
+.game{
     text-align:center;
 }
 
-.game-container h2{
-    margin-bottom:20px;
-    font-size:30px;
-    font-weight:600;
+h1{
+    color:#fff;
+    margin-bottom:15px;
 }
 
-/* ==========================
-      Score Boxes
-========================== */
-
-.stats{
+.scoreboard{
     display:flex;
     justify-content:center;
-    gap:20px;
-    flex-wrap:wrap;
-    margin-bottom:25px;
-}
-
-.stat-box{
-    min-width:120px;
-    padding:12px 18px;
-    border-radius:16px;
-    background:rgba(255,255,255,.08);
-    backdrop-filter:blur(15px);
-    border:1px solid rgba(255,255,255,.08);
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-    font-weight:600;
-}
-
-.stat-box span{
-    font-size:24px;
-    color:#fde047;
-}
-
-/* ==========================
-      Countdown
-========================== */
-
-#countdown{
-    font-size:72px;
+    gap:40px;
+    margin-bottom:15px;
+    font-size:20px;
+    color:#fff;
     font-weight:bold;
-    margin-bottom:20px;
-    color:#facc15;
-    text-shadow:0 0 20px rgba(250,204,21,.6);
+}
+
+canvas{
+    background:#3cb043;
+    border:5px solid white;
+    border-radius:10px;
+    box-shadow:0 0 20px rgba(0,0,0,.4);
+}
+
+p{
+    margin-top:15px;
+    color:white;
+    font-size:18px;
+}
+
+button{
+    margin-top:20px;
+    padding:10px 20px;
+    font-size:18px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#ff9800;
+    color:white;
     transition:.3s;
 }
 
-/* ==========================
-        Canvas
-========================== */
-
-canvas{
-    width:100%;
-    max-width:900px;
-    height:auto;
-    border-radius:22px;
-    border:4px solid rgba(255,255,255,.15);
-    background:#3ba63f;
-    box-shadow:
-        0 20px 50px rgba(0,0,0,.45),
-        inset 0 0 25px rgba(255,255,255,.05);
+button:hover{
+    background:#e68900;
 }
 
-/* ==========================
-      Instructions
-========================== */
+@media(max-width:850px){
 
-.instructions{
-    margin-top:20px;
-    color:#d1d5db;
-    line-height:1.8;
-}
-
-.instructions p{
-    margin-top:6px;
-}
-
-/* ==========================
-      Game Over
-========================== */
-
-#gameOver{
-    margin-top:30px;
-    padding:30px;
-    background:rgba(0,0,0,.75);
-    border-radius:20px;
-    backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,.08);
-}
-
-#gameOver h2{
-    margin-bottom:12px;
-    color:#ef4444;
-}
-
-#finalScore{
-    margin-bottom:20px;
-    font-size:22px;
-}
-
-#gameOver button{
-    padding:12px 22px;
-    margin:10px;
-    border:none;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:15px;
-    transition:.25s;
-}
-
-#restartBtn{
-    background:#22c55e;
-    color:white;
-}
-
-#restartBtn:hover{
-    background:#16a34a;
-}
-
-#gameOver button:last-child{
-    background:#2563eb;
-    color:white;
-}
-
-#gameOver button:last-child:hover{
-    background:#1d4ed8;
-}
-
-.hide{
-    display:none;
-}
-
-/* ==========================
-      Responsive
-========================== */
-
-@media(max-width:768px){
-
-    .navbar{
-        flex-direction:column;
-        gap:12px;
+    canvas{
+        width:95%;
+        height:auto;
     }
 
-    .right{
-        flex-wrap:wrap;
-        justify-content:center;
+    .scoreboard{
+        gap:20px;
+        font-size:18px;
     }
 
-    .game-container h2{
-        font-size:24px;
-    }
-
-    .stat-box{
-        min-width:100px;
-    }
-
-    #countdown{
-        font-size:56px;
-    }
-}
-
-@media(max-width:480px){
-
-    .right span{
-        font-size:12px;
-        padding:6px 10px;
-    }
-
-    .right button{
-        font-size:13px;
-        padding:8px 12px;
-    }
-
-    .stat-box{
-        width:100%;
-        max-width:160px;
-    }
-
-    #countdown{
-        font-size:46px;
-    }
-
-    .game-container h2{
-        font-size:22px;
-    }
 }
