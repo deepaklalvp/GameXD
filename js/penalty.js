@@ -1,3 +1,17 @@
+import { auth, db } from "./firebase.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+import {
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+let currentUserUID = null;
+let currentPoints = 0;
 // ===========================
 // Penalty Kick - Part 1
 // ===========================
@@ -398,3 +412,39 @@ function updateBall() {
     ball.y += dy / dist * ball.speed;
 
 }
+
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+        location.href = "index.html";
+        return;
+    }
+
+    currentUserUID = user.uid;
+
+    const snap = await getDoc(doc(db, "users", user.uid));
+
+    if (snap.exists()) {
+
+        const data = snap.data();
+
+        currentPoints = data.points || 0;
+
+        document.getElementById("userName").textContent =
+            `Hi, ${data.name}`;
+
+        document.getElementById("userPoints").textContent =
+            `⭐ ${currentPoints} pts`;
+    }
+
+});
+
+document.getElementById("logoutBtn").addEventListener("click", () => {
+
+    signOut(auth).then(() => {
+
+        location.href = "index.html";
+
+    });
+
+});
