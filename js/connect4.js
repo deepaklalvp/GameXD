@@ -716,4 +716,3 @@ onAuthStateChanged(
 // ===============================
 
 createBoard();
-```
