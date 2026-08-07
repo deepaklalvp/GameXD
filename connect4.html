@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Connect Four | GameXD</title>
+
+    <link rel="stylesheet" href="css/connect4.css">
+    <script type="module" src="./js/connect4.js" defer></script>
+</head>
+
+<body>
+
+    <div class="background"></div>
+
+    <!-- ================= NAVBAR ================= -->
+    <div class="navbar">
+
+        <h2 onclick="location.href='home.html'" style="cursor:pointer;">
+            🎮 GameXD
+        </h2>
+
+        <div class="right">
+            <span id="userName">Loading...</span>
+            <span id="userPoints"> | ⭐ 0 pts</span>
+            <button id="logoutBtn">Logout</button>
+        </div>
+
+    </div>
+
+    <!-- ================= MAIN ================= -->
+    <div class="container">
+
+        <h1>Connect Four</h1>
+
+        <p id="status">Your Turn (🔴)</p>
+
+        <div class="controls">
+
+            <label for="difficulty">Difficulty:</label>
+
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+
+        </div>
+
+        <!-- Board -->
+        <div id="board" class="board">
+
+            <!-- Row 1 -->
+            <div class="cell" data-row="0" data-col="0"></div>
+            <div class="cell" data-row="0" data-col="1"></div>
+            <div class="cell" data-row="0" data-col="2"></div>
+            <div class="cell" data-row="0" data-col="3"></div>
+            <div class="cell" data-row="0" data-col="4"></div>
+            <div class="cell" data-row="0" data-col="5"></div>
+            <div class="cell" data-row="0" data-col="6"></div>
+
+            <!-- Row 2 -->
+            <div class="cell" data-row="1" data-col="0"></div>
+            <div class="cell" data-row="1" data-col="1"></div>
+            <div class="cell" data-row="1" data-col="2"></div>
+            <div class="cell" data-row="1" data-col="3"></div>
+            <div class="cell" data-row="1" data-col="4"></div>
+            <div class="cell" data-row="1" data-col="5"></div>
+            <div class="cell" data-row="1" data-col="6"></div>
+
+            <!-- Row 3 -->
+            <div class="cell" data-row="2" data-col="0"></div>
+            <div class="cell" data-row="2" data-col="1"></div>
+            <div class="cell" data-row="2" data-col="2"></div>
+            <div class="cell" data-row="2" data-col="3"></div>
+            <div class="cell" data-row="2" data-col="4"></div>
+            <div class="cell" data-row="2" data-col="5"></div>
+            <div class="cell" data-row="2" data-col="6"></div>
+
+            <!-- Row 4 -->
+            <div class="cell" data-row="3" data-col="0"></div>
+            <div class="cell" data-row="3" data-col="1"></div>
+            <div class="cell" data-row="3" data-col="2"></div>
+            <div class="cell" data-row="3" data-col="3"></div>
+            <div class="cell" data-row="3" data-col="4"></div>
+            <div class="cell" data-row="3" data-col="5"></div>
+            <div class="cell" data-row="3" data-col="6"></div>
+
+            <!-- Row 5 -->
+            <div class="cell" data-row="4" data-col="0"></div>
+            <div class="cell" data-row="4" data-col="1"></div>
+            <div class="cell" data-row="4" data-col="2"></div>
+            <div class="cell" data-row="4" data-col="3"></div>
+            <div class="cell" data-row="4" data-col="4"></div>
+            <div class="cell" data-row="4" data-col="5"></div>
+            <div class="cell" data-row="4" data-col="6"></div>
+
+            <!-- Row 6 -->
+            <div class="cell" data-row="5" data-col="0"></div>
+            <div class="cell" data-row="5" data-col="1"></div>
+            <div class="cell" data-row="5" data-col="2"></div>
+            <div class="cell" data-row="5" data-col="3"></div>
+            <div class="cell" data-row="5" data-col="4"></div>
+            <div class="cell" data-row="5" data-col="5"></div>
+            <div class="cell" data-row="5" data-col="6"></div>
+
+        </div>
+
+        <div class="legend">
+
+            <span class="red">
+                🔴 You
+            </span>
+
+            <span class="yellow">
+                🟡 AI
+            </span>
+
+        </div>
+
+        <div class="buttons">
+
+            <button id="restartBtn">
+                🔄 Restart
+            </button>
+
+            <button onclick="location.href='home.html'">
+                🏠 Home
+            </button>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
