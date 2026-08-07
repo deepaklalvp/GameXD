@@ -1,30 +1,56 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Connect Four | GameXD</title>
 
-    <link rel="stylesheet" href="css/connect4.css">
-    <script type="module" src="./js/connect4.js" defer></script>
+    <link
+        rel="stylesheet"
+        href="css/connect4.css"
+    >
+
+    <script
+        type="module"
+        src="./js/connect4.js"
+        defer
+    ></script>
+
 </head>
+
 
 <body>
 
     <div class="background"></div>
 
-    <!-- NAVBAR -->
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
     <div class="navbar">
 
-        <h2 onclick="location.href='home.html'">
+        <h2
+            onclick="location.href='home.html'"
+            style="cursor:pointer;"
+        >
             🎮 GameXD
         </h2>
 
+
         <div class="right">
 
-            <span id="userName">Loading...</span>
+            <span id="userName">
+                Loading...
+            </span>
 
             <span id="userPoints">
                 | ⭐ 0 pts
@@ -39,16 +65,56 @@
     </div>
 
 
-    <!-- GAME -->
+    <!-- =========================
+         GAME
+    ========================== -->
+
     <div class="container">
 
-        <h1>Connect Four</h1>
+        <h1>
+            Connect Four
+        </h1>
+
+
+        <!-- GAME MODE -->
+
+        <div class="modeBox">
+
+            <label for="gameMode">
+                Game Mode:
+            </label>
+
+            <select id="gameMode">
+
+                <option value="ai">
+                    🤖 Vs AI
+                </option>
+
+                <option value="local">
+                    👥 2 Players
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- STATUS -->
 
         <p id="status">
             Your Turn 🔴
         </p>
 
-        <div id="board" class="board"></div>
+
+        <!-- BOARD -->
+
+        <div
+            id="board"
+            class="board"
+        ></div>
+
+
+        <!-- BUTTONS -->
 
         <div class="buttons">
 
@@ -56,7 +122,9 @@
                 🔄 Restart
             </button>
 
-            <button onclick="location.href='home.html'">
+            <button
+                onclick="location.href='home.html'"
+            >
                 🏠 Home
             </button>
 
@@ -65,4 +133,5 @@
     </div>
 
 </body>
+
 </html>
