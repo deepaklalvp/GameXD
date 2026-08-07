@@ -419,6 +419,7 @@ function checkWin(player) {
 
     }
 
+    
 
     // Diagonal \
     for (
