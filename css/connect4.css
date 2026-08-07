@@ -1,0 +1,239 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #111;
+    color: white;
+
+    min-height: 100vh;
+
+    overflow-x: hidden;
+}
+
+/* Background */
+
+.background {
+    position: fixed;
+
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(
+        135deg,
+        #4facfe,
+        #00f2fe
+    );
+
+    filter: blur(120px);
+
+    z-index: -1;
+}
+
+/* Navbar */
+
+.navbar {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 18px 40px;
+
+    background: rgba(255,255,255,.1);
+
+    backdrop-filter: blur(15px);
+}
+
+.navbar h2 {
+    cursor: pointer;
+}
+
+.right {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+button {
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+/* Game */
+
+.container {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    margin-top: 35px;
+
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+#status {
+    margin: 15px;
+
+    font-size: 22px;
+
+    font-weight: bold;
+}
+
+/* Board */
+
+.board {
+    display: grid;
+
+    grid-template-columns:
+        repeat(7, 65px);
+
+    gap: 7px;
+
+    padding: 12px;
+
+    background: rgba(20, 90, 180, .9);
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.4);
+}
+
+/* Cells */
+
+.cell {
+    width: 65px;
+    height: 65px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.9);
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.cell:hover {
+    transform: scale(.92);
+
+    background: white;
+}
+
+/* Player */
+
+.red {
+    background: #ff3030;
+
+    box-shadow:
+        inset 0 -4px 8px rgba(0,0,0,.3);
+}
+
+/* AI */
+
+.yellow {
+    background: #ffd21f;
+
+    box-shadow:
+        inset 0 -4px 8px rgba(0,0,0,.3);
+}
+
+/* Winning pieces */
+
+.win {
+    animation: winner .6s infinite alternate;
+}
+
+@keyframes winner {
+
+    from {
+        transform: scale(1);
+        box-shadow:
+            0 0 5px white;
+    }
+
+    to {
+        transform: scale(1.12);
+        box-shadow:
+            0 0 25px #00ff66;
+    }
+
+}
+
+/* Buttons */
+
+.buttons {
+    display: flex;
+
+    gap: 20px;
+
+    margin-top: 25px;
+}
+
+.buttons button:first-child {
+    background: white;
+}
+
+.buttons button:last-child {
+    background: #222;
+    color: white;
+}
+
+/* Mobile */
+
+@media(max-width:600px) {
+
+    .navbar {
+        padding: 15px;
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .right {
+        font-size: 13px;
+
+        gap: 8px;
+    }
+
+    .board {
+        grid-template-columns:
+            repeat(7, 42px);
+
+        gap: 4px;
+
+        padding: 8px;
+    }
+
+    .cell {
+        width: 42px;
+        height: 42px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+}
+```
