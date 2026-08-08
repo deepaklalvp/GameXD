@@ -30,19 +30,29 @@ let board = [];
 
 let gameOver = false;
 
-// Used only for AI mode
+// AI mode
 let playerTurn = true;
 
-// Used only for 2-player mode
+// Local mode
 let currentPlayer = "R";
 
-// "ai" = Player vs AI
-// "local" = Player 1 vs Player 2
+// ai / local
 let gameMode = "ai";
 
 
 // =========================================
-// FIREBASE STATE
+// LOCAL SCOREBOARD
+// =========================================
+
+let player1Score = 0;
+let player2Score = 0;
+
+let player1Name = "Player 1";
+let player2Name = "Player 2";
+
+
+// =========================================
+// FIREBASE
 // =========================================
 
 let currentUserUID = null;
@@ -50,7 +60,7 @@ let currentPoints = 0;
 
 
 // =========================================
-// HTML ELEMENTS
+// ELEMENTS
 // =========================================
 
 const boardElement =
@@ -62,34 +72,66 @@ const statusElement =
 const restartButton =
     document.getElementById("restartBtn");
 
+const resetScoreButton =
+    document.getElementById("resetScoreBtn");
+
 const logoutButton =
     document.getElementById("logoutBtn");
 
 const gameModeElement =
     document.getElementById("gameMode");
 
+const playerSetup =
+    document.getElementById("playerSetup");
+
+const scoreboard =
+    document.getElementById("scoreboard");
+
+const player1NameInput =
+    document.getElementById("player1Name");
+
+const player2NameInput =
+    document.getElementById("player2Name");
+
+const displayPlayer1 =
+    document.getElementById("displayPlayer1");
+
+const displayPlayer2 =
+    document.getElementById("displayPlayer2");
+
+const player1ScoreElement =
+    document.getElementById("player1Score");
+
+const player2ScoreElement =
+    document.getElementById("player2Score");
+
 
 // =========================================
-// CREATE / RESET BOARD
+// CREATE BOARD
 // =========================================
 
 function createBoard() {
 
     board = [];
 
-    for (let row = 0; row < ROWS; row++) {
+    for (
+        let row = 0;
+        row < ROWS;
+        row++
+    ) {
 
         board.push(
             Array(COLS).fill("")
         );
-
     }
+
 
     gameOver = false;
 
     playerTurn = true;
 
     currentPlayer = "R";
+
 
     drawBoard();
 
@@ -105,36 +147,54 @@ function drawBoard() {
 
     boardElement.innerHTML = "";
 
-    for (let row = 0; row < ROWS; row++) {
 
-        for (let col = 0; col < COLS; col++) {
+    for (
+        let row = 0;
+        row < ROWS;
+        row++
+    ) {
+
+        for (
+            let col = 0;
+            col < COLS;
+            col++
+        ) {
 
             const cell =
                 document.createElement("div");
 
+
             cell.classList.add("cell");
 
-            // Red piece
-            if (board[row][col] === "R") {
+
+            if (
+                board[row][col] === "R"
+            ) {
 
                 cell.classList.add("red");
 
             }
 
-            // Yellow piece
-            if (board[row][col] === "Y") {
+
+            if (
+                board[row][col] === "Y"
+            ) {
 
                 cell.classList.add("yellow");
 
             }
 
+
             cell.dataset.row = row;
+
             cell.dataset.col = col;
+
 
             cell.addEventListener(
                 "click",
                 () => handleCellClick(col)
             );
+
 
             boardElement.appendChild(cell);
         }
@@ -143,19 +203,18 @@ function drawBoard() {
 
 
 // =========================================
-// HANDLE BOARD CLICK
+// HANDLE CLICK
 // =========================================
 
 function handleCellClick(col) {
 
-    // Game already finished
     if (gameOver) {
         return;
     }
 
 
     // =====================================
-    // LOCAL 2 PLAYER MODE
+    // LOCAL 2 PLAYER
     // =====================================
 
     if (gameMode === "local") {
@@ -167,19 +226,17 @@ function handleCellClick(col) {
 
 
     // =====================================
-    // VS AI MODE
+    // VS AI
     // =====================================
 
     if (gameMode === "ai") {
 
-        // Don't allow clicking while AI moves
         if (!playerTurn) {
             return;
         }
 
         playerMove(col);
 
-        return;
     }
 }
 
@@ -207,14 +264,7 @@ function getEmptyRow(col) {
 
 
 // =========================================
-// ===============================
-// VS AI MODE
-// ===============================
-// =========================================
-
-
-// =========================================
-// PLAYER MOVE - AI MODE
+// AI MODE - PLAYER MOVE
 // =========================================
 
 function playerMove(col) {
@@ -222,6 +272,7 @@ function playerMove(col) {
     if (gameOver) {
         return;
     }
+
 
     if (!playerTurn) {
         return;
@@ -232,21 +283,17 @@ function playerMove(col) {
         getEmptyRow(col);
 
 
-    // Column is full
     if (row === -1) {
         return;
     }
 
 
-    // Place player's red piece
     board[row][col] = "R";
 
     drawBoard();
 
 
-    // =====================================
-    // PLAYER WINS
-    // =====================================
+    // Player wins
 
     if (checkWin("R")) {
 
@@ -259,9 +306,7 @@ function playerMove(col) {
     }
 
 
-    // =====================================
-    // DRAW
-    // =====================================
+    // Draw
 
     if (isDraw()) {
 
@@ -274,28 +319,22 @@ function playerMove(col) {
     }
 
 
-    // =====================================
-    // AI'S TURN
-    // =====================================
+    // AI's turn
 
     playerTurn = false;
 
     updateTurnStatus();
 
 
-    // IMPORTANT:
-    // AI is ONLY called here in AI mode.
-
     setTimeout(() => {
 
-        // Check again in case
-        // the user changed mode/restarted
         if (
             gameOver ||
             gameMode !== "ai"
         ) {
             return;
         }
+
 
         aiMove();
 
@@ -309,10 +348,10 @@ function playerMove(col) {
 
 function aiMove() {
 
-    // Safety checks
     if (gameOver) {
         return;
     }
+
 
     if (gameMode !== "ai") {
         return;
@@ -337,7 +376,6 @@ function aiMove() {
     }
 
 
-    // No moves available
     if (
         availableColumns.length === 0
     ) {
@@ -345,16 +383,14 @@ function aiMove() {
     }
 
 
-    // =====================================
-    // AI STRATEGY
-    // =====================================
+    // Try to win
 
-    // 1. Try to win
     const winningColumn =
         findWinningMove("Y");
 
 
-    // 2. Block player
+    // Block player
+
     const blockingColumn =
         findWinningMove("R");
 
@@ -379,9 +415,6 @@ function aiMove() {
     else if (
         availableColumns.includes(3)
     ) {
-
-        // Prefer center column
-        // most of the time
 
         if (Math.random() < 0.65) {
 
@@ -408,12 +441,10 @@ function aiMove() {
     }
 
 
-    // =====================================
-    // PLACE AI PIECE
-    // =====================================
-
     const row =
-        getEmptyRow(selectedColumn);
+        getEmptyRow(
+            selectedColumn
+        );
 
 
     if (row === -1) {
@@ -426,9 +457,7 @@ function aiMove() {
     drawBoard();
 
 
-    // =====================================
-    // AI WINS
-    // =====================================
+    // AI wins
 
     if (checkWin("Y")) {
 
@@ -441,9 +470,7 @@ function aiMove() {
     }
 
 
-    // =====================================
-    // DRAW
-    // =====================================
+    // Draw
 
     if (isDraw()) {
 
@@ -456,9 +483,7 @@ function aiMove() {
     }
 
 
-    // =====================================
-    // PLAYER'S TURN AGAIN
-    // =====================================
+    // Player's turn
 
     playerTurn = true;
 
@@ -474,7 +499,8 @@ function randomColumn(columns) {
 
     return columns[
         Math.floor(
-            Math.random() * columns.length
+            Math.random() *
+            columns.length
         )
     ];
 }
@@ -501,15 +527,14 @@ function findWinningMove(player) {
         }
 
 
-        // Temporarily place piece
         board[row][col] = player;
 
 
         const win =
-            findWinningPattern(player) !== null;
+            findWinningPattern(player)
+            !== null;
 
 
-        // Remove temporary piece
         board[row][col] = "";
 
 
@@ -524,19 +549,11 @@ function findWinningMove(player) {
 
 
 // =========================================
-// ===============================
-// LOCAL 2 PLAYER MODE
-// ===============================
-// =========================================
-
-
-// =========================================
-// LOCAL PLAYER MOVE
+// LOCAL 2 PLAYER MOVE
 // =========================================
 
 function localPlayerMove(col) {
 
-    // Safety check
     if (gameOver) {
         return;
     }
@@ -546,15 +563,12 @@ function localPlayerMove(col) {
         getEmptyRow(col);
 
 
-    // Column is full
     if (row === -1) {
         return;
     }
 
 
-    // =====================================
-    // PLACE CURRENT PLAYER'S PIECE
-    // =====================================
+    // Place piece
 
     board[row][col] =
         currentPlayer;
@@ -564,35 +578,47 @@ function localPlayerMove(col) {
 
 
     // =====================================
-    // CHECK WIN
+    // WIN
     // =====================================
 
     if (
         checkWin(currentPlayer)
     ) {
 
-        if (currentPlayer === "R") {
+        if (
+            currentPlayer === "R"
+        ) {
+
+            player1Score++;
+
+            updateScoreboard();
+
 
             endLocalGame(
-                "🎉 Player 1 Wins! 🔴"
+                `🎉 ${player1Name} Wins! 🔴`
             );
 
         }
 
         else {
 
-            endLocalGame(
-                "🎉 Player 2 Wins! 🟡"
-            );
+            player2Score++;
 
+            updateScoreboard();
+
+
+            endLocalGame(
+                `🎉 ${player2Name} Wins! 🟡`
+            );
         }
+
 
         return;
     }
 
 
     // =====================================
-    // CHECK DRAW
+    // DRAW
     // =====================================
 
     if (isDraw()) {
@@ -609,7 +635,9 @@ function localPlayerMove(col) {
     // SWITCH PLAYER
     // =====================================
 
-    if (currentPlayer === "R") {
+    if (
+        currentPlayer === "R"
+    ) {
 
         currentPlayer = "Y";
 
@@ -621,11 +649,54 @@ function localPlayerMove(col) {
     }
 
 
-    // =====================================
-    // UPDATE STATUS
-    // =====================================
-
     updateTurnStatus();
+}
+
+
+// =========================================
+// UPDATE SCOREBOARD
+// =========================================
+
+function updateScoreboard() {
+
+    player1ScoreElement.textContent =
+        player1Score;
+
+    player2ScoreElement.textContent =
+        player2Score;
+
+
+    displayPlayer1.textContent =
+        player1Name;
+
+    displayPlayer2.textContent =
+        player2Name;
+}
+
+
+// =========================================
+// UPDATE PLAYER NAMES
+// =========================================
+
+function updatePlayerNames() {
+
+    const name1 =
+        player1NameInput.value.trim();
+
+
+    const name2 =
+        player2NameInput.value.trim();
+
+
+    player1Name =
+        name1 || "Player 1";
+
+
+    player2Name =
+        name2 || "Player 2";
+
+
+    updateScoreboard();
 }
 
 
@@ -654,35 +725,39 @@ function updateTurnStatus() {
                 "🤖 AI Thinking...";
         }
 
+
         return;
     }
 
 
     // =====================================
-    // LOCAL 2 PLAYER
+    // LOCAL
     // =====================================
 
-    if (gameMode === "local") {
+    if (
+        gameMode === "local"
+    ) {
 
-        if (currentPlayer === "R") {
+        if (
+            currentPlayer === "R"
+        ) {
 
             statusElement.textContent =
-                "Player 1's Turn 🔴";
+                `${player1Name}'s Turn 🔴`;
 
         }
 
         else {
 
             statusElement.textContent =
-                "Player 2's Turn 🟡";
+                `${player2Name}'s Turn 🟡`;
         }
-
     }
 }
 
 
 // =========================================
-// WIN DETECTION
+// WIN CHECK
 // =========================================
 
 function checkWin(player) {
@@ -709,9 +784,7 @@ function checkWin(player) {
 
 function findWinningPattern(player) {
 
-    // =====================================
-    // HORIZONTAL
-    // =====================================
+    // Horizontal
 
     for (
         let row = 0;
@@ -743,9 +816,7 @@ function findWinningPattern(player) {
     }
 
 
-    // =====================================
-    // VERTICAL
-    // =====================================
+    // Vertical
 
     for (
         let row = 0;
@@ -777,9 +848,7 @@ function findWinningPattern(player) {
     }
 
 
-    // =====================================
-    // DIAGONAL \
-    // =====================================
+    // Diagonal \
 
     for (
         let row = 0;
@@ -811,9 +880,7 @@ function findWinningPattern(player) {
     }
 
 
-    // =====================================
-    // DIAGONAL /
-    // =====================================
+    // Diagonal /
 
     for (
         let row = 0;
@@ -850,13 +917,15 @@ function findWinningPattern(player) {
 
 
 // =========================================
-// HIGHLIGHT WINNING PIECES
+// HIGHLIGHT WIN
 // =========================================
 
 function highlightWin(pattern) {
 
     const cells =
-        document.querySelectorAll(".cell");
+        document.querySelectorAll(
+            ".cell"
+        );
 
 
     pattern.forEach(
@@ -907,10 +976,8 @@ async function endAIGame(
         message;
 
 
-    // =====================================
-    // FIREBASE POINTS
-    // ONLY FOR AI MODE
-    // =====================================
+    // Firebase points ONLY
+    // in AI mode
 
     if (
         gameMode === "ai" &&
@@ -933,8 +1000,8 @@ function endLocalGame(message) {
     playerTurn = false;
 
 
-    // NO FIREBASE POINT UPDATE
-    // IN LOCAL 2 PLAYER MODE
+    // IMPORTANT:
+    // No Firebase points here.
 
     statusElement.textContent =
         `${message} — No points awarded`;
@@ -942,7 +1009,7 @@ function endLocalGame(message) {
 
 
 // =========================================
-// UPDATE FIREBASE POINTS
+// FIREBASE POINT UPDATE
 // =========================================
 
 async function updatePoints(value) {
@@ -992,6 +1059,44 @@ async function updatePoints(value) {
 
 
 // =========================================
+// SHOW / HIDE LOCAL UI
+// =========================================
+
+function updateModeUI() {
+
+    if (
+        gameMode === "local"
+    ) {
+
+        playerSetup.style.display =
+            "flex";
+
+        scoreboard.style.display =
+            "flex";
+
+        resetScoreButton.style.display =
+            "inline-block";
+
+
+        updatePlayerNames();
+
+    }
+
+    else {
+
+        playerSetup.style.display =
+            "none";
+
+        scoreboard.style.display =
+            "none";
+
+        resetScoreButton.style.display =
+            "none";
+    }
+}
+
+
+// =========================================
 // GAME MODE CHANGE
 // =========================================
 
@@ -1003,8 +1108,24 @@ gameModeElement.addEventListener(
             gameModeElement.value;
 
 
-        // Completely reset game
-        // when switching modes.
+        // Switching modes starts
+        // a fresh local scoreboard.
+
+        if (
+            gameMode === "local"
+        ) {
+
+            player1Score = 0;
+
+            player2Score = 0;
+
+
+            updatePlayerNames();
+
+        }
+
+
+        updateModeUI();
 
         createBoard();
     }
@@ -1012,15 +1133,77 @@ gameModeElement.addEventListener(
 
 
 // =========================================
-// RESTART
+// PLAYER NAME CHANGES
+// =========================================
+
+player1NameInput.addEventListener(
+    "input",
+    () => {
+
+        if (
+            gameMode === "local"
+        ) {
+
+            updatePlayerNames();
+
+            updateTurnStatus();
+        }
+    }
+);
+
+
+player2NameInput.addEventListener(
+    "input",
+    () => {
+
+        if (
+            gameMode === "local"
+        ) {
+
+            updatePlayerNames();
+
+            updateTurnStatus();
+        }
+    }
+);
+
+
+// =========================================
+// RESET SCORE
+// =========================================
+
+resetScoreButton.addEventListener(
+    "click",
+    () => {
+
+        player1Score = 0;
+
+        player2Score = 0;
+
+
+        updateScoreboard();
+
+
+        // Also start a fresh round
+
+        createBoard();
+    }
+);
+
+
+// =========================================
+// RESTART ROUND
 // =========================================
 
 restartButton.addEventListener(
     "click",
     () => {
 
-        createBoard();
+        // IMPORTANT:
+        // Restart does NOT reset
+        // local 2-player scores.
 
+        createBoard();
     }
 );
 
@@ -1054,16 +1237,12 @@ logoutButton.addEventListener(
 
 
 // =========================================
-// FIREBASE AUTHENTICATION
+// FIREBASE AUTH
 // =========================================
 
 onAuthStateChanged(
     auth,
     async user => {
-
-        // =================================
-        // NOT LOGGED IN
-        // =================================
 
         if (!user) {
 
@@ -1102,15 +1281,11 @@ onAuthStateChanged(
                     data.points || 0;
 
 
-                // Username
-
                 document.getElementById(
                     "userName"
                 ).textContent =
                     `Hi, ${data.name || "Player"}`;
 
-
-                // Points
 
                 document.getElementById(
                     "userPoints"
@@ -1129,6 +1304,13 @@ onAuthStateChanged(
         }
     }
 );
+
+
+// =========================================
+// INITIAL UI
+// =========================================
+
+updateModeUI();
 
 
 // =========================================
