@@ -29,29 +29,9 @@ let currentPoints = 0;
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-
-// Make canvas rendering sharper
-function setupCanvas() {
-
-    const rect = canvas.getBoundingClientRect();
-
-    const dpr = window.devicePixelRatio || 1;
-
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-}
-
-
-// =========================================================
-// UI
-// =========================================================
-
 const scoreEl = document.getElementById("score");
 const livesEl = document.getElementById("lives");
 const restartBtn = document.getElementById("restartBtn");
-const message = document.getElementById("message");
 
 
 // =========================================================
@@ -65,16 +45,46 @@ let gameOverState = false;
 let shotInProgress = false;
 
 
+// Result message is drawn directly on canvas
+let resultText = "";
+let resultColor = "";
+let resultTimer = 0;
+
+
 // =========================================================
-// FIELD DIMENSIONS
+// CANVAS SIZE
 // =========================================================
 
 function getGameWidth() {
-    return canvas.getBoundingClientRect().width;
+    return canvas.clientWidth;
 }
 
 function getGameHeight() {
-    return canvas.getBoundingClientRect().height;
+    return canvas.clientHeight;
+}
+
+
+function setupCanvas() {
+
+    const rect = canvas.getBoundingClientRect();
+
+    const dpr =
+        window.devicePixelRatio || 1;
+
+    canvas.width =
+        Math.round(rect.width * dpr);
+
+    canvas.height =
+        Math.round(rect.height * dpr);
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
 }
 
 
@@ -84,13 +94,22 @@ function getGameHeight() {
 
 function getGoal() {
 
-    const width = getGameWidth();
+    const width =
+        getGameWidth();
 
     return {
-        x: width * 0.12,
-        y: 45,
-        width: width * 0.76,
-        height: 115
+
+        x:
+            width * 0.12,
+
+        y:
+            45,
+
+        width:
+            width * 0.76,
+
+        height:
+            115
     };
 }
 
@@ -100,11 +119,17 @@ function getGoal() {
 // =========================================================
 
 const keeper = {
+
     x: 0,
+
     y: 0,
+
     width: 0,
+
     height: 24,
+
     speed: 2.4,
+
     dir: 1
 };
 
@@ -116,11 +141,13 @@ const keeper = {
 const ball = {
 
     x: 0,
+
     y: 0,
 
     radius: 14,
 
     targetX: 0,
+
     targetY: 0,
 
     moving: false,
@@ -135,20 +162,19 @@ const ball = {
 
 function positionObjects() {
 
-    const width = getGameWidth();
-    const height = getGameHeight();
+    const width =
+        getGameWidth();
 
-    const goal = getGoal();
+    const height =
+        getGameHeight();
 
-    keeper.width = goal.width * 0.25;
+    const goal =
+        getGoal();
 
-    keeper.x = Math.max(
-        goal.x + keeper.width / 2,
-        Math.min(
-            keeper.x || width / 2,
-            goal.x + goal.width - keeper.width / 2
-        )
-    );
+
+    keeper.width =
+        goal.width * 0.25;
+
 
     keeper.y =
         goal.y +
@@ -157,13 +183,35 @@ function positionObjects() {
         8;
 
 
+    if (!keeper.x) {
+
+        keeper.x =
+            width / 2;
+    }
+
+
+    keeper.x =
+        Math.max(
+            goal.x +
+            keeper.width / 2,
+
+            Math.min(
+                keeper.x,
+
+                goal.x +
+                goal.width -
+                keeper.width / 2
+            )
+        );
+
+
     if (!shotInProgress) {
 
-        ball.x = width / 2;
+        ball.x =
+            width / 2;
 
         ball.y =
             height - 115;
-
     }
 }
 
@@ -179,23 +227,30 @@ function resizeGame() {
     positionObjects();
 
     draw();
-
 }
 
 
-window.addEventListener("resize", resizeGame);
+window.addEventListener(
+    "resize",
+    resizeGame
+);
 
 
 // =========================================================
-// FIELD
+// DRAW FIELD
 // =========================================================
 
 function drawField() {
 
-    const width = getGameWidth();
-    const height = getGameHeight();
+    const width =
+        getGameWidth();
 
-    // Base pitch
+    const height =
+        getGameHeight();
+
+
+    // Main grass gradient
+
     const gradient =
         ctx.createLinearGradient(
             0,
@@ -204,17 +259,22 @@ function drawField() {
             height
         );
 
+
     gradient.addColorStop(
         0,
         "#168044"
     );
+
 
     gradient.addColorStop(
         1,
         "#075126"
     );
 
-    ctx.fillStyle = gradient;
+
+    ctx.fillStyle =
+        gradient;
+
 
     ctx.fillRect(
         0,
@@ -225,14 +285,22 @@ function drawField() {
 
 
     // Grass stripes
-    const stripeHeight = height / 10;
 
-    for (let i = 0; i < 10; i++) {
+    const stripeHeight =
+        height / 10;
+
+
+    for (
+        let i = 0;
+        i < 10;
+        i++
+    ) {
 
         ctx.fillStyle =
             i % 2 === 0
                 ? "rgba(255,255,255,.035)"
                 : "rgba(0,0,0,.035)";
+
 
         ctx.fillRect(
             0,
@@ -240,16 +308,19 @@ function drawField() {
             width,
             stripeHeight
         );
-
     }
 
 
-    // Subtle pitch lines
+    // Pitch markings
 
     ctx.strokeStyle =
-        "rgba(255,255,255,.20)";
+        "rgba(255,255,255,.22)";
 
     ctx.lineWidth = 2;
+
+
+    const goal =
+        getGoal();
 
 
     // Penalty box
@@ -257,14 +328,15 @@ function drawField() {
     const boxWidth =
         width * 0.58;
 
-    const boxHeight = 135;
+    const boxHeight =
+        135;
 
     const boxX =
         (width - boxWidth) / 2;
 
     const boxY =
-        getGoal().y +
-        getGoal().height;
+        goal.y +
+        goal.height;
 
 
     ctx.strokeRect(
@@ -287,29 +359,34 @@ function drawField() {
         Math.PI * 2
     );
 
+
     ctx.fillStyle =
-        "rgba(255,255,255,.75)";
+        "rgba(255,255,255,.80)";
 
     ctx.fill();
 
+
+    // Goal
 
     drawGoal();
 }
 
 
 // =========================================================
-// GOAL
+// DRAW GOAL
 // =========================================================
 
 function drawGoal() {
 
-    const goal = getGoal();
+    const goal =
+        getGoal();
 
 
     // Net background
 
     ctx.fillStyle =
         "rgba(245,250,255,.10)";
+
 
     ctx.fillRect(
         goal.x,
@@ -319,10 +396,10 @@ function drawGoal() {
     );
 
 
-    // Net
+    // Net vertical lines
 
     ctx.strokeStyle =
-        "rgba(255,255,255,.30)";
+        "rgba(255,255,255,.28)";
 
     ctx.lineWidth = 1;
 
@@ -342,13 +419,15 @@ function drawGoal() {
 
         ctx.lineTo(
             x,
-            goal.y + goal.height
+            goal.y +
+            goal.height
         );
 
         ctx.stroke();
-
     }
 
+
+    // Net horizontal lines
 
     for (
         let y = goal.y;
@@ -364,12 +443,12 @@ function drawGoal() {
         );
 
         ctx.lineTo(
-            goal.x + goal.width,
+            goal.x +
+            goal.width,
             y
         );
 
         ctx.stroke();
-
     }
 
 
@@ -380,7 +459,9 @@ function drawGoal() {
 
     ctx.lineWidth = 7;
 
-    ctx.lineJoin = "round";
+    ctx.lineJoin =
+        "round";
+
 
     ctx.strokeRect(
         goal.x,
@@ -390,17 +471,18 @@ function drawGoal() {
     );
 
 
-    // Goal glow
+    // Small frame glow
 
     ctx.shadowColor =
         "rgba(255,255,255,.30)";
 
-    ctx.shadowBlur = 12;
+    ctx.shadowBlur = 10;
 
     ctx.strokeStyle =
         "rgba(255,255,255,.75)";
 
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 2;
+
 
     ctx.strokeRect(
         goal.x,
@@ -408,13 +490,14 @@ function drawGoal() {
         goal.width,
         goal.height
     );
+
 
     ctx.shadowBlur = 0;
 }
 
 
 // =========================================================
-// GOALKEEPER
+// DRAW GOALKEEPER
 // =========================================================
 
 function drawKeeper() {
@@ -443,17 +526,22 @@ function drawKeeper() {
             y + h
         );
 
+
     gradient.addColorStop(
         0,
-        "#ffd84a"
+        "#ffe45a"
     );
+
 
     gradient.addColorStop(
         1,
-        "#e79b00"
+        "#df9700"
     );
 
-    ctx.fillStyle = gradient;
+
+    ctx.fillStyle =
+        gradient;
+
 
     ctx.beginPath();
 
@@ -471,7 +559,8 @@ function drawKeeper() {
     // Head
 
     ctx.fillStyle =
-        "#f0b58b";
+        "#efb188";
+
 
     ctx.beginPath();
 
@@ -486,7 +575,7 @@ function drawKeeper() {
     ctx.fill();
 
 
-    // Gloves
+    // Left glove
 
     ctx.fillStyle =
         "#ffffff";
@@ -505,6 +594,8 @@ function drawKeeper() {
     ctx.fill();
 
 
+    // Right glove
+
     ctx.beginPath();
 
     ctx.arc(
@@ -520,61 +611,68 @@ function drawKeeper() {
 
 
 // =========================================================
-// FOOTBALL
+// DRAW FOOTBALL
 // =========================================================
 
 function drawBall() {
 
-    const r = ball.radius;
+    const r =
+        ball.radius;
 
 
-    // Shadow underneath
+    // Ball shadow
 
     ctx.beginPath();
 
     ctx.ellipse(
         ball.x,
-        ball.y + r * .75,
-        r * .9,
+        ball.y + r * .78,
+        r * .90,
         r * .30,
         0,
         0,
         Math.PI * 2
     );
 
+
     ctx.fillStyle =
-        "rgba(0,0,0,.25)";
+        "rgba(0,0,0,.28)";
 
     ctx.fill();
 
 
-    // Football body
+    // Ball gradient
 
     const gradient =
         ctx.createRadialGradient(
             ball.x - r * .35,
-            ball.y - r * .4,
-            r * .1,
+            ball.y - r * .40,
+            r * .08,
             ball.x,
             ball.y,
             r
         );
+
 
     gradient.addColorStop(
         0,
         "#ffffff"
     );
 
+
     gradient.addColorStop(
-        .65,
-        "#f2f4f5"
+        .60,
+        "#f1f3f4"
     );
+
 
     gradient.addColorStop(
         1,
-        "#c6cbd0"
+        "#bfc5ca"
     );
 
+
+    // Ball body
 
     ctx.beginPath();
 
@@ -586,15 +684,17 @@ function drawBall() {
         Math.PI * 2
     );
 
+
     ctx.fillStyle =
         gradient;
 
     ctx.fill();
 
 
-    // Black football panels
+    // Clip football panels
 
     ctx.save();
+
 
     ctx.beginPath();
 
@@ -610,7 +710,7 @@ function drawBall() {
 
 
     ctx.fillStyle =
-        "#17191c";
+        "#151719";
 
 
     // Center pentagon
@@ -624,40 +724,70 @@ function drawBall() {
     );
 
 
-    // Side panels
+    // Upper left panel
 
     drawPolygon(
-        ball.x - r * .55,
-        ball.y - r * .25,
+        ball.x -
+        r * .55,
+
+        ball.y -
+        r * .25,
+
         r * .18,
+
         5,
+
         -.5
     );
 
 
+    // Upper right panel
+
     drawPolygon(
-        ball.x + r * .55,
-        ball.y - r * .25,
+        ball.x +
+        r * .55,
+
+        ball.y -
+        r * .25,
+
         r * .18,
+
         5,
+
         .5
     );
 
 
+    // Lower left panel
+
     drawPolygon(
-        ball.x - r * .40,
-        ball.y + r * .50,
+        ball.x -
+        r * .40,
+
+        ball.y +
+        r * .50,
+
         r * .16,
+
         5,
+
         -.7
     );
 
 
+    // Lower right panel
+
     drawPolygon(
-        ball.x + r * .40,
-        ball.y + r * .50,
+        ball.x +
+        r * .40,
+
+        ball.y +
+        r * .50,
+
         r * .16,
+
         5,
+
         .7
     );
 
@@ -665,7 +795,7 @@ function drawBall() {
     ctx.restore();
 
 
-    // Outline
+    // Ball outline
 
     ctx.beginPath();
 
@@ -677,6 +807,7 @@ function drawBall() {
         Math.PI * 2
     );
 
+
     ctx.strokeStyle =
         "rgba(0,0,0,.45)";
 
@@ -687,7 +818,7 @@ function drawBall() {
 
 
 // =========================================================
-// POLYGON HELPER
+// POLYGON
 // =========================================================
 
 function drawPolygon(
@@ -700,6 +831,7 @@ function drawPolygon(
 
     ctx.beginPath();
 
+
     for (
         let i = 0;
         i < sides;
@@ -708,22 +840,40 @@ function drawPolygon(
 
         const angle =
             rotation +
-            i * Math.PI * 2 / sides;
+            i *
+            Math.PI *
+            2 /
+            sides;
+
 
         const px =
             x +
-            Math.cos(angle) * radius;
+            Math.cos(angle) *
+            radius;
+
 
         const py =
             y +
-            Math.sin(angle) * radius;
+            Math.sin(angle) *
+            radius;
 
-        if (i === 0)
-            ctx.moveTo(px, py);
-        else
-            ctx.lineTo(px, py);
 
+        if (i === 0) {
+
+            ctx.moveTo(
+                px,
+                py
+            );
+
+        } else {
+
+            ctx.lineTo(
+                px,
+                py
+            );
+        }
     }
+
 
     ctx.closePath();
 
@@ -732,12 +882,14 @@ function drawPolygon(
 
 
 // =========================================================
-// KEEPER MOVEMENT
+// GOALKEEPER MOVEMENT
 // =========================================================
 
 function updateKeeper() {
 
-    const goal = getGoal();
+    const goal =
+        getGoal();
+
 
     keeper.x +=
         keeper.speed *
@@ -746,7 +898,7 @@ function updateKeeper() {
 
     if (
         keeper.x -
-            keeper.width / 2 <=
+        keeper.width / 2 <=
         goal.x
     ) {
 
@@ -760,9 +912,9 @@ function updateKeeper() {
 
     if (
         keeper.x +
-            keeper.width / 2 >=
+        keeper.width / 2 >=
         goal.x +
-            goal.width
+        goal.width
     ) {
 
         keeper.x =
@@ -776,7 +928,7 @@ function updateKeeper() {
 
 
 // =========================================================
-// BALL CLICK
+// SHOOT
 // =========================================================
 
 canvas.addEventListener(
@@ -787,8 +939,9 @@ canvas.addEventListener(
             gameOverState ||
             ball.moving ||
             shotInProgress
-        )
+        ) {
             return;
+        }
 
 
         const rect =
@@ -796,21 +949,33 @@ canvas.addEventListener(
 
 
         ball.targetX =
-            (e.clientX - rect.left) *
-            (getGameWidth() / rect.width);
+            (e.clientX -
+                rect.left) *
+            (
+                getGameWidth() /
+                rect.width
+            );
 
 
         ball.targetY =
-            (e.clientY - rect.top) *
-            (getGameHeight() / rect.height);
+            (e.clientY -
+                rect.top) *
+            (
+                getGameHeight() /
+                rect.height
+            );
 
 
-        // Prevent shooting behind the goal
+        // Don't allow target outside
+        // useful playing area
 
         ball.targetY =
             Math.max(
                 30,
-                ball.targetY
+                Math.min(
+                    ball.targetY,
+                    getGameHeight() - 20
+                )
             );
 
 
@@ -827,13 +992,15 @@ canvas.addEventListener(
 
 function updateBall() {
 
-    if (!ball.moving)
+    if (!ball.moving) {
         return;
+    }
 
 
     const dx =
         ball.targetX -
         ball.x;
+
 
     const dy =
         ball.targetY -
@@ -848,7 +1015,7 @@ function updateBall() {
 
 
     if (
-        dist <
+        dist <=
         ball.speed
     ) {
 
@@ -867,35 +1034,45 @@ function updateBall() {
 
 
     ball.x +=
-        dx / dist *
+        (dx / dist) *
         ball.speed;
 
+
     ball.y +=
-        dy / dist *
+        (dy / dist) *
         ball.speed;
 }
 
 
 // =========================================================
-// SHOT RESULT
+// CHECK SHOT
 // =========================================================
 
 function checkShot() {
 
-    if (gameOverState)
+    if (gameOverState) {
         return;
+    }
 
 
-    const goal = getGoal();
+    const goal =
+        getGoal();
 
 
     const insideGoal =
-        ball.x > goal.x &&
+        ball.x >
+            goal.x &&
+
         ball.x <
-            goal.x + goal.width &&
-        ball.y > goal.y &&
+            goal.x +
+            goal.width &&
+
+        ball.y >
+            goal.y &&
+
         ball.y <
-            goal.y + goal.height;
+            goal.y +
+            goal.height;
 
 
     const keeperSave =
@@ -903,18 +1080,23 @@ function checkShot() {
             keeper.x -
             keeper.width / 2 -
             ball.radius &&
+
         ball.x <
             keeper.x +
             keeper.width / 2 +
             ball.radius &&
+
         ball.y >
             keeper.y -
             ball.radius &&
+
         ball.y <
             keeper.y +
             keeper.height +
             ball.radius;
 
+
+    // SAVED
 
     if (
         insideGoal &&
@@ -927,8 +1109,10 @@ function checkShot() {
             "🧤 SAVED!",
             "#ffb52e"
         );
-
     }
+
+
+    // GOAL
 
     else if (insideGoal) {
 
@@ -938,8 +1122,10 @@ function checkShot() {
             "⚽ GOAL!",
             "#4dff91"
         );
-
     }
+
+
+    // MISS
 
     else {
 
@@ -949,7 +1135,6 @@ function checkShot() {
             "❌ MISS!",
             "#ff5570"
         );
-
     }
 
 
@@ -964,14 +1149,13 @@ function checkShot() {
 
         gameOverState = true;
 
+
         setTimeout(
             gameOver,
             1200
         );
 
-    }
-
-    else {
+    } else {
 
         setTimeout(
             resetBall,
@@ -982,7 +1166,8 @@ function checkShot() {
 
 
 // =========================================================
-// RESULT MESSAGE
+// SHOW RESULT
+// Draw directly on canvas
 // =========================================================
 
 function showMessage(
@@ -990,49 +1175,158 @@ function showMessage(
     color
 ) {
 
-    if (!message)
-        return;
-
-
-    message.textContent =
+    resultText =
         text;
 
-    message.style.color =
+    resultColor =
         color;
 
-
-    // Keep message above the canvas
-    message.style.top =
-        "82px";
-
-
-    message.style.left =
-        "50%";
+    resultTimer =
+        90;
+}
 
 
-    message.style.transform =
-        "translateX(-50%)";
+// =========================================================
+// DRAW RESULT
+// =========================================================
+
+function drawResultMessage() {
+
+    if (
+        !resultText ||
+        resultTimer <= 0
+    ) {
+
+        return;
+    }
 
 
-    message.style.opacity =
-        "1";
+    const width =
+        getGameWidth();
 
 
-    message.classList.add(
-        "show"
+    /*
+       Put result in the upper
+       portion of the FIELD,
+       below the goal.
+
+       This prevents it from
+       appearing at the bottom
+       or outside the canvas.
+    */
+
+    const x =
+        width / 2;
+
+
+    const y =
+        205;
+
+
+    // Fade animation
+
+    const progress =
+        resultTimer / 90;
+
+
+    const alpha =
+        Math.min(
+            1,
+            progress * 3
+        );
+
+
+    ctx.save();
+
+
+    ctx.globalAlpha =
+        alpha;
+
+
+    // Result glass panel
+
+    const boxWidth =
+        Math.min(
+            width * .68,
+            290
+        );
+
+
+    const boxHeight =
+        58;
+
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.50)";
+
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        x -
+        boxWidth / 2,
+
+        y -
+        boxHeight / 2,
+
+        boxWidth,
+
+        boxHeight,
+
+        16
+    );
+
+    ctx.fill();
+
+
+    // Result text
+
+    ctx.font =
+        "900 30px Inter, Arial, sans-serif";
+
+
+    ctx.textAlign =
+        "center";
+
+
+    ctx.textBaseline =
+        "middle";
+
+
+    ctx.shadowColor =
+        resultColor;
+
+
+    ctx.shadowBlur =
+        20;
+
+
+    ctx.fillStyle =
+        resultColor;
+
+
+    ctx.fillText(
+        resultText,
+        x,
+        y
     );
 
 
-    setTimeout(
-        () => {
+    ctx.restore();
 
-            message.classList.remove(
-                "show"
-            );
 
-        },
-        1200
-    );
+    resultTimer--;
+
+
+    // Clear after animation
+
+    if (
+        resultTimer <= 0
+    ) {
+
+        resultText = "";
+        resultColor = "";
+    }
 }
 
 
@@ -1052,6 +1346,7 @@ function resetBall() {
     ball.x =
         width / 2;
 
+
     ball.y =
         height - 115;
 
@@ -1059,11 +1354,13 @@ function resetBall() {
     ball.targetX =
         ball.x;
 
+
     ball.targetY =
         ball.y;
 
 
     ball.moving = false;
+
 
     shotInProgress = false;
 }
@@ -1075,23 +1372,41 @@ function resetBall() {
 
 function draw() {
 
+    const width =
+        getGameWidth();
+
+    const height =
+        getGameHeight();
+
+
     ctx.clearRect(
         0,
         0,
-        getGameWidth(),
-        getGameHeight()
+        width,
+        height
     );
 
 
     drawField();
 
+
     updateKeeper();
+
 
     drawKeeper();
 
+
     updateBall();
 
+
     drawBall();
+
+
+    // IMPORTANT:
+    // Result is drawn LAST,
+    // so it appears above everything.
+
+    drawResultMessage();
 }
 
 
@@ -1126,6 +1441,13 @@ restartBtn.addEventListener(
         shotInProgress = false;
 
 
+        resultText = "";
+
+        resultColor = "";
+
+        resultTimer = 0;
+
+
         scoreEl.textContent =
             score;
 
@@ -1135,11 +1457,6 @@ restartBtn.addEventListener(
 
         restartBtn.style.display =
             "none";
-
-
-        message.classList.remove(
-            "show"
-        );
 
 
         resetBall();
@@ -1161,20 +1478,26 @@ async function gameOver() {
     let reward = 0;
 
 
-    if (score >= 15)
+    if (score >= 15) {
+
         reward = 100;
 
-    else if (score >= 11)
+    } else if (score >= 11) {
+
         reward = 75;
 
-    else if (score >= 8)
+    } else if (score >= 8) {
+
         reward = 50;
 
-    else if (score >= 5)
+    } else if (score >= 5) {
+
         reward = 25;
 
-    else if (score >= 3)
+    } else if (score >= 3) {
+
         reward = 10;
+    }
 
 
     await updatePoints(
@@ -1215,50 +1538,60 @@ onAuthStateChanged(
             user.uid;
 
 
-        const snap =
-            await getDoc(
-                doc(
-                    db,
-                    "users",
-                    user.uid
-                )
+        try {
+
+            const snap =
+                await getDoc(
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    )
+                );
+
+
+            if (snap.exists()) {
+
+                const data =
+                    snap.data();
+
+
+                currentPoints =
+                    data.points || 0;
+
+
+                const userName =
+                    document.getElementById(
+                        "userName"
+                    );
+
+
+                const userPoints =
+                    document.getElementById(
+                        "userPoints"
+                    );
+
+
+                if (userName) {
+
+                    userName.textContent =
+                        `Hi, ${data.name || "Player"}`;
+                }
+
+
+                if (userPoints) {
+
+                    userPoints.textContent =
+                        `⭐ ${currentPoints} pts`;
+                }
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Firebase user loading error:",
+                error
             );
-
-
-        if (snap.exists()) {
-
-            const data =
-                snap.data();
-
-
-            currentPoints =
-                data.points || 0;
-
-
-            const userName =
-                document.getElementById(
-                    "userName"
-                );
-
-
-            const userPoints =
-                document.getElementById(
-                    "userPoints"
-                );
-
-
-            if (userName) {
-
-                userName.textContent =
-                    `Hi, ${data.name || "Player"}`;
-            }
-
-
-            if (userPoints) {
-
-                userPoints.textContent =
-                    `⭐ ${currentPoints} pts`;
-            }
         }
     }
 );
@@ -1278,16 +1611,22 @@ if (logoutBtn) {
 
     logoutBtn.addEventListener(
         "click",
-        () => {
+        async () => {
 
-            signOut(auth)
-                .then(
-                    () => {
+            try {
 
-                        location.href =
-                            "index.html";
-                    }
+                await signOut(auth);
+
+                location.href =
+                    "index.html";
+
+            } catch (error) {
+
+                console.error(
+                    "Logout error:",
+                    error
                 );
+            }
         }
     );
 }
@@ -1302,41 +1641,53 @@ async function updatePoints(points) {
     if (
         !currentUserUID ||
         points === 0
-    )
+    ) {
+
         return;
+    }
 
 
-    const ref =
-        doc(
-            db,
-            "users",
-            currentUserUID
+    try {
+
+        const ref =
+            doc(
+                db,
+                "users",
+                currentUserUID
+            );
+
+
+        await updateDoc(
+            ref,
+            {
+                points:
+                    increment(points)
+            }
         );
 
 
-    await updateDoc(
-        ref,
-        {
-            points:
-                increment(points)
+        currentPoints +=
+            points;
+
+
+        const userPoints =
+            document.getElementById(
+                "userPoints"
+            );
+
+
+        if (userPoints) {
+
+            userPoints.textContent =
+                `⭐ ${currentPoints} pts`;
         }
-    );
 
+    } catch (error) {
 
-    currentPoints +=
-        points;
-
-
-    const userPoints =
-        document.getElementById(
-            "userPoints"
+        console.error(
+            "Point update error:",
+            error
         );
-
-
-    if (userPoints) {
-
-        userPoints.textContent =
-            `⭐ ${currentPoints} pts`;
     }
 }
 
@@ -1345,7 +1696,9 @@ async function updatePoints(points) {
 // INITIALIZE
 // =========================================================
 
-resizeGame();
+setupCanvas();
+
+positionObjects();
 
 resetBall();
 
