@@ -1,840 +1,465 @@
-/* =========================================
-   GAME XD - CONNECT FOUR
-   Complete CSS
-========================================= */
+
+/* =========================================================
+   GAME XD — CONNECT FOUR
+   Modern Neon Arcade UI
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 
-/* =========================================
+/* =========================================================
    RESET
-========================================= */
+========================================================= */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 
-/* =========================================
-   BODY
-========================================= */
+html {
+    min-height: 100%;
+}
+
 
 body {
     min-height: 100vh;
 
-    background: #080b14;
+    font-family:
+        'Inter',
+        Arial,
+        Helvetica,
+        sans-serif;
 
-    color: white;
+    color: #f5f7ff;
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(93, 63, 255, 0.22),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 85% 15%,
+            rgba(0, 210, 255, 0.16),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(255, 0, 128, 0.10),
+            transparent 35%
+        ),
+        #070811;
 
     overflow-x: hidden;
 }
 
 
-/* =========================================
+/* =========================================================
    BACKGROUND
-========================================= */
+========================================================= */
 
 .background {
     position: fixed;
 
-    top: -20%;
-    left: -20%;
+    inset: 0;
 
-    width: 140%;
-    height: 140%;
+    width: 100%;
+    height: 100%;
 
-    background:
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(79, 172, 254, .45),
-            transparent 35%
-        ),
-
-        radial-gradient(
-            circle at 80% 70%,
-            rgba(0, 242, 254, .30),
-            transparent 35%
-        ),
-
-        linear-gradient(
-            135deg,
-            #101b38,
-            #06101f,
-            #0b1020
-        );
-
-    filter: blur(35px);
+    pointer-events: none;
 
     z-index: -2;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(15, 18, 40, 0.3),
+            rgba(5, 7, 18, 0.9)
+        );
 }
 
 
-/* =========================================
+/* subtle grid */
+
+body::before {
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: -1;
+
+    opacity: 0.16;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 42px 42px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 90%
+        );
+}
+
+
+/* =========================================================
    NAVBAR
-========================================= */
+========================================================= */
 
 .navbar {
-    width: 100%;
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
 
     display: flex;
 
     justify-content: space-between;
+
     align-items: center;
 
-    padding: 18px 40px;
+    min-height: 70px;
 
-    background: rgba(255, 255, 255, .08);
+    padding: 14px 38px;
+
+    background:
+        rgba(7, 8, 17, 0.78);
 
     border-bottom:
-        1px solid rgba(255, 255, 255, .12);
+        1px solid rgba(255,255,255,.08);
 
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
 
     box-shadow:
-        0 8px 30px rgba(0, 0, 0, .20);
+        0 10px 40px rgba(0,0,0,.22);
 }
 
 
-/* GameXD logo */
-
 .navbar h2 {
-    font-size: 24px;
+    font-size: 21px;
+
+    font-weight: 900;
+
+    letter-spacing: -0.5px;
 
     cursor: pointer;
 
-    user-select: none;
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #a9b6ff
+        );
 
-    transition: .2s;
+    -webkit-background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+
+    transition:
+        transform .2s ease,
+        filter .2s ease;
 }
+
 
 .navbar h2:hover {
-    transform: scale(1.04);
+    transform: translateY(-1px);
+
+    filter:
+        drop-shadow(
+            0 0 12px rgba(120,120,255,.45)
+        );
 }
 
-
-/* Right side */
 
 .right {
     display: flex;
 
     align-items: center;
 
-    gap: 15px;
+    gap: 13px;
 
-    font-size: 15px;
+    color: #aeb4ca;
+
+    font-size: 13px;
+
+    font-weight: 600;
 }
 
-
-/* Username */
 
 #userName {
-    font-weight: bold;
+    color: #f4f5ff;
 
-    white-space: nowrap;
+    font-weight: 700;
 }
 
-
-/* Points */
 
 #userPoints {
-    font-weight: bold;
+    color: #ffd75a;
 
-    color: #ffe45c;
-
-    white-space: nowrap;
+    font-weight: 700;
 }
 
 
-/* Logout */
+/* =========================================================
+   BUTTON BASE
+========================================================= */
 
-#logoutBtn {
-    padding: 9px 16px;
-
+button {
     border: none;
 
-    border-radius: 9px;
-
-    background: rgba(255, 255, 255, .95);
-
-    color: #111;
-
-    font-weight: bold;
+    outline: none;
 
     cursor: pointer;
 
+    font-family: inherit;
+
+    font-weight: 700;
+
+    color: #ffffff;
+
+    padding: 10px 17px;
+
+    border-radius: 11px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    border:
+        1px solid rgba(255,255,255,.11);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 6px 18px rgba(0,0,0,.18);
+
     transition:
-        transform .2s,
-        background .2s;
+        transform .18s ease,
+        background .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
 }
 
-#logoutBtn:hover {
+
+button:hover {
     transform: translateY(-2px);
 
-    background: white;
+    background:
+        rgba(255,255,255,.14);
+
+    border-color:
+        rgba(255,255,255,.20);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.25);
 }
 
 
-/* =========================================
+button:active {
+    transform:
+        translateY(0)
+        scale(.97);
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+#logoutBtn {
+    padding: 8px 14px;
+
+    font-size: 12px;
+
+    background:
+        rgba(255,70,110,.08);
+
+    border-color:
+        rgba(255,70,110,.18);
+
+    color:
+        #ff8da7;
+}
+
+
+#logoutBtn:hover {
+    background:
+        rgba(255,70,110,.16);
+
+    border-color:
+        rgba(255,70,110,.35);
+
+    box-shadow:
+        0 0 20px rgba(255,50,100,.12);
+}
+
+
+/* =========================================================
    MAIN CONTAINER
-========================================= */
+========================================================= */
 
 .container {
-    min-height: calc(100vh - 80px);
+    width: min(100%, 720px);
+
+    margin:
+        0 auto;
+
+    padding:
+        42px 20px 55px;
 
     display: flex;
 
     flex-direction: column;
 
     align-items: center;
-
-    justify-content: flex-start;
-
-    padding: 40px 20px 50px;
 }
 
 
-/* =========================================
+/* =========================================================
    TITLE
-========================================= */
+========================================================= */
 
-h1 {
-    font-size: 38px;
+.container h1 {
+    margin-bottom: 10px;
 
-    letter-spacing: .5px;
+    font-size:
+        clamp(32px, 6vw, 52px);
 
-    margin-bottom: 8px;
+    line-height: 1;
 
-    text-align: center;
+    font-weight: 900;
 
-    text-shadow:
-        0 5px 20px rgba(0, 0, 0, .35);
-}
-
-
-/* =========================================
-   STATUS
-========================================= */
-
-#status {
-    min-height: 28px;
-
-    margin: 12px 0 22px;
-
-    font-size: 20px;
-
-    font-weight: bold;
+    letter-spacing: -2px;
 
     text-align: center;
-
-    color: rgba(255, 255, 255, .92);
-
-    transition: .2s;
-}
-
-
-/* =========================================
-   CONNECT FOUR BOARD
-========================================= */
-
-.board {
-    position: relative;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(7, 68px);
-
-    gap: 8px;
-
-    padding: 17px;
-
-    border-radius: 25px;
 
     background:
         linear-gradient(
-            145deg,
-            #1b65bd,
-            #104a94 45%,
-            #07316c
+            135deg,
+            #ffffff 10%,
+            #aab7ff 45%,
+            #6c7cff 80%
         );
 
-    border:
-        2px solid rgba(255, 255, 255, .18);
+    -webkit-background-clip: text;
 
-    box-shadow:
-        0 25px 60px rgba(0, 0, 0, .45),
+    -webkit-text-fill-color: transparent;
 
-        inset 0 3px 4px
-        rgba(255, 255, 255, .22),
-
-        inset 0 -8px 18px
-        rgba(0, 0, 0, .35);
-
-    overflow: hidden;
-}
-
-
-/* Board inner border */
-
-.board::before {
-    content: "";
-
-    position: absolute;
-
-    inset: 6px;
-
-    border-radius: 20px;
-
-    border:
-        1px solid rgba(255, 255, 255, .09);
-
-    pointer-events: none;
-
-    z-index: 5;
-}
-
-
-/* =========================================
-   CELLS
-========================================= */
-
-.cell {
-    position: relative;
-
-    width: 68px;
-    height: 68px;
-
-    border-radius: 50%;
-
-    cursor: pointer;
-
-    background:
-        radial-gradient(
-            circle at 35% 30%,
-            #ffffff 0%,
-            #edf2f6 40%,
-            #c5ced8 72%,
-            #8d99a6 100%
+    filter:
+        drop-shadow(
+            0 8px 25px rgba(70,90,255,.18)
         );
-
-    border:
-        3px solid rgba(0, 0, 0, .18);
-
-    box-shadow:
-
-        inset 0 6px 9px
-        rgba(0, 0, 0, .20),
-
-        inset 0 -5px 8px
-        rgba(255, 255, 255, .35),
-
-        0 3px 5px
-        rgba(0, 0, 0, .25);
-
-    transition:
-        transform .15s ease,
-        box-shadow .15s ease;
-
-    z-index: 2;
 }
 
 
-/* =========================================
-   CELL HOVER
-========================================= */
-
-.cell:hover {
-    transform: scale(.94);
-
-    box-shadow:
-
-        inset 0 5px 8px
-        rgba(0, 0, 0, .18),
-
-        0 0 14px
-        rgba(255, 255, 255, .35);
-}
-
-
-/* =========================================
-   RED PLAYER PIECE
-========================================= */
-
-.cell.red {
-    background:
-        radial-gradient(
-            circle at 32% 25%,
-            #ff9a9a 0%,
-            #ff5555 22%,
-            #f02020 50%,
-            #c80000 76%,
-            #850000 100%
-        );
-
-    border-color: #8f0000;
-
-    box-shadow:
-
-        inset 0 6px 9px
-        rgba(255, 255, 255, .30),
-
-        inset 0 -8px 11px
-        rgba(75, 0, 0, .35),
-
-        0 4px 8px
-        rgba(0, 0, 0, .35);
-}
-
-
-/* =========================================
-   YELLOW AI PIECE
-========================================= */
-
-.cell.yellow {
-    background:
-        radial-gradient(
-            circle at 32% 25%,
-            #fffbd0 0%,
-            #fff36b 22%,
-            #ffd51c 50%,
-            #f3ae00 76%,
-            #a96b00 100%
-        );
-
-    border-color: #a56d00;
-
-    box-shadow:
-
-        inset 0 6px 9px
-        rgba(255, 255, 255, .35),
-
-        inset 0 -8px 11px
-        rgba(100, 60, 0, .30),
-
-        0 4px 8px
-        rgba(0, 0, 0, .35);
-}
-
-
-/* =========================================
-   PIECE HIGHLIGHT
-========================================= */
-
-.cell.red::after,
-.cell.yellow::after {
-    content: "";
-
-    position: absolute;
-
-    top: 12%;
-    left: 20%;
-
-    width: 25%;
-    height: 16%;
-
-    border-radius: 50%;
-
-    background:
-        rgba(255, 255, 255, .45);
-
-    filter: blur(1px);
-
-    pointer-events: none;
-}
-
-
-/* =========================================
-   PIECE DROP ANIMATION
-========================================= */
-
-.cell.red,
-.cell.yellow {
-    animation:
-        dropPiece .28s cubic-bezier(.2, .8, .3, 1);
-}
-
-
-@keyframes dropPiece {
-
-    0% {
-        transform:
-            translateY(-35px)
-            scale(.75);
-
-        opacity: .3;
-    }
-
-    65% {
-        transform:
-            translateY(5px)
-            scale(1.04);
-
-        opacity: 1;
-    }
-
-    100% {
-        transform:
-            translateY(0)
-            scale(1);
-    }
-
-}
-
-
-/* =========================================
-   WINNING PIECES
-========================================= */
-
-.cell.win {
-    z-index: 10;
-
-    animation:
-        winningPiece .65s
-        infinite alternate;
-}
-
-
-@keyframes winningPiece {
-
-    from {
-        transform: scale(1);
-
-        box-shadow:
-            0 0 8px #00ff88,
-            0 0 15px rgba(0, 255, 136, .45),
-
-            inset 0 5px 8px
-            rgba(255, 255, 255, .25);
-    }
-
-    to {
-        transform: scale(1.12);
-
-        box-shadow:
-            0 0 20px #00ff88,
-            0 0 45px rgba(0, 255, 136, .70),
-
-            inset 0 5px 8px
-            rgba(255, 255, 255, .30);
-    }
-
-}
-
-
-/* =========================================
-   BUTTON AREA
-========================================= */
-
-.buttons {
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 15px;
-
-    margin-top: 30px;
-}
-
-
-/* =========================================
-   GAME BUTTONS
-========================================= */
-
-.buttons button {
-    min-width: 125px;
-
-    padding: 11px 20px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    font-size: 15px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease,
-        background .2s ease;
-}
-
-
-/* Restart */
-
-#restartBtn {
-    background: white;
-
-    color: #111;
-
-    box-shadow:
-        0 5px 15px rgba(0, 0, 0, .20);
-}
-
-
-/* Home */
-
-.buttons button:last-child {
-    background:
-        rgba(255, 255, 255, .12);
-
-    color: white;
-
-    border:
-        1px solid rgba(255, 255, 255, .18);
-
-    backdrop-filter: blur(10px);
-}
-
-
-/* Button hover */
-
-.buttons button:hover {
-    transform: translateY(-3px);
-
-    box-shadow:
-        0 8px 20px rgba(0, 0, 0, .25);
-}
-
-
-/* Button active */
-
-.buttons button:active {
-    transform: translateY(0);
-}
-
-
-/* =========================================
-   MOBILE - TABLET
-========================================= */
-
-@media (max-width: 700px) {
-
-    .navbar {
-        padding: 15px 20px;
-    }
-
-    .navbar h2 {
-        font-size: 20px;
-    }
-
-    .right {
-        gap: 8px;
-
-        font-size: 12px;
-    }
-
-    #logoutBtn {
-        padding: 8px 11px;
-
-        font-size: 12px;
-    }
-
-
-    .container {
-        padding-top: 30px;
-    }
-
-
-    h1 {
-        font-size: 30px;
-    }
-
-
-    #status {
-        font-size: 18px;
-
-        margin-bottom: 18px;
-    }
-
-
-    .board {
-        grid-template-columns:
-            repeat(7, 52px);
-
-        gap: 6px;
-
-        padding: 13px;
-
-        border-radius: 21px;
-    }
-
-
-    .cell {
-        width: 52px;
-        height: 52px;
-
-        border-width: 2px;
-    }
-
-}
-
-
-/* =========================================
-   MOBILE - SMALL
-========================================= */
-
-@media (max-width: 500px) {
-
-    .navbar {
-        flex-direction: column;
-
-        gap: 10px;
-
-        padding: 14px;
-    }
-
-
-    .right {
-        flex-wrap: wrap;
-
-        justify-content: center;
-    }
-
-
-    .container {
-        padding:
-            25px 8px 40px;
-    }
-
-
-    h1 {
-        font-size: 26px;
-    }
-
-
-    #status {
-        font-size: 17px;
-
-        margin-bottom: 16px;
-    }
-
-
-    .board {
-        grid-template-columns:
-            repeat(7, 42px);
-
-        gap: 4px;
-
-        padding: 10px;
-
-        border-radius: 17px;
-    }
-
-
-    .cell {
-        width: 42px;
-        height: 42px;
-
-        border-width: 2px;
-    }
-
-
-    .buttons {
-        gap: 10px;
-
-        margin-top: 22px;
-    }
-
-
-    .buttons button {
-        min-width: 105px;
-
-        padding: 10px 12px;
-
-        font-size: 13px;
-    }
-
-}
-
-
-/* =========================================
-   VERY SMALL PHONES
-========================================= */
-
-@media (max-width: 370px) {
-
-    .board {
-        grid-template-columns:
-            repeat(7, 37px);
-
-        gap: 3px;
-
-        padding: 8px;
-    }
-
-
-    .cell {
-        width: 37px;
-        height: 37px;
-    }
-
-
-    .buttons button {
-        min-width: 95px;
-
-        font-size: 12px;
-    }
-
-}
-
-
-/* =========================
-   GAME MODE
-========================= */
+/* =========================================================
+   MODE SELECTOR
+========================================================= */
 
 .modeBox {
     display: flex;
 
     align-items: center;
 
-    gap: 10px;
+    gap: 12px;
 
-    margin-bottom: 5px;
+    margin-top: 20px;
 
-    padding: 10px 15px;
+    padding: 9px 12px;
 
-    border-radius: 12px;
+    border-radius: 13px;
 
-    background: rgba(255,255,255,.10);
+    background:
+        rgba(255,255,255,.045);
 
-    border: 1px solid rgba(255,255,255,.15);
+    border:
+        1px solid rgba(255,255,255,.09);
 
-    backdrop-filter: blur(10px);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.04),
+        0 10px 30px rgba(0,0,0,.18);
+
+    backdrop-filter:
+        blur(15px);
 }
+
 
 .modeBox label {
-    font-weight: bold;
+    color: #aeb5cc;
+
+    font-size: 13px;
+
+    font-weight: 700;
 }
+
 
 #gameMode {
-    padding: 8px 12px;
+    appearance: none;
 
-    border: none;
+    -webkit-appearance: none;
 
-    border-radius: 8px;
+    min-width: 135px;
 
-    background: white;
+    padding: 9px 30px 9px 12px;
 
-    color: #111;
+    border-radius: 9px;
 
-    font-weight: bold;
-
-    cursor: pointer;
+    border:
+        1px solid rgba(255,255,255,.12);
 
     outline: none;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-weight: 700;
+
+    background:
+        #171a2b;
+
+    cursor: pointer;
 }
 
-/* =========================================
+
+#gameMode:focus {
+    border-color:
+        rgba(116,125,255,.65);
+
+    box-shadow:
+        0 0 0 3px rgba(100,110,255,.12);
+}
+
+
+#gameMode option {
+    background: #151827;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
    PLAYER SETUP
-========================================= */
+========================================================= */
 
 .playerSetup {
     display: flex;
@@ -843,60 +468,108 @@ h1 {
 
     align-items: center;
 
-    gap: 15px;
+    gap: 14px;
 
-    margin: 10px 0 15px;
+    width: 100%;
 
-    padding: 12px 15px;
+    max-width: 390px;
 
-    border-radius: 14px;
+    margin-top: 15px;
 
-    background: rgba(255,255,255,.08);
+    padding: 14px;
 
-    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 16px;
 
-    backdrop-filter: blur(12px);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.07),
+            rgba(255,255,255,.025)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.09);
+
+    box-shadow:
+        0 18px 45px rgba(0,0,0,.20);
+
+    backdrop-filter:
+        blur(18px);
 }
 
 
 .nameInput {
+    flex: 1;
+
     display: flex;
 
     flex-direction: column;
 
-    gap: 5px;
+    gap: 6px;
 }
 
 
 .nameInput label {
-    font-size: 13px;
+    font-size: 11px;
 
-    font-weight: bold;
+    font-weight: 800;
+
+    letter-spacing: .5px;
+
+    color: #9ea6c1;
 }
 
 
 .nameInput input {
-    width: 130px;
+    width: 100%;
 
-    padding: 8px 10px;
+    padding: 10px 11px;
 
-    border: none;
+    border-radius: 9px;
+
+    border:
+        1px solid rgba(255,255,255,.10);
 
     outline: none;
 
-    border-radius: 8px;
+    background:
+        rgba(255,255,255,.06);
 
-    background: rgba(255,255,255,.95);
+    color: #ffffff;
 
-    color: #111;
+    font-family: inherit;
 
-    font-weight: bold;
+    font-size: 13px;
+
+    font-weight: 600;
+
+    transition:
+        border-color .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
 }
 
 
-/* =========================================
+.nameInput input::placeholder {
+    color: #6f7690;
+}
+
+
+.nameInput input:focus {
+    background:
+        rgba(255,255,255,.09);
+
+    border-color:
+        rgba(116,126,255,.7);
+
+    box-shadow:
+        0 0 0 3px rgba(100,110,255,.11);
+}
+
+
+/* =========================================================
    SCOREBOARD
-========================================= */
+========================================================= */
 
 .scoreboard {
     display: flex;
@@ -905,193 +578,716 @@ h1 {
 
     justify-content: center;
 
-    gap: 20px;
+    gap: 22px;
 
-    min-width: 270px;
+    min-width: 290px;
 
-    margin: 5px 0 10px;
+    margin-top: 16px;
 
-    padding: 12px 25px;
+    padding: 13px 24px;
 
     border-radius: 18px;
 
-    background: rgba(255,255,255,.10);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.075),
+            rgba(255,255,255,.025)
+        );
 
-    border: 1px solid rgba(255,255,255,.16);
-
-    backdrop-filter: blur(15px);
+    border:
+        1px solid rgba(255,255,255,.10);
 
     box-shadow:
-        0 10px 30px rgba(0,0,0,.20);
+        0 20px 50px rgba(0,0,0,.24),
+        inset 0 1px 0 rgba(255,255,255,.06);
+
+    backdrop-filter:
+        blur(20px);
 }
 
 
 .playerScore {
-    min-width: 90px;
+    min-width: 95px;
 
     text-align: center;
 }
 
 
 .playerName {
-    font-size: 14px;
-
-    font-weight: bold;
-
-    white-space: nowrap;
+    max-width: 115px;
 
     overflow: hidden;
 
     text-overflow: ellipsis;
 
-    max-width: 110px;
+    white-space: nowrap;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: .7px;
 }
 
 
 .score {
     margin-top: 2px;
 
-    font-size: 30px;
+    font-size: 31px;
+
+    line-height: 1;
 
     font-weight: 900;
 }
 
 
 .redScore .playerName {
-    color: #ff6969;
+    color: #ff7185;
 }
 
 
 .redScore .score {
-    color: #ff3d3d;
+    color: #ff536b;
 
     text-shadow:
-        0 0 12px rgba(255,60,60,.45);
+        0 0 20px rgba(255,60,90,.35);
 }
 
 
 .yellowScore .playerName {
-    color: #ffe66a;
+    color: #ffe36b;
 }
 
 
 .yellowScore .score {
-    color: #ffd21f;
+    color: #ffd43b;
 
     text-shadow:
-        0 0 12px rgba(255,210,30,.45);
+        0 0 20px rgba(255,205,40,.30);
 }
 
 
 .scoreDivider {
-    font-size: 25px;
+    color: #646b83;
 
-    font-weight: bold;
+    font-size: 20px;
 
-    opacity: .6;
+    font-weight: 800;
 }
 
 
-/* =========================================
-   RESET SCORE BUTTON
-========================================= */
+/* =========================================================
+   STATUS
+========================================================= */
+
+#status {
+    min-height: 27px;
+
+    margin:
+        20px 0 17px;
+
+    color: #b8bfd5;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    text-align: center;
+
+    letter-spacing: .15px;
+}
+
+
+/* =========================================================
+   CONNECT FOUR BOARD
+========================================================= */
+
+.board {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(7, 1fr);
+
+    gap: clamp(7px, 1.2vw, 11px);
+
+    width:
+        min(92vw, 590px);
+
+    aspect-ratio:
+        7 / 6;
+
+    padding:
+        clamp(12px, 2vw, 19px);
+
+    border-radius:
+        clamp(20px, 3vw, 28px);
+
+    background:
+        linear-gradient(
+            145deg,
+            #252b5d 0%,
+            #161a3d 45%,
+            #0e122d 100%
+        );
+
+    border:
+        1px solid rgba(143,153,255,.28);
+
+    box-shadow:
+        0 30px 70px rgba(0,0,0,.55),
+        0 0 60px rgba(73,83,255,.12),
+        inset 0 2px 2px rgba(255,255,255,.10),
+        inset 0 -8px 25px rgba(0,0,0,.30);
+
+    overflow: visible;
+}
+
+
+/* board top shine */
+
+.board::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 7%;
+
+    width: 86%;
+    height: 2px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.45),
+            transparent
+        );
+
+    opacity: .5;
+}
+
+
+/* =========================================================
+   CELLS
+========================================================= */
+
+.cell {
+    position: relative;
+
+    aspect-ratio: 1 / 1;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            #0b0e20 0%,
+            #070914 68%,
+            #04050c 100%
+        );
+
+    border:
+        2px solid rgba(255,255,255,.045);
+
+    box-shadow:
+        inset 0 7px 12px rgba(0,0,0,.65),
+        inset 0 -2px 3px rgba(255,255,255,.025),
+        0 3px 6px rgba(0,0,0,.25);
+
+    transition:
+        transform .16s ease,
+        border-color .16s ease,
+        box-shadow .16s ease;
+}
+
+
+/* subtle hover */
+
+.cell:hover {
+    transform: scale(1.035);
+
+    border-color:
+        rgba(150,160,255,.24);
+
+    box-shadow:
+        inset 0 7px 12px rgba(0,0,0,.65),
+        0 0 15px rgba(100,110,255,.13);
+}
+
+
+/* =========================================================
+   RED BALL
+========================================================= */
+
+.cell.red {
+    background:
+        radial-gradient(
+            circle at 32% 25%,
+            #ffb2bb 0%,
+            #ff526b 18%,
+            #ed2447 52%,
+            #a70729 100%
+        );
+
+    border-color:
+        rgba(255,150,165,.30);
+
+    box-shadow:
+        inset 7px 8px 12px rgba(255,255,255,.22),
+        inset -7px -9px 13px rgba(80,0,15,.48),
+        0 5px 12px rgba(0,0,0,.35),
+        0 0 16px rgba(255,45,80,.15);
+}
+
+
+/* red shine */
+
+.cell.red::before,
+.cell.yellow::before {
+    content: "";
+
+    position: absolute;
+
+    width: 27%;
+
+    height: 17%;
+
+    top: 18%;
+
+    left: 21%;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.45);
+
+    filter: blur(1px);
+
+    transform:
+        rotate(-25deg);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   YELLOW BALL
+========================================================= */
+
+.cell.yellow {
+    background:
+        radial-gradient(
+            circle at 32% 25%,
+            #fff9b0 0%,
+            #ffe34f 18%,
+            #ffc61c 52%,
+            #b87300 100%
+        );
+
+    border-color:
+        rgba(255,230,100,.30);
+
+    box-shadow:
+        inset 7px 8px 12px rgba(255,255,255,.25),
+        inset -7px -9px 13px rgba(80,45,0,.45),
+        0 5px 12px rgba(0,0,0,.35),
+        0 0 16px rgba(255,205,35,.13);
+}
+
+
+/* =========================================================
+   LAST MOVE
+========================================================= */
+
+.cell.last-move {
+    z-index: 5;
+
+    animation:
+        lastMovePulse
+        1.15s
+        ease-in-out
+        infinite;
+
+    box-shadow:
+        0 0 0 3px rgba(255,255,255,.95),
+        0 0 14px rgba(255,255,255,.65),
+        0 0 30px rgba(124,137,255,.50);
+}
+
+
+@keyframes lastMovePulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.07);
+    }
+}
+
+
+/* =========================================================
+   WINNING PIECES
+========================================================= */
+
+.cell.win {
+    z-index: 10;
+
+    animation:
+        winnerPulse
+        .65s
+        ease-in-out
+        infinite alternate;
+
+    border:
+        3px solid #ffffff;
+
+    box-shadow:
+        0 0 0 3px rgba(255,255,255,.22),
+        0 0 20px rgba(255,255,255,.9),
+        0 0 42px rgba(120,130,255,.75);
+}
+
+
+@keyframes winnerPulse {
+
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.10);
+    }
+}
+
+
+/* =========================================================
+   BUTTON AREA
+========================================================= */
+
+.buttons {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 11px;
+
+    margin-top: 24px;
+}
+
+
+/* Restart */
+
+#restartBtn {
+    background:
+        linear-gradient(
+            135deg,
+            #5b63ff,
+            #744dff
+        );
+
+    border-color:
+        rgba(155,160,255,.35);
+
+    box-shadow:
+        0 8px 24px rgba(82,75,255,.24),
+        inset 0 1px 0 rgba(255,255,255,.20);
+}
+
+
+#restartBtn:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #6870ff,
+            #825cff
+        );
+
+    box-shadow:
+        0 12px 30px rgba(82,75,255,.35),
+        0 0 20px rgba(100,100,255,.18);
+}
+
+
+/* Reset score */
 
 #resetScoreBtn {
     background:
-        rgba(255,80,80,.15);
+        rgba(255,255,255,.055);
 
-    color: white;
+    color: #ff879d;
 
-    border:
-        1px solid rgba(255,100,100,.25);
+    border-color:
+        rgba(255,100,130,.20);
 }
 
 
 #resetScoreBtn:hover {
     background:
-        rgba(255,80,80,.28);
+        rgba(255,70,100,.12);
+
+    border-color:
+        rgba(255,100,130,.40);
 }
 
 
-/* =========================================
-   MOBILE
-========================================= */
+/* Home */
 
-@media (max-width: 600px) {
+.buttons button:last-child {
+    background:
+        rgba(255,255,255,.055);
+
+    color: #b9c0d8;
+}
+
+
+.buttons button:last-child:hover {
+    color: #ffffff;
+
+    background:
+        rgba(255,255,255,.10);
+}
+
+
+/* =========================================================
+   FOCUS ACCESSIBILITY
+========================================================= */
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+.cell:focus-visible {
+    outline:
+        2px solid #7b83ff;
+
+    outline-offset:
+        3px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .navbar {
+        padding:
+            13px 16px;
+    }
+
+
+    .navbar h2 {
+        font-size: 18px;
+    }
+
+
+    .right {
+        gap: 7px;
+
+        font-size: 11px;
+    }
+
+
+    #userPoints {
+        display: none;
+    }
+
+
+    #logoutBtn {
+        padding:
+            7px 10px;
+
+        font-size: 10px;
+    }
+
+
+    .container {
+        padding:
+            30px 12px 40px;
+    }
+
+
+    .container h1 {
+        letter-spacing:
+            -1.5px;
+    }
+
+
+    .modeBox {
+        margin-top: 17px;
+    }
+
 
     .playerSetup {
-        flex-direction: column;
+        max-width: 330px;
 
-        width: 100%;
-
-        max-width: 300px;
-    }
-
-
-    .nameInput {
-        width: 100%;
-    }
-
-
-    .nameInput input {
-        width: 100%;
+        padding: 11px;
     }
 
 
     .scoreboard {
-        min-width: 240px;
-
-        padding: 10px 18px;
+        min-width: 260px;
 
         gap: 15px;
+
+        padding:
+            11px 17px;
     }
 
 
     .playerScore {
-        min-width: 75px;
-    }
-
-
-    .playerName {
-        max-width: 90px;
-
-        font-size: 12px;
+        min-width: 78px;
     }
 
 
     .score {
-        font-size: 26px;
+        font-size: 27px;
     }
 
 
-    .scoreDivider {
-        font-size: 21px;
+    .playerName {
+        max-width: 95px;
+
+        font-size: 10px;
+    }
+
+
+    #status {
+        margin:
+            17px 0 14px;
+
+        font-size: 13px;
+    }
+
+
+    .board {
+        width:
+            min(94vw, 560px);
+
+        gap:
+            6px;
+
+        padding:
+            12px;
+
+        border-radius:
+            20px;
+    }
+
+
+    .cell {
+        border-width:
+            1px;
+    }
+
+
+    .cell.last-move {
+        box-shadow:
+            0 0 0 2px rgba(255,255,255,.95),
+            0 0 12px rgba(255,255,255,.65),
+            0 0 22px rgba(124,137,255,.45);
+    }
+
+
+    .buttons {
+        margin-top: 20px;
+
+        gap: 8px;
+    }
+
+
+    .buttons button {
+        padding:
+            9px 12px;
+
+        font-size: 12px;
     }
 
 }
 
-/* Last played piece */
-.cell.last-move {
-    position: relative;
-    box-shadow:
-        0 0 0 4px rgba(255, 255, 255, 0.85),
-        0 0 18px rgba(255, 255, 255, 0.9);
 
-    animation: lastMovePulse 0.9s ease-in-out infinite;
-    z-index: 2;
-}
+/* =========================================================
+   SMALL PHONES
+========================================================= */
 
-@keyframes lastMovePulse {
+@media (max-width: 400px) {
 
-    0%, 100% {
-        transform: scale(1);
+    .navbar {
+        min-height: 62px;
     }
 
-    50% {
-        transform: scale(1.08);
+
+    .navbar h2 {
+        font-size: 16px;
     }
+
+
+    .right span:first-child {
+        max-width: 70px;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+    }
+
+
+    .modeBox {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+
+    .playerSetup {
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+
+    .scoreboard {
+        min-width: 235px;
+
+        gap: 10px;
+    }
+
+
+    .board {
+        width: 96vw;
+
+        padding: 9px;
+
+        gap: 5px;
+
+        border-radius: 17px;
+    }
+
+
+    .buttons button {
+        padding:
+            8px 10px;
+
+        font-size: 11px;
+    }
+
 }
-
-
-
 
