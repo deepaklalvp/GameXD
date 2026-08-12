@@ -257,21 +257,17 @@ function showAIMode() {
     gameMode = "ai";
 
     aiModeBtn.classList.add("active");
-
     twoPlayerModeBtn.classList.remove("active");
 
+    // Hide 2-player elements
+    playerNamesBox.style.display = "none";
+    scoreboard.style.display = "none";
+    resetScoreBtn.style.display = "none";
 
-    playerNamesBox.classList.add("hidden");
-
-    scoreboard.classList.add("hidden");
-
-    resetScoreBtn.classList.add("hidden");
-
-    difficultyContainer.classList.remove("hidden");
-
+    // Show AI difficulty
+    difficultyContainer.style.display = "flex";
 
     restart();
-
 }
 
 
@@ -284,23 +280,19 @@ function showTwoPlayerMode() {
     gameMode = "2player";
 
     aiModeBtn.classList.remove("active");
-
     twoPlayerModeBtn.classList.add("active");
 
+    // Show 2-player elements
+    playerNamesBox.style.display = "flex";
+    scoreboard.style.display = "flex";
+    resetScoreBtn.style.display = "inline-block";
 
-    playerNamesBox.classList.remove("hidden");
-
-    scoreboard.classList.remove("hidden");
-
-    resetScoreBtn.classList.remove("hidden");
-
-    difficultyContainer.classList.add("hidden");
-
+    // Hide AI difficulty
+    difficultyContainer.style.display = "none";
 
     updatePlayerNames();
 
     restart();
-
 }
 
 
