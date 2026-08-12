@@ -1,788 +1,539 @@
-
-/* =========================================================
-   FLAPPY BIRD - MODERN GAME UI
-   ========================================================= */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Inter, Arial, Helvetica, sans-serif;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins, sans-serif;
 }
 
+html,
+body{
+    width:100%;
+    min-height:100%;
+    overflow-x:hidden;
+}
 
-/* =========================================================
-   BODY
-   ========================================================= */
+body{
+    background:#071a2b;
+    color:#fff;
+    padding-top:70px;
+}
 
-body {
-    min-height: 100vh;
+/* =========================
+   BACKGROUND
+========================= */
+
+.background{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    overflow:hidden;
 
     background:
         radial-gradient(
-            circle at 20% 20%,
-            rgba(255, 255, 255, 0.12),
-            transparent 28%
+            circle at 15% 15%,
+            rgba(56,189,248,.35),
+            transparent 35%
         ),
         radial-gradient(
-            circle at 80% 15%,
-            rgba(255, 213, 79, 0.15),
-            transparent 25%
+            circle at 85% 80%,
+            rgba(34,211,238,.22),
+            transparent 35%
         ),
         linear-gradient(
-            145deg,
-            #10162f 0%,
-            #172c55 45%,
-            #0b1228 100%
+            180deg,
+            #0ea5e9 0%,
+            #0284c7 42%,
+            #075985 100%
         );
-
-    color: #fff;
-
-    padding-top: 72px;
-
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-
-    overflow-x: hidden;
 }
 
-
-/* =========================================================
-   BACKGROUND GLOW
-   ========================================================= */
-
-.background {
-    position: fixed;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    overflow: hidden;
-
-    z-index: -1;
-}
-
+/* Soft clouds */
 
 .background::before,
-.background::after {
-    content: "";
-
-    position: absolute;
-
-    width: 320px;
-    height: 320px;
-
-    border-radius: 50%;
-
-    filter: blur(90px);
-
-    opacity: 0.35;
+.background::after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    filter:blur(10px);
+    opacity:.18;
+    background:#fff;
 }
 
-
-.background::before {
-    top: -100px;
-    left: -80px;
-
-    background: #4facfe;
+.background::before{
+    width:280px;
+    height:100px;
+    top:18%;
+    left:-80px;
+    box-shadow:
+        100px 20px 0 20px rgba(255,255,255,.8),
+        200px 0 0 5px rgba(255,255,255,.7);
 }
 
-
-.background::after {
-    right: -100px;
-    bottom: -100px;
-
-    background: #8f5cff;
+.background::after{
+    width:240px;
+    height:90px;
+    bottom:20%;
+    right:-100px;
+    box-shadow:
+        -100px 20px 0 15px rgba(255,255,255,.7),
+        -200px 0 0 5px rgba(255,255,255,.6);
 }
 
-
-/* =========================================================
+/* =========================
    NAVBAR
-   ========================================================= */
+========================= */
 
-.navbar {
-    position: fixed;
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:70px;
 
-    top: 0;
-    left: 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 
-    width: 100%;
-    height: 64px;
+    padding:0 24px;
 
-    display: flex;
+    background:rgba(3,20,35,.55);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
 
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 0 24px;
-
-    background:
-        rgba(9, 15, 35, 0.78);
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-
-    border-bottom:
-        1px solid rgba(255, 255, 255, 0.08);
+    border-bottom:1px solid rgba(255,255,255,.12);
 
     box-shadow:
-        0 8px 30px rgba(0, 0, 0, 0.22);
+        0 8px 30px rgba(0,0,0,.18);
 
-    z-index: 1000;
+    z-index:1000;
 }
 
-
-.navbar h2 {
-    margin: 0;
-
-    cursor: pointer;
-
-    font-size: 21px;
-    font-weight: 800;
-
-    letter-spacing: -0.5px;
-
-    color: #ffffff;
-
-    transition: 0.2s ease;
+.navbar h2{
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:.3px;
+    cursor:pointer;
 }
 
-
-.navbar h2:hover {
-    transform: translateY(-1px);
-
-    opacity: 0.85;
+.navbar .right{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:10px;
+    flex-wrap:wrap;
 }
-
-
-.navbar .right {
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-}
-
 
 #userName,
-#userPoints {
-    font-size: 14px;
+#userPoints{
+    padding:7px 11px;
+    border-radius:999px;
 
-    color: rgba(255, 255, 255, 0.9);
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.1);
 
-    white-space: nowrap;
+    font-size:13px;
+    white-space:nowrap;
 }
 
-
-#userPoints {
-    font-weight: 700;
+#userPoints{
+    color:#fde047;
+    font-weight:700;
 }
 
+.navbar button{
+    border:none;
+    padding:8px 13px;
+    border-radius:11px;
 
-/* =========================================================
-   LOGOUT BUTTON
-   ========================================================= */
+    background:rgba(255,255,255,.1);
+    color:white;
 
-#logoutBtn {
-    margin: 0;
+    font-weight:600;
+    cursor:pointer;
 
-    padding: 8px 15px;
-
-    border: 1px solid
-        rgba(255, 255, 255, 0.12);
-
-    border-radius: 10px;
-
-    background:
-        rgba(255, 255, 255, 0.08);
-
-    color: #fff;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        border 0.2s ease;
+    transition:.25s ease;
 }
 
-
-#logoutBtn:hover {
-    transform: translateY(-2px);
-
-    background:
-        rgba(255, 255, 255, 0.15);
-
-    border-color:
-        rgba(255, 255, 255, 0.22);
+.navbar button:hover{
+    background:rgba(255,255,255,.2);
+    transform:translateY(-1px);
 }
 
-
-/* =========================================================
+/* =========================
    GAME CONTAINER
-   ========================================================= */
+========================= */
 
-.game-container {
-    position: relative;
+.container{
+    width:100%;
+    max-width:520px;
 
-    width: 100%;
+    margin:0 auto;
 
-    max-width: 460px;
+    padding:25px 15px 35px;
 
-    padding: 16px 14px 30px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    text-align: center;
+    text-align:center;
 }
 
-
-/* =========================================================
-   TITLE
-   ========================================================= */
-
-.game-container h2 {
-    margin-bottom: 12px;
-
-    font-size: 30px;
-
-    font-weight: 900;
-
-    letter-spacing: -1px;
-
-    color: #ffffff;
+.container h2{
+    font-size:28px;
+    font-weight:700;
 
     text-shadow:
-        0 5px 20px rgba(0, 0, 0, 0.25);
+        0 4px 15px rgba(0,0,0,.25);
 }
 
+#score{
+    margin-top:10px;
 
-/* =========================================================
-   SCORE
-   ========================================================= */
+    padding:8px 18px;
 
-#score {
-    position: relative;
+    border-radius:999px;
 
-    z-index: 5;
+    background:rgba(0,0,0,.22);
+    border:1px solid rgba(255,255,255,.15);
 
-    min-width: 110px;
-
-    padding: 8px 18px;
-
-    margin-bottom: 12px;
-
-    border-radius: 14px;
-
-    background:
-        rgba(255, 255, 255, 0.10);
-
-    border:
-        1px solid rgba(255, 255, 255, 0.13);
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    color: #ffffff;
-
-    font-size: 21px;
-
-    font-weight: 900;
-
-    letter-spacing: 0.5px;
+    font-size:18px;
+    font-weight:700;
 
     box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.18);
+        0 8px 20px rgba(0,0,0,.15);
 }
 
+/* =========================
+   COUNTDOWN
+========================= */
 
-/* =========================================================
+#countdown{
+    height:75px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:64px;
+    font-weight:800;
+
+    color:#fff;
+
+    text-shadow:
+        0 4px 15px rgba(0,0,0,.35);
+
+    z-index:20;
+
+    pointer-events:none;
+}
+
+/* =========================
    GAME AREA
-   ========================================================= */
+========================= */
 
-.game-area {
-    position: relative;
+canvas{
+    display:block;
 
-    width: 100%;
+    width:min(92vw,420px);
+    height:auto;
 
-    display: flex;
+    aspect-ratio:3 / 4;
 
-    justify-content: center;
+    margin-top:5px;
 
-    align-items: center;
-}
+    border-radius:22px;
 
-
-/* =========================================================
-   CANVAS
-   ========================================================= */
-
-canvas {
-    display: block;
-
-    width: 100%;
-
-    max-width: 420px;
-
-    height: 600px;
-
-    border-radius: 24px;
-
-    border:
-        1px solid rgba(255, 255, 255, 0.22);
+    border:2px solid rgba(255,255,255,.35);
 
     background:
         linear-gradient(
             180deg,
-            #62d8ff 0%,
-            #35b9f2 55%,
-            #1b94d3 100%
+            rgba(125,211,252,.2),
+            rgba(14,165,233,.15)
         );
 
     box-shadow:
-        0 25px 60px rgba(0, 0, 0, 0.35),
-        0 0 0 6px rgba(255, 255, 255, 0.025);
+        0 20px 50px rgba(0,0,0,.3),
+        0 0 0 6px rgba(255,255,255,.04);
 
-    touch-action: manipulation;
-
-    cursor: pointer;
+    touch-action:none;
 }
 
-
-/* =========================================================
-   COUNTDOWN
-   ========================================================= */
-
-#countdown {
-    position: absolute;
-
-    top: 50%;
-
-    left: 50%;
-
-    transform:
-        translate(-50%, -50%);
-
-    z-index: 20;
-
-    min-width: 90px;
-
-    min-height: 90px;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    border-radius: 50%;
-
-    background:
-        rgba(7, 15, 35, 0.42);
-
-    border:
-        2px solid rgba(255, 255, 255, 0.2);
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    color: #fff;
-
-    font-size: 52px;
-
-    font-weight: 900;
-
-    text-shadow:
-        0 5px 25px rgba(0, 0, 0, 0.5);
-
-    pointer-events: none;
-}
-
-
-/* =========================================================
+/* =========================
    GAME OVER
-   ========================================================= */
+========================= */
 
-#gameOver {
-    position: absolute;
+#gameOver{
+    position:fixed;
+    inset:0;
 
-    top: 0;
-    left: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    transform: translateX(-50%);
+    padding:20px;
 
-    width: 100%;
+    background:rgba(2,15,25,.62);
 
-    max-width: 420px;
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
 
-    height: 600px;
+    z-index:2000;
+}
 
-    display: flex;
+#gameOver.hide{
+    display:none;
+}
 
-    flex-direction: column;
+#gameOver > div{
+    width:min(360px,90vw);
 
-    justify-content: center;
+    padding:30px 25px;
 
-    align-items: center;
-
-    padding: 30px;
-
-    border-radius: 24px;
+    border-radius:24px;
 
     background:
         linear-gradient(
             145deg,
-            rgba(8, 13, 31, 0.92),
-            rgba(19, 28, 59, 0.90)
+            rgba(255,255,255,.14),
+            rgba(255,255,255,.06)
         );
 
-    border:
-        1px solid rgba(255, 255, 255, 0.15);
-
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-
-    color: #fff;
-
-    z-index: 50;
+    border:1px solid rgba(255,255,255,.18);
 
     box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.45);
+        0 25px 70px rgba(0,0,0,.45);
+
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+
+    text-align:center;
 }
 
-
-#gameOver h2 {
-    margin-bottom: 12px;
-
-    font-size: 32px;
-
-    font-weight: 900;
-
-    color: #ffffff;
+#gameOver h2{
+    font-size:30px;
+    margin-bottom:12px;
 }
 
-
-#finalScore {
-    margin-bottom: 8px;
-
-    font-size: 18px;
-
-    line-height: 1.7;
-
-    color:
-        rgba(255, 255, 255, 0.82);
+#finalScore{
+    color:#bae6fd;
+    font-size:17px;
+    line-height:1.6;
 }
 
-
-/* =========================================================
-   HIDDEN
-   ========================================================= */
-
-.hide {
-    display: none !important;
-}
-
-
-/* =========================================================
+/* =========================
    BUTTONS
-   ========================================================= */
+========================= */
 
-button {
-    margin-top: 14px;
+button{
+    border:none;
+    padding:11px 18px;
 
-    padding: 11px 22px;
-
-    border: 0;
-
-    border-radius: 12px;
+    border-radius:13px;
 
     background:
         linear-gradient(
             135deg,
-            #ffca28,
-            #ff8f00
+            #06b6d4,
+            #0284c7
         );
 
-    color: #151515;
+    color:white;
 
-    font-size: 15px;
+    font-size:15px;
+    font-weight:700;
 
-    font-weight: 800;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 8px 22px rgba(255, 152, 0, 0.25);
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        filter 0.2s ease;
-}
-
-
-button:hover {
-    transform: translateY(-2px);
+    cursor:pointer;
 
     box-shadow:
-        0 12px 28px rgba(255, 152, 0, 0.32);
+        0 7px 20px rgba(2,132,199,.3);
 
-    filter: brightness(1.05);
+    transition:.25s ease;
 }
 
-
-button:active {
-    transform: translateY(1px);
+button:hover{
+    transform:translateY(-2px);
 
     box-shadow:
-        0 5px 14px rgba(255, 152, 0, 0.2);
+        0 10px 25px rgba(2,132,199,.4);
 }
 
-
-/* =========================================================
-   GAME INSTRUCTIONS
-   ========================================================= */
-
-.game-instruction {
-    margin-top: 14px;
-
-    padding: 8px 15px;
-
-    border-radius: 12px;
-
-    background:
-        rgba(255, 255, 255, 0.07);
-
-    border:
-        1px solid rgba(255, 255, 255, 0.08);
-
-    color:
-        rgba(255, 255, 255, 0.75);
-
-    font-size: 13px;
-
-    line-height: 1.5;
+button:active{
+    transform:scale(.97);
 }
 
+/* =========================
+   HIDDEN
+========================= */
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
+.hide,
+.hidden{
+    display:none !important;
+}
 
-@media (max-width: 600px) {
+/* =========================
+   TABLET
+========================= */
 
-    body {
-        padding-top: 112px;
+@media(max-width:700px){
 
-        align-items: flex-start;
+    .navbar{
+        height:auto;
+        min-height:64px;
+
+        padding:9px 12px;
+
+        gap:8px;
     }
 
-
-    .navbar {
-        height: auto;
-
-        min-height: 96px;
-
-        padding:
-            10px 12px;
-
-        flex-direction: column;
-
-        justify-content: center;
-
-        gap: 8px;
+    .navbar h2{
+        font-size:18px;
     }
 
-
-    .navbar h2 {
-        font-size: 19px;
+    .navbar .right{
+        gap:6px;
     }
-
-
-    .navbar .right {
-        width: 100%;
-
-        justify-content: center;
-
-        flex-wrap: wrap;
-
-        gap: 7px;
-    }
-
 
     #userName,
-    #userPoints {
-        font-size: 12px;
+    #userPoints{
+        font-size:11px;
+        padding:5px 8px;
     }
 
-
-    #logoutBtn {
-        padding: 7px 12px;
-
-        font-size: 12px;
+    .navbar button{
+        padding:7px 9px;
+        font-size:12px;
     }
 
-
-    .game-container {
-        max-width: 100%;
-
-        padding:
-            8px 8px 25px;
+    body{
+        padding-top:82px;
     }
 
-
-    .game-container h2 {
-        font-size: 26px;
-
-        margin-bottom: 9px;
+    .container{
+        padding-top:15px;
     }
 
-
-    #score {
-        font-size: 19px;
-
-        padding:
-            7px 16px;
-
-        margin-bottom: 9px;
+    .container h2{
+        font-size:24px;
     }
 
-
-    canvas {
-        width: 94vw;
-
-        max-width: 420px;
-
-        height: 70vh;
-
-        min-height: 500px;
-
-        max-height: 680px;
-
-        border-radius: 20px;
-    }
-
-
-    #gameOver {
-        width: 94vw;
-
-        height: 70vh;
-
-        min-height: 500px;
-
-        max-height: 680px;
-
-        border-radius: 20px;
-    }
-
-
-    #gameOver h2 {
-        font-size: 28px;
-    }
-
-
-    #finalScore {
-        font-size: 16px;
-    }
-
-
-    #countdown {
-        min-width: 75px;
-
-        min-height: 75px;
-
-        font-size: 42px;
-    }
-
-
-    button {
-        min-width: 160px;
-
-        padding:
-            11px 20px;
-    }
-
-
-    .game-instruction {
-        max-width: 90vw;
-
-        font-size: 12px;
+    #countdown{
+        font-size:52px;
+        height:65px;
     }
 }
 
+/* =========================
+   MOBILE
+========================= */
 
-/* =========================================================
-   VERY SMALL PHONES
-   ========================================================= */
+@media(max-width:480px){
 
-@media (max-width: 380px) {
-
-    body {
-        padding-top: 108px;
+    body{
+        padding-top:112px;
     }
 
-
-    .navbar {
-        min-height: 92px;
+    .navbar{
+        flex-direction:column;
+        justify-content:center;
+        min-height:100px;
     }
 
-
-    .game-container h2 {
-        font-size: 23px;
+    .navbar h2{
+        font-size:17px;
     }
 
-
-    #score {
-        font-size: 17px;
+    .navbar .right{
+        justify-content:center;
+        width:100%;
     }
 
-
-    canvas {
-        width: 95vw;
-
-        height: 67vh;
-
-        min-height: 460px;
-
-        border-radius: 17px;
+    .container{
+        padding:12px 10px 25px;
     }
 
+    .container h2{
+        font-size:22px;
+    }
 
-    #gameOver {
-        width: 95vw;
+    #score{
+        margin-top:7px;
+        font-size:16px;
+        padding:7px 15px;
+    }
 
-        height: 67vh;
+    #countdown{
+        height:55px;
+        font-size:46px;
+    }
 
-        min-height: 460px;
+    canvas{
+        width:94vw;
+        max-width:380px;
 
-        border-radius: 17px;
+        border-radius:18px;
+
+        box-shadow:
+            0 15px 35px rgba(0,0,0,.3),
+            0 0 0 4px rgba(255,255,255,.04);
+    }
+
+    #gameOver{
+        padding:15px;
+    }
+
+    #gameOver > div{
+        padding:25px 18px;
+        border-radius:20px;
+    }
+
+    #gameOver h2{
+        font-size:26px;
+    }
+
+    button{
+        padding:10px 15px;
+        font-size:14px;
     }
 }
 
+/* =========================
+   SMALL PHONES
+========================= */
 
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
+@media(max-width:360px){
 
-@media (prefers-reduced-motion: reduce) {
+    body{
+        padding-top:108px;
+    }
 
-    *,
-    *::before,
-    *::after {
-        scroll-behavior: auto !important;
+    .navbar{
+        min-height:96px;
+    }
 
-        transition: none !important;
+    .navbar .right{
+        gap:4px;
+    }
 
-        animation: none !important;
+    #userName,
+    #userPoints{
+        font-size:10px;
+    }
+
+    .navbar button{
+        font-size:11px;
+        padding:6px 8px;
+    }
+
+    .container h2{
+        font-size:20px;
+    }
+
+    #score{
+        font-size:14px;
+    }
+
+    canvas{
+        width:92vw;
     }
 }
