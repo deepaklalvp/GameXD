@@ -1,79 +1,564 @@
-body{
+*{
     margin:0;
-    font-family:Arial;
-    background:#111;
-    color:white;
-    text-align:center;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins, Arial, sans-serif;
 }
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+    overflow-x:hidden;
+}
+
+body{
+    background:#07110d;
+    color:#fff;
+    text-align:center;
+    min-height:100vh;
+    padding-top:70px;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
 
 .background{
     position:fixed;
-    width:100%;
-    height:100%;
-    background:linear-gradient(135deg,#00c6ff,#0072ff);
-    filter:blur(120px);
+    inset:0;
     z-index:-1;
+    overflow:hidden;
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(34,197,94,.30),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 25%,
+            rgba(16,185,129,.22),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(6,182,212,.18),
+            transparent 40%
+        ),
+        #07110d;
 }
+
+.background::before,
+.background::after{
+    content:"";
+    position:absolute;
+
+    width:280px;
+    height:280px;
+
+    border-radius:50%;
+
+    filter:blur(90px);
+
+    opacity:.35;
+
+    animation:floatGlow 14s ease-in-out infinite alternate;
+}
+
+.background::before{
+    background:#22c55e;
+    top:-100px;
+    left:-100px;
+}
+
+.background::after{
+    background:#06b6d4;
+    bottom:-120px;
+    right:-100px;
+
+    animation-delay:3s;
+}
+
+@keyframes floatGlow{
+
+    from{
+        transform:translate(0,0) scale(1);
+    }
+
+    to{
+        transform:translate(60px,-40px) scale(1.2);
+    }
+}
+
+/* =========================
+   NAVBAR
+========================= */
 
 .navbar{
+    position:fixed;
+    top:0;
+    left:0;
+
+    width:100%;
+    min-height:64px;
+
+    padding:10px 22px;
+
     display:flex;
     justify-content:space-between;
-    padding:15px 30px;
-    background:rgba(255,255,255,0.1);
-    backdrop-filter:blur(10px);
+    align-items:center;
+
+    background:rgba(7,17,13,.72);
+
+    backdrop-filter:blur(20px);
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.25);
+
+    z-index:1000;
 }
+
+.navbar h2{
+    font-size:19px;
+    font-weight:600;
+}
+
+.navbar .right{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+#userName,
+#userPoints{
+    padding:6px 10px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.07);
+
+    border:1px solid rgba(255,255,255,.06);
+
+    font-size:12px;
+
+    white-space:nowrap;
+}
+
+#userPoints{
+    color:#facc15;
+    font-weight:600;
+}
+
+.navbar button{
+    margin:0;
+
+    padding:8px 13px;
+
+    border:none;
+    border-radius:10px;
+
+    background:rgba(255,255,255,.08);
+
+    color:#fff;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    transition:.25s;
+}
+
+.navbar button:hover{
+    background:rgba(255,255,255,.15);
+    transform:translateY(-2px);
+}
+
+/* =========================
+   GAME CONTAINER
+========================= */
 
 .container{
-    margin-top:20px;
+    width:min(100%,520px);
+
+    margin:0 auto;
+
+    padding:25px 15px 40px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
+/* =========================
+   TITLE
+========================= */
+
+.container h1{
+    font-size:clamp(25px,6vw,34px);
+
+    margin-bottom:6px;
+
+    font-weight:700;
+
+    background:
+        linear-gradient(
+            90deg,
+            #4ade80,
+            #22c55e,
+            #06b6d4
+        );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.container p{
+    color:#94a3b8;
+    font-size:14px;
+}
+
+/* =========================
+   COUNTDOWN
+========================= */
+
+.countdown{
+    width:100%;
+    height:70px;
+
+    margin-top:8px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:58px;
+    font-weight:800;
+
+    color:#4ade80;
+
+    text-shadow:
+        0 0 10px rgba(74,222,128,.7),
+        0 0 30px rgba(74,222,128,.35);
+
+    pointer-events:none;
+}
+
+/* =========================
+   SCORE
+========================= */
+
+#score{
+    margin:8px 0 12px;
+
+    padding:8px 18px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.07);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:#facc15;
+
+    font-size:15px;
+    font-weight:700;
+
+    backdrop-filter:blur(12px);
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.18);
+}
+
+/* =========================
+   CANVAS / GAME BOARD
+========================= */
+
 canvas{
-    background:rgba(255,255,255,0.1);
-    border-radius:10px;
-    margin-top:10px;
+    display:block;
+
+    width:min(92vw,420px);
+
+    height:auto;
+
+    aspect-ratio:1 / 1;
+
+    margin:8px auto 0;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(9,30,20,.96),
+            rgba(4,20,13,.98)
+        );
+
+    border-radius:20px;
+
+    border:2px solid rgba(74,222,128,.35);
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.04),
+        0 20px 50px rgba(0,0,0,.45),
+        0 0 35px rgba(34,197,94,.14);
+
+    image-rendering:auto;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.buttons{
+    margin-top:18px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    gap:10px;
+
+    flex-wrap:wrap;
 }
 
 button{
-    margin:10px;
-    padding:10px 18px;
+    padding:11px 18px;
+
     border:none;
-    border-radius:8px;
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #16a34a,
+            #059669
+        );
+
+    color:white;
+
+    font-size:14px;
+    font-weight:600;
+
     cursor:pointer;
-    font-weight:bold;
+
+    box-shadow:
+        0 8px 20px rgba(16,185,129,.20);
+
+    transition:.25s;
 }
 
-.countdown{
-    font-size:70px;
-    font-weight:bold;
-    color:#00ff88;
-    height:80px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+button:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(16,185,129,.32);
 }
+
+button:active{
+    transform:scale(.96);
+}
+
+/* =========================
+   GAME OVER MODAL
+========================= */
 
 .modal{
-
     position:fixed;
+
     inset:0;
 
-    background:rgba(0,0,0,.7);
-
     display:flex;
+
     justify-content:center;
     align-items:center;
-}
 
-.hidden{
-    display:none;
+    padding:20px;
+
+    background:rgba(0,0,0,.68);
+
+    backdrop-filter:blur(10px);
+
+    z-index:2000;
 }
 
 .modal-box{
+    width:min(100%,360px);
 
-    background:#1e293b;
-    padding:30px;
-    border-radius:20px;
+    padding:28px 22px;
+
     text-align:center;
 
-    width:320px;
+    border-radius:24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(24,40,30,.96),
+            rgba(8,20,14,.96)
+        );
+
+    border:1px solid rgba(74,222,128,.18);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.55),
+        0 0 35px rgba(34,197,94,.12);
+
+    animation:modalIn .3s ease;
+}
+
+.modal-box h2{
+    font-size:25px;
+
+    margin-bottom:10px;
+
+    color:#4ade80;
+}
+
+.modal-box p{
+    color:#cbd5e1;
+    margin-bottom:8px;
+}
+
+@keyframes modalIn{
+
+    from{
+        opacity:0;
+        transform:scale(.92) translateY(10px);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1) translateY(0);
+    }
+}
+
+/* =========================
+   HIDDEN
+========================= */
+
+.hidden{
+    display:none !important;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    body{
+        padding-top:62px;
+    }
+
+    .navbar{
+        min-height:58px;
+        padding:8px 12px;
+    }
+
+    .navbar h2{
+        font-size:16px;
+    }
+
+    .navbar .right{
+        gap:5px;
+    }
+
+    #userName,
+    #userPoints{
+        font-size:10px;
+        padding:5px 7px;
+    }
+
+    .navbar button{
+        padding:6px 9px;
+        font-size:11px;
+    }
+
+    .container{
+        padding:20px 12px 30px;
+    }
+
+    .container h1{
+        font-size:25px;
+    }
+
+    .container p{
+        font-size:13px;
+    }
+
+    .countdown{
+        height:62px;
+        font-size:48px;
+    }
+
+    #score{
+        margin-bottom:10px;
+    }
+
+    canvas{
+        width:92vw;
+        max-width:390px;
+
+        border-radius:17px;
+    }
+
+    .buttons{
+        gap:6px;
+    }
+
+    button{
+        padding:10px 14px;
+        font-size:13px;
+    }
+
+    .modal-box{
+        padding:24px 18px;
+    }
+}
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media(max-width:380px){
+
+    body{
+        padding-top:92px;
+    }
+
+    .navbar{
+        flex-direction:column;
+        gap:5px;
+    }
+
+    .navbar .right{
+        justify-content:center;
+    }
+
+    .container{
+        padding-top:15px;
+    }
+
+    .container h1{
+        font-size:22px;
+    }
+
+    canvas{
+        width:90vw;
+        border-radius:15px;
+    }
+
+    .countdown{
+        font-size:42px;
+        height:55px;
+    }
+
+    button{
+        padding:9px 12px;
+        font-size:12px;
+    }
 }
