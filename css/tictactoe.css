@@ -1,100 +1,790 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-body{
-    background:#111;
-    color:white;
-    min-height:100vh;
-    overflow-x:hidden;
-    overflow-y:auto;
+/* =========================
+   BODY
+========================= */
+
+body {
+    min-height: 100vh;
+    color: #fff;
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(circle at 15% 20%, rgba(79, 172, 254, 0.35), transparent 35%),
+        radial-gradient(circle at 85% 80%, rgba(0, 242, 254, 0.25), transparent 35%),
+        #080b14;
 }
 
-.background{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:linear-gradient(135deg,#4facfe,#00f2fe);
-    filter:blur(120px);
-    z-index:-1;
+/* =========================
+   BACKGROUND
+========================= */
+
+.background {
+    position: fixed;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(79, 172, 254, 0.35),
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(0, 242, 254, 0.25),
+            transparent 40%
+        );
+
+    filter: blur(70px);
+    z-index: -1;
+    pointer-events: none;
 }
 
-.navbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:18px 40px;
-    background:rgba(255,255,255,.1);
-    backdrop-filter:blur(15px);
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    width: 100%;
+
+    min-height: 68px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px 35px;
+
+    background: rgba(10, 15, 30, 0.72);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    position: relative;
+    z-index: 10;
 }
 
-.right{
-    display:flex;
-    gap:15px;
-    align-items:center;
+.navbar h2 {
+    font-size: 21px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition: 0.2s ease;
 }
 
-button{
-    padding:10px 18px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:bold;
+.navbar h2:hover {
+    transform: scale(1.03);
 }
 
-.container{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    margin-top:40px;
-    padding:20px;
+.right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
 }
 
-#status{
-    margin:20px;
-    font-size:22px;
-    font-weight:bold;
+#userName,
+#userPoints {
+    font-size: 14px;
+    color: #e5f4ff;
+    white-space: nowrap;
 }
 
-.board{
-    display:grid;
-    grid-template-columns:repeat(3,120px);
-    grid-template-rows:repeat(3,120px);
-    gap:10px;
+#userPoints {
+    color: #ffd84d;
 }
 
-.cell{
-    background:rgba(255,255,255,.12);
-    backdrop-filter:blur(10px);
-    border-radius:12px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:55px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:.2s;
+/* Navbar logout */
+
+#logoutBtn {
+    margin: 0;
+
+    padding: 9px 15px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
 }
 
-.cell:hover{
-    background:rgba(255,255,255,.22);
+#logoutBtn:hover {
+    background: rgba(255, 80, 80, 0.25);
+    transform: translateY(-1px);
 }
 
-.buttons{
-    margin-top:30px;
-    display:flex;
-    gap:20px;
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.container {
+    width: 100%;
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    padding: 35px 20px 50px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
 }
+
+/* =========================
+   TITLE
+========================= */
+
+.container h1 {
+    font-size: clamp(28px, 5vw, 42px);
+
+    margin-bottom: 5px;
+
+    font-weight: 800;
+
+    background: linear-gradient(
+        90deg,
+        #ffffff,
+        #8be9ff
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+#status {
+    min-height: 30px;
+
+    margin: 12px 0 18px;
+
+    font-size: clamp(17px, 3vw, 22px);
+
+    font-weight: 700;
+
+    color: #eafaff;
+}
+
+/* =========================
+   GAME MODE BUTTONS
+========================= */
+
+/* If your HTML uses these classes/IDs */
+
+.game-mode,
+.mode-buttons,
+.mode-selector {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+
+    width: 100%;
+}
+
+.game-mode button,
+.mode-buttons button,
+.mode-selector button {
+    margin: 0;
+
+    min-width: 130px;
+
+    padding: 11px 18px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: #fff;
+
+    cursor: pointer;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+.game-mode button:hover,
+.mode-buttons button:hover,
+.mode-selector button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Active mode */
+
+.game-mode button.active,
+.mode-buttons button.active,
+.mode-selector button.active {
+    background: linear-gradient(
+        135deg,
+        #2196f3,
+        #00c6ff
+    );
+
+    border-color: rgba(255, 255, 255, 0.25);
+
+    box-shadow:
+        0 8px 25px rgba(0, 198, 255, 0.25);
+}
+
+/* =========================
+   DIFFICULTY
+========================= */
+
+.difficulty {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+
+    padding: 9px 13px;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(12px);
+}
+
+.difficulty label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #dceeff;
+}
+
+#difficulty {
+    padding: 8px 30px 8px 10px;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+
+    background: #151d2d;
+    color: white;
+
+    cursor: pointer;
+
+    outline: none;
+}
+
+/* =========================
+   PLAYER NAMES
+========================= */
+
+.player-names {
+    width: 100%;
+    max-width: 440px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 16px;
+}
+
+.player-names input {
+    width: 100%;
+    min-width: 0;
+
+    padding: 11px 13px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+
+    outline: none;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: white;
+
+    font-size: 14px;
+
+    transition: 0.2s ease;
+}
+
+.player-names input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.player-names input:focus {
+    border-color: #00c6ff;
+
+    box-shadow:
+        0 0 0 3px rgba(0, 198, 255, 0.12);
+}
+
+/* =========================
+   TWO PLAYER SCOREBOARD
+========================= */
+
+.two-player-scoreboard {
+    width: 100%;
+    max-width: 440px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: stretch;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+.player-score {
+    flex: 1;
+
+    padding: 12px;
+
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.07);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(14px);
+}
+
+.player-score .player-name {
+    display: block;
+
+    font-size: 13px;
+
+    color: #bcd4e8;
+
+    margin-bottom: 4px;
+}
+
+.player-score .score {
+    display: block;
+
+    font-size: 25px;
+
+    font-weight: 800;
+
+    color: white;
+}
+
+.player-score.x {
+    border-color: rgba(0, 198, 255, 0.25);
+}
+
+.player-score.o {
+    border-color: rgba(255, 100, 180, 0.25);
+}
+
+/* =========================
+   BOARD
+========================= */
+
+.board {
+    width: min(90vw, 390px);
+
+    aspect-ratio: 1 / 1;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+
+    gap: clamp(7px, 2vw, 11px);
+
+    padding: clamp(8px, 2vw, 12px);
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.13),
+            rgba(255, 255, 255, 0.045)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.13);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* =========================
+   CELLS
+========================= */
+
+.cell {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.12),
+            rgba(255, 255, 255, 0.045)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    font-size: clamp(42px, 10vw, 65px);
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.cell:hover {
+    background: rgba(255, 255, 255, 0.16);
+
+    transform: scale(0.97);
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.18);
+}
+
+.cell:active {
+    transform: scale(0.93);
+}
+
+/* X */
+
+.cell:has(:not(*)) {
+    color: white;
+}
+
+/* =========================
+   WIN
+========================= */
 
 .win {
-    background: rgba(0, 255, 120, 0.35) !important;
-    box-shadow: 0 0 20px rgba(0, 255, 120, 0.8);
-    transform: scale(1.05);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0, 255, 150, 0.38),
+            rgba(0, 210, 120, 0.16)
+        ) !important;
+
+    border-color: rgba(0, 255, 150, 0.65) !important;
+
+    box-shadow:
+        0 0 20px rgba(0, 255, 150, 0.35),
+        inset 0 0 20px rgba(0, 255, 150, 0.12);
+
+    transform: scale(1.03);
 }
+
+/* =========================
+   BUTTONS
+========================= */
+
+.buttons {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 24px;
+
+    flex-wrap: wrap;
+}
+
+.buttons button,
+#resetScoreBtn {
+    margin: 0;
+
+    min-width: 130px;
+
+    padding: 11px 18px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 11px;
+
+    background: rgba(255, 255, 255, 0.09);
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.buttons button:first-child {
+    background: linear-gradient(
+        135deg,
+        #2196f3,
+        #00c6ff
+    );
+}
+
+.buttons button:hover,
+#resetScoreBtn:hover {
+    transform: translateY(-2px);
+
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.buttons button:active,
+#resetScoreBtn:active {
+    transform: scale(0.96);
+}
+
+/* =========================
+   HIDDEN
+========================= */
 
 .hidden {
     display: none !important;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        min-height: auto;
+
+        padding: 11px 14px;
+
+        gap: 10px;
+    }
+
+    .navbar h2 {
+        font-size: 18px;
+    }
+
+    .right {
+        gap: 6px;
+
+        justify-content: flex-end;
+    }
+
+    #userName {
+        display: none;
+    }
+
+    #userPoints {
+        font-size: 13px;
+    }
+
+    #logoutBtn {
+        padding: 7px 11px;
+        font-size: 12px;
+    }
+
+    .container {
+        padding: 25px 12px 35px;
+    }
+
+    .container h1 {
+        font-size: 30px;
+    }
+
+    #status {
+        font-size: 18px;
+        margin: 10px 0 15px;
+    }
+
+    .game-mode,
+    .mode-buttons,
+    .mode-selector {
+        width: 100%;
+    }
+
+    .game-mode button,
+    .mode-buttons button,
+    .mode-selector button {
+        flex: 1;
+
+        min-width: 0;
+
+        padding: 10px 8px;
+
+        font-size: 13px;
+    }
+
+    .difficulty {
+        margin-bottom: 15px;
+    }
+
+    .player-names,
+    .two-player-scoreboard {
+        max-width: 95vw;
+    }
+
+    .player-names {
+        gap: 8px;
+    }
+
+    .player-names input {
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .two-player-scoreboard {
+        gap: 8px;
+    }
+
+    .player-score {
+        padding: 10px;
+    }
+
+    .player-score .score {
+        font-size: 22px;
+    }
+
+    .board {
+        width: min(92vw, 380px);
+
+        border-radius: 20px;
+
+        gap: 7px;
+
+        padding: 8px;
+    }
+
+    .cell {
+        border-radius: 14px;
+        font-size: clamp(40px, 15vw, 60px);
+    }
+
+    .buttons {
+        gap: 9px;
+
+        margin-top: 20px;
+    }
+
+    .buttons button,
+    #resetScoreBtn {
+        flex: 1;
+
+        min-width: 0;
+
+        padding: 11px 10px;
+
+        font-size: 13px;
+    }
+}
+
+/* =========================
+   VERY SMALL PHONES
+========================= */
+
+@media (max-width: 380px) {
+
+    .navbar {
+        padding: 10px;
+    }
+
+    .navbar h2 {
+        font-size: 16px;
+    }
+
+    #userPoints {
+        font-size: 12px;
+    }
+
+    #logoutBtn {
+        padding: 6px 9px;
+    }
+
+    .container {
+        padding-top: 20px;
+    }
+
+    .container h1 {
+        font-size: 26px;
+    }
+
+    .board {
+        width: 94vw;
+        gap: 5px;
+        padding: 6px;
+    }
+
+    .cell {
+        border-radius: 11px;
+    }
+
+    .buttons button,
+    #resetScoreBtn {
+        font-size: 12px;
+        padding: 10px 7px;
+    }
+}
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media (min-width: 900px) {
+
+    .container {
+        padding-top: 45px;
+    }
+
+    .board {
+        width: 390px;
+    }
+
+    .cell:hover {
+        transform: translateY(-2px);
+    }
 }
