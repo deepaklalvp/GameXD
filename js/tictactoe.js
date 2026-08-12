@@ -59,7 +59,6 @@ let playerOName = "Player O";
 // =====================================================
 
 const winPatterns = [
-
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -70,7 +69,6 @@ const winPatterns = [
 
     [0, 4, 8],
     [2, 4, 6]
-
 ];
 
 
@@ -129,11 +127,9 @@ function getEmpty(b = board) {
 function checkWin(b, player) {
 
     return winPatterns.some(pattern =>
-
         pattern.every(index =>
             b[index] === player
         )
-
     );
 
 }
@@ -146,11 +142,9 @@ function checkWin(b, player) {
 function getWinningPattern(b, player) {
 
     return winPatterns.find(pattern =>
-
         pattern.every(index =>
             b[index] === player
         )
-
     );
 
 }
@@ -194,10 +188,10 @@ function highlightWin(pattern) {
 
 function clearHighlights() {
 
+    if (!cells) return;
+
     cells.forEach(cell => {
-
         cell.classList.remove("win");
-
     });
 
 }
@@ -215,8 +209,13 @@ function updateScoreboard() {
     scoreO.textContent = playerOScore;
     scoreDraw.textContent = drawScore;
 
-    scoreXName.textContent = playerXName;
-    scoreOName.textContent = playerOName;
+    if (scoreXName) {
+        scoreXName.textContent = playerXName;
+    }
+
+    if (scoreOName) {
+        scoreOName.textContent = playerOName;
+    }
 
 }
 
@@ -235,15 +234,35 @@ function updatePlayerNames() {
     const oName =
         playerOInput.value.trim();
 
-
     playerXName =
         xName || "Player X";
 
     playerOName =
         oName || "Player O";
 
-
     updateScoreboard();
+
+}
+
+
+// =====================================================
+// SHOW / HIDE ELEMENT SAFELY
+// =====================================================
+
+function showElement(element) {
+
+    if (!element) return;
+
+    element.classList.remove("hidden");
+
+}
+
+
+function hideElement(element) {
+
+    if (!element) return;
+
+    element.classList.add("hidden");
 
 }
 
@@ -256,18 +275,29 @@ function showAIMode() {
 
     gameMode = "ai";
 
-    aiModeBtn.classList.add("active");
-    twoPlayerModeBtn.classList.remove("active");
+    // Buttons
+    if (aiModeBtn) {
+        aiModeBtn.classList.add("active");
+    }
 
-    // Hide 2-player elements
-    playerNamesBox.style.display = "none";
-    scoreboard.style.display = "none";
-    resetScoreBtn.style.display = "none";
+    if (twoPlayerModeBtn) {
+        twoPlayerModeBtn.classList.remove("active");
+    }
+
+
+    // Hide 2-player UI
+    hideElement(playerNamesBox);
+    hideElement(scoreboard);
+    hideElement(resetScoreBtn);
+
 
     // Show AI difficulty
-    difficultyContainer.style.display = "flex";
+    showElement(difficultyContainer);
 
+
+    // Reset board only
     restart();
+
 }
 
 
@@ -279,20 +309,30 @@ function showTwoPlayerMode() {
 
     gameMode = "2player";
 
-    aiModeBtn.classList.remove("active");
-    twoPlayerModeBtn.classList.add("active");
+    // Buttons
+    if (aiModeBtn) {
+        aiModeBtn.classList.remove("active");
+    }
 
-    // Show 2-player elements
-    playerNamesBox.style.display = "flex";
-    scoreboard.style.display = "flex";
-    resetScoreBtn.style.display = "inline-block";
+    if (twoPlayerModeBtn) {
+        twoPlayerModeBtn.classList.add("active");
+    }
+
+
+    // Show 2-player UI
+    showElement(playerNamesBox);
+    showElement(scoreboard);
+    showElement(resetScoreBtn);
+
 
     // Hide AI difficulty
-    difficultyContainer.style.display = "none";
+    hideElement(difficultyContainer);
+
 
     updatePlayerNames();
 
     restart();
+
 }
 
 
@@ -308,19 +348,22 @@ function restart() {
 
     playerTurn = true;
 
-
     clearHighlights();
 
 
-    cells.forEach(cell => {
+    if (cells) {
 
-        cell.textContent = "";
+        cells.forEach(cell => {
 
-        cell.classList.remove("x");
+            cell.textContent = "";
 
-        cell.classList.remove("o");
+            cell.classList.remove("x");
+            cell.classList.remove("o");
+            cell.classList.remove("win");
 
-    });
+        });
+
+    }
 
 
     if (gameMode === "ai") {
@@ -345,6 +388,11 @@ function restart() {
 // =====================================================
 
 function resetTwoPlayerScore() {
+
+    // Only available in 2-player mode
+    if (gameMode !== "2player") {
+        return;
+    }
 
     playerXScore = 0;
     playerOScore = 0;
@@ -456,12 +504,13 @@ function minimax(newBoard, player) {
         newBoard[index] = player;
 
 
-        const result = minimax(
-            newBoard,
-            player === "O"
-                ? "X"
-                : "O"
-        );
+        const result =
+            minimax(
+                newBoard,
+                player === "O"
+                    ? "X"
+                    : "O"
+            );
 
 
         move.score = result.score;
@@ -539,10 +588,7 @@ function aiMove() {
     let move;
 
 
-    // -----------------------------
     // EASY
-    // -----------------------------
-
     if (difficulty === "easy") {
 
         move = randomMove();
@@ -550,10 +596,7 @@ function aiMove() {
     }
 
 
-    // -----------------------------
     // MEDIUM
-    // -----------------------------
-
     else if (difficulty === "medium") {
 
         move =
@@ -564,10 +607,7 @@ function aiMove() {
     }
 
 
-    // -----------------------------
     // HARD
-    // -----------------------------
-
     else {
 
         const result =
@@ -578,7 +618,9 @@ function aiMove() {
     }
 
 
-    if (move === undefined) return;
+    if (move === undefined) {
+        return;
+    }
 
 
     board[move] = "O";
@@ -607,7 +649,11 @@ function aiMove() {
 
 
     // Draw
-    if (board.every(value => value !== "")) {
+    if (
+        board.every(
+            value => value !== ""
+        )
+    ) {
 
         endAIGame(
             "🤝 Draw!",
@@ -668,7 +714,11 @@ function playerMoveAI(index) {
 
 
     // Draw
-    if (board.every(value => value !== "")) {
+    if (
+        board.every(
+            value => value !== ""
+        )
+    ) {
 
         endAIGame(
             "🤝 Draw!",
@@ -680,12 +730,17 @@ function playerMoveAI(index) {
     }
 
 
-    updateStatus("🤖 AI Thinking...");
+    updateStatus(
+        "🤖 AI Thinking..."
+    );
 
 
     setTimeout(() => {
 
-        aiMove();
+        // Make sure player hasn't changed mode
+        if (gameMode === "ai" && !gameOver) {
+            aiMove();
+        }
 
     }, 450);
 
@@ -704,7 +759,9 @@ function playerMoveTwoPlayer(index) {
 
 
     const currentPlayer =
-        playerTurn ? "X" : "O";
+        playerTurn
+            ? "X"
+            : "O";
 
 
     board[index] = currentPlayer;
@@ -722,7 +779,7 @@ function playerMoveTwoPlayer(index) {
 
 
     // -----------------------------
-    // X WINS
+    // PLAYER WINS
     // -----------------------------
 
     if (
@@ -857,10 +914,7 @@ async function endAIGame(message, points) {
     updateStatus(message);
 
 
-    // IMPORTANT:
-    // Firebase points are ONLY updated
-    // in AI mode.
-
+    // Firebase points ONLY in AI mode
     if (
         gameMode === "ai" &&
         points !== 0
@@ -907,8 +961,12 @@ async function updatePoints(points) {
         currentPoints += points;
 
 
-        userPointsEl.textContent =
-            ` | ⭐ ${currentPoints} pts`;
+        if (userPointsEl) {
+
+            userPointsEl.textContent =
+                ` | ⭐ ${currentPoints} pts`;
+
+        }
 
     }
 
@@ -968,22 +1026,39 @@ async function loadUser(user) {
                 data.points || 0;
 
 
-            userNameEl.textContent =
-                `Hi, ${data.name || "Player"}`;
+            if (userNameEl) {
+
+                userNameEl.textContent =
+                    `Hi, ${data.name || "Player"}`;
+
+            }
 
 
-            userPointsEl.textContent =
-                ` | ⭐ ${currentPoints} pts`;
+            if (userPointsEl) {
+
+                userPointsEl.textContent =
+                    ` | ⭐ ${currentPoints} pts`;
+
+            }
 
         }
 
         else {
 
-            userNameEl.textContent =
-                `Hi, Player`;
+            if (userNameEl) {
 
-            userPointsEl.textContent =
-                ` | ⭐ 0 pts`;
+                userNameEl.textContent =
+                    "Hi, Player";
+
+            }
+
+
+            if (userPointsEl) {
+
+                userPointsEl.textContent =
+                    " | ⭐ 0 pts";
+
+            }
 
         }
 
@@ -1162,6 +1237,21 @@ document.addEventListener(
 
 
         // -----------------------------
+        // Validate important elements
+        // -----------------------------
+
+        if (!cells || cells.length !== 9) {
+
+            console.error(
+                "Tic Tac Toe board cells not found."
+            );
+
+            return;
+
+        }
+
+
+        // -----------------------------
         // Cell clicks
         // -----------------------------
 
@@ -1187,81 +1277,113 @@ document.addEventListener(
         // AI mode
         // -----------------------------
 
-        aiModeBtn.addEventListener(
-            "click",
-            showAIMode
-        );
+        if (aiModeBtn) {
+
+            aiModeBtn.addEventListener(
+                "click",
+                showAIMode
+            );
+
+        }
 
 
         // -----------------------------
         // 2 Player mode
         // -----------------------------
 
-        twoPlayerModeBtn.addEventListener(
-            "click",
-            showTwoPlayerMode
-        );
+        if (twoPlayerModeBtn) {
+
+            twoPlayerModeBtn.addEventListener(
+                "click",
+                showTwoPlayerMode
+            );
+
+        }
 
 
         // -----------------------------
         // Player names
         // -----------------------------
 
-        playerXInput.addEventListener(
-            "input",
-            updatePlayerNames
-        );
+        if (playerXInput) {
+
+            playerXInput.addEventListener(
+                "input",
+                updatePlayerNames
+            );
+
+        }
 
 
-        playerOInput.addEventListener(
-            "input",
-            updatePlayerNames
-        );
+        if (playerOInput) {
+
+            playerOInput.addEventListener(
+                "input",
+                updatePlayerNames
+            );
+
+        }
 
 
         // -----------------------------
         // Difficulty
         // -----------------------------
 
-        difficultySelect.addEventListener(
-            "change",
-            event => {
+        if (difficultySelect) {
 
-                difficulty =
-                    event.target.value;
+            difficultySelect.addEventListener(
+                "change",
+                event => {
 
-            }
-        );
+                    difficulty =
+                        event.target.value;
+
+                }
+            );
+
+        }
 
 
         // -----------------------------
         // Restart
         // -----------------------------
 
-        restartBtn.addEventListener(
-            "click",
-            restart
-        );
+        if (restartBtn) {
+
+            restartBtn.addEventListener(
+                "click",
+                restart
+            );
+
+        }
 
 
         // -----------------------------
         // Reset 2-player scoreboard
         // -----------------------------
 
-        resetScoreBtn.addEventListener(
-            "click",
-            resetTwoPlayerScore
-        );
+        if (resetScoreBtn) {
+
+            resetScoreBtn.addEventListener(
+                "click",
+                resetTwoPlayerScore
+            );
+
+        }
 
 
         // -----------------------------
         // Logout
         // -----------------------------
 
-        logoutBtn.addEventListener(
-            "click",
-            logout
-        );
+        if (logoutBtn) {
+
+            logoutBtn.addEventListener(
+                "click",
+                logout
+            );
+
+        }
 
 
         // -----------------------------
