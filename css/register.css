@@ -1,3 +1,9 @@
+/* =========================================================
+   GAME XD - REGISTER PAGE
+   Modern Flutter / Glassmorphism UI
+========================================================= */
+
+
 /* =========================
    GOOGLE FONT
 ========================= */
@@ -26,23 +32,22 @@ body{
     min-height:100vh;
 
     display:flex;
-
     justify-content:center;
     align-items:center;
 
     padding:20px;
 
-    color:white;
-
     background:#020617;
+
+    color:white;
 
     overflow:hidden;
 }
 
 
-/* =========================
+/* =========================================================
    BACKGROUND
-========================= */
+========================================================= */
 
 .background{
 
@@ -53,6 +58,7 @@ body{
     overflow:hidden;
 
     background:
+
         radial-gradient(
             circle at 10% 10%,
             rgba(59,130,246,.35),
@@ -77,7 +83,9 @@ body{
 }
 
 
-/* Blue glow */
+/* =========================
+   BLUE GLOW
+========================= */
 
 .background::before{
 
@@ -107,7 +115,9 @@ body{
 }
 
 
-/* Purple glow */
+/* =========================
+   PURPLE GLOW
+========================= */
 
 .background::after{
 
@@ -118,8 +128,8 @@ body{
     width:450px;
     height:450px;
 
-    bottom:-200px;
     right:-160px;
+    bottom:-200px;
 
     border-radius:50%;
 
@@ -137,14 +147,22 @@ body{
 }
 
 
+/* =========================
+   BACKGROUND ANIMATION
+========================= */
+
 @keyframes floatBlue{
 
     from{
-        transform:translate(0,0) scale(1);
+        transform:
+            translate(0,0)
+            scale(1);
     }
 
     to{
-        transform:translate(80px,60px) scale(1.15);
+        transform:
+            translate(80px,60px)
+            scale(1.15);
     }
 
 }
@@ -153,19 +171,23 @@ body{
 @keyframes floatPurple{
 
     from{
-        transform:translate(0,0) scale(1);
+        transform:
+            translate(0,0)
+            scale(1);
     }
 
     to{
-        transform:translate(-70px,-50px) scale(1.2);
+        transform:
+            translate(-70px,-50px)
+            scale(1.2);
     }
 
 }
 
 
-/* =========================
+/* =========================================================
    REGISTER CONTAINER
-========================= */
+========================================================= */
 
 .register-container{
 
@@ -180,9 +202,9 @@ body{
 }
 
 
-/* =========================
+/* =========================================================
    CARD
-========================= */
+========================================================= */
 
 .card{
 
@@ -208,8 +230,12 @@ body{
     -webkit-backdrop-filter:blur(22px);
 
     box-shadow:
-        0 25px 60px rgba(0,0,0,.45),
-        inset 0 1px 0 rgba(255,255,255,.08);
+
+        0 25px 60px
+        rgba(0,0,0,.45),
+
+        inset 0 1px 0
+        rgba(255,255,255,.08);
 
     position:relative;
 
@@ -217,7 +243,9 @@ body{
 }
 
 
-/* Glass highlight */
+/* =========================
+   CARD TOP LIGHT
+========================= */
 
 .card::before{
 
@@ -232,6 +260,7 @@ body{
     height:1px;
 
     background:
+
         linear-gradient(
             90deg,
             transparent,
@@ -241,9 +270,9 @@ body{
 }
 
 
-/* =========================
+/* =========================================================
    TITLE
-========================= */
+========================================================= */
 
 .card h1{
 
@@ -260,7 +289,8 @@ body{
     margin-bottom:6px;
 
     text-shadow:
-        0 5px 20px rgba(59,130,246,.35);
+        0 5px 20px
+        rgba(59,130,246,.35);
 }
 
 
@@ -276,21 +306,23 @@ body{
 }
 
 
-/* =========================
+/* =========================================================
    INPUT GROUP
-========================= */
+========================================================= */
 
 .input-group{
 
     position:relative;
 
+    width:100%;
+
     margin-bottom:16px;
 }
 
 
-/* =========================
-   INPUT ICON
-========================= */
+/* =========================================================
+   LEFT INPUT ICON
+========================================================= */
 
 .icon{
 
@@ -308,13 +340,14 @@ body{
 
     pointer-events:none;
 
-    transition:.25s;
+    transition:
+        color .25s;
 }
 
 
-/* =========================
+/* =========================================================
    INPUT
-========================= */
+========================================================= */
 
 .input-group input{
 
@@ -335,26 +368,38 @@ body{
         rgba(255,255,255,.075);
 
     border:
-        1px solid rgba(255,255,255,.08);
+        1px solid
+        rgba(255,255,255,.08);
 
     color:white;
 
     font-size:15px;
 
     transition:
+
         border .25s,
+
         background .25s,
+
         box-shadow .25s;
 }
 
 
+/* =========================
+   PLACEHOLDER
+========================= */
+
 .input-group input::placeholder{
 
     color:#64748b;
+
+    opacity:1;
 }
 
 
-/* Focus */
+/* =========================
+   INPUT FOCUS
+========================= */
 
 .input-group input:focus{
 
@@ -365,10 +410,18 @@ body{
         rgba(96,165,250,.65);
 
     box-shadow:
-        0 0 0 3px rgba(59,130,246,.12),
-        0 8px 25px rgba(37,99,235,.12);
+
+        0 0 0 3px
+        rgba(59,130,246,.12),
+
+        0 8px 25px
+        rgba(37,99,235,.12);
 }
 
+
+/* =========================
+   ICON FOCUS
+========================= */
 
 .input-group:focus-within .icon{
 
@@ -376,9 +429,79 @@ body{
 }
 
 
-/* =========================
+/* =========================================================
+   PASSWORD EYE
+========================================================= */
+
+#togglePassword{
+
+    position:absolute;
+
+    right:14px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:26px;
+    height:26px;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    color:#94a3b8;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    z-index:10;
+
+    transition:
+
+        color .2s,
+
+        transform .2s;
+}
+
+
+/* Eye icon itself */
+
+#togglePassword i{
+
+    pointer-events:none;
+
+    line-height:1;
+}
+
+
+/* Hover */
+
+#togglePassword:hover{
+
+    color:#60a5fa;
+
+    transform:
+        translateY(-50%)
+        scale(1.08);
+}
+
+
+/* Active */
+
+#togglePassword:active{
+
+    transform:
+        translateY(-50%)
+        scale(.92);
+}
+
+
+/* =========================================================
    BUTTON
-========================= */
+========================================================= */
 
 button{
 
@@ -403,6 +526,7 @@ button{
     color:white;
 
     background:
+
         linear-gradient(
             135deg,
             #2563eb,
@@ -410,20 +534,29 @@ button{
         );
 
     box-shadow:
-        0 8px 25px rgba(37,99,235,.25);
+
+        0 8px 25px
+        rgba(37,99,235,.25);
 
     transition:
+
         transform .2s,
+
         box-shadow .2s,
+
         filter .2s;
 }
 
+
+/* Button icon */
 
 button i{
 
     margin-right:8px;
 }
 
+
+/* Button hover */
 
 button:hover{
 
@@ -432,9 +565,13 @@ button:hover{
     filter:brightness(1.08);
 
     box-shadow:
-        0 12px 30px rgba(59,130,246,.35);
+
+        0 12px 30px
+        rgba(59,130,246,.35);
 }
 
+
+/* Button click */
 
 button:active{
 
@@ -442,9 +579,9 @@ button:active{
 }
 
 
-/* =========================
-   ERROR
-========================= */
+/* =========================================================
+   ERROR MESSAGE
+========================================================= */
 
 #error{
 
@@ -457,12 +594,24 @@ button:active{
     text-align:center;
 
     font-size:13px;
+
+    line-height:1.4;
 }
 
 
-/* =========================
+/* =========================================================
+   SUCCESS MESSAGE
+========================================================= */
+
+.success{
+
+    color:#4ade80 !important;
+}
+
+
+/* =========================================================
    LOGIN LINK
-========================= */
+========================================================= */
 
 .login{
 
@@ -484,7 +633,9 @@ button:active{
 
     font-weight:600;
 
-    transition:.2s;
+    transition:
+
+        color .2s;
 }
 
 
@@ -496,25 +647,38 @@ button:active{
 }
 
 
-/* =========================
-   SUCCESS MESSAGE
-========================= */
+/* =========================================================
+   TABLET
+========================================================= */
 
-.success{
+@media(max-width:768px){
 
-    color:#4ade80 !important;
+    body{
+
+        padding:18px;
+    }
+
+    .card{
+
+        max-width:410px;
+
+        padding:32px 26px;
+    }
+
 }
 
 
-/* =========================
+/* =========================================================
    MOBILE
-========================= */
+========================================================= */
 
 @media(max-width:500px){
 
     body{
 
         padding:15px;
+
+        overflow:auto;
     }
 
 
@@ -559,6 +723,29 @@ button:active{
         height:50px;
 
         font-size:14px;
+
+        padding-left:44px;
+
+        padding-right:45px;
+    }
+
+
+    .icon{
+
+        left:14px;
+
+        font-size:15px;
+    }
+
+
+    #togglePassword{
+
+        right:13px;
+
+        width:25px;
+        height:25px;
+
+        font-size:15px;
     }
 
 
@@ -575,12 +762,26 @@ button:active{
         font-size:12px;
     }
 
+
+    .background::before{
+
+        width:300px;
+        height:300px;
+    }
+
+
+    .background::after{
+
+        width:320px;
+        height:320px;
+    }
+
 }
 
 
-/* =========================
+/* =========================================================
    VERY SMALL PHONES
-========================= */
+========================================================= */
 
 @media(max-width:360px){
 
@@ -606,6 +807,8 @@ button:active{
 
     .card p{
 
+        font-size:12px;
+
         margin-bottom:18px;
     }
 
@@ -613,12 +816,24 @@ button:active{
     .input-group input{
 
         height:47px;
+
+        font-size:13px;
     }
 
 
     button{
 
         height:47px;
+
+        font-size:13px;
+    }
+
+
+    .login{
+
+        margin-top:16px;
+
+        font-size:11px;
     }
 
 }
