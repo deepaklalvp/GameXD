@@ -631,21 +631,19 @@ function aiMove() {
 
 
     // AI wins
-    if (checkWin(board, "O")) {
+ if (checkWin(board, "O")) {
 
-        highlightWin(
-            getWinningPattern(board, "O")
-        );
+    highlightWin(
+        getWinningPattern(board, "O")
+    );
 
+    await endGame(
+        "😔 AI Wins! -5 ⭐",
+        -5
+    );
 
-        endAIGame(
-            "😔 AI Wins!",
-            -5
-        );
-
-        return;
-
-    }
+    return;
+}
 
 
     // Draw
@@ -696,21 +694,19 @@ function playerMoveAI(index) {
 
 
     // Player wins
-    if (checkWin(board, "X")) {
+if (checkWin(board, "X")) {
 
-        highlightWin(
-            getWinningPattern(board, "X")
-        );
+    highlightWin(
+        getWinningPattern(board, "X")
+    );
 
+    await endGame(
+        "🎉 You Win! +10 ⭐",
+        10
+    );
 
-        endAIGame(
-            "🎉 You Win!",
-            10
-        );
-
-        return;
-
-    }
+    return;
+}
 
 
     // Draw
