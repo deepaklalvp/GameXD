@@ -13,477 +13,441 @@ body{
 }
 
 body{
-    background:#071a2b;
+    background:#080d1a;
     color:#fff;
-    min-height:100vh;
-    padding-top:70px;
+    padding-top:72px;
 }
 
-/* =========================================================
+/* =========================
    BACKGROUND
-========================================================= */
+========================= */
 
 .background{
     position:fixed;
     inset:0;
-    z-index:-1;
+    z-index:-2;
     overflow:hidden;
 
     background:
         radial-gradient(
             circle at 15% 10%,
-            rgba(125,211,252,.45),
+            rgba(56,189,248,.28),
             transparent 35%
         ),
         radial-gradient(
-            circle at 85% 75%,
-            rgba(34,211,238,.25),
-            transparent 35%
+            circle at 85% 85%,
+            rgba(139,92,246,.25),
+            transparent 40%
         ),
         linear-gradient(
-            180deg,
-            #0ea5e9 0%,
-            #0284c7 45%,
-            #075985 100%
+            145deg,
+            #07111f,
+            #0b172a 50%,
+            #111827
         );
 }
 
-/* Cloud effect */
+.background::before,
+.background::after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    filter:blur(80px);
+    opacity:.35;
+    animation:floatBackground 12s ease-in-out infinite alternate;
+}
 
 .background::before{
-    content:"";
-
-    position:absolute;
-
-    width:280px;
-    height:90px;
-
-    top:18%;
-    left:-90px;
-
-    border-radius:100px;
-
-    background:rgba(255,255,255,.16);
-
-    filter:blur(8px);
-
-    box-shadow:
-        100px 15px 0 20px rgba(255,255,255,.12),
-        210px 0 0 5px rgba(255,255,255,.1);
+    width:260px;
+    height:260px;
+    background:#06b6d4;
+    top:-100px;
+    left:-80px;
 }
 
 .background::after{
-    content:"";
-
-    position:absolute;
-
-    width:240px;
-    height:80px;
-
-    right:-100px;
-    bottom:18%;
-
-    border-radius:100px;
-
-    background:rgba(255,255,255,.12);
-
-    filter:blur(8px);
-
-    box-shadow:
-        -100px 15px 0 15px rgba(255,255,255,.1),
-        -200px 0 0 5px rgba(255,255,255,.08);
+    width:300px;
+    height:300px;
+    background:#8b5cf6;
+    right:-120px;
+    bottom:-120px;
+    animation-delay:3s;
 }
 
+@keyframes floatBackground{
+    from{
+        transform:translate(0,0) scale(1);
+    }
 
-/* =========================================================
+    to{
+        transform:translate(50px,-30px) scale(1.15);
+    }
+}
+
+/* =========================
    NAVBAR
-========================================================= */
+========================= */
 
 .navbar{
     position:fixed;
-
     top:0;
     left:0;
-
     width:100%;
-    height:70px;
+    height:64px;
 
     display:flex;
     justify-content:space-between;
     align-items:center;
 
-    padding:0 24px;
+    padding:0 22px;
 
-    background:rgba(3,20,35,.58);
-
+    background:rgba(8,13,26,.72);
     backdrop-filter:blur(18px);
     -webkit-backdrop-filter:blur(18px);
 
-    border-bottom:1px solid rgba(255,255,255,.12);
-
-    box-shadow:
-        0 8px 30px rgba(0,0,0,.2);
+    border-bottom:1px solid rgba(255,255,255,.08);
 
     z-index:1000;
 }
 
 .navbar h2{
-    font-size:20px;
+    margin:0;
+    font-size:19px;
     font-weight:700;
-
     letter-spacing:.3px;
-
     cursor:pointer;
-
-    white-space:nowrap;
 }
 
 .navbar .right{
     display:flex;
-
     align-items:center;
     justify-content:flex-end;
-
     gap:9px;
-
-    flex-wrap:wrap;
 }
 
 #userName,
 #userPoints{
-    padding:7px 11px;
+    white-space:nowrap;
+
+    padding:6px 10px;
 
     border-radius:999px;
 
-    background:rgba(255,255,255,.09);
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.07);
 
-    border:1px solid rgba(255,255,255,.1);
-
-    font-size:13px;
-
-    white-space:nowrap;
+    font-size:12px;
 }
 
 #userPoints{
-    color:#fde047;
+    color:#facc15;
     font-weight:700;
 }
 
-.navbar .right button{
-    border:none;
-
+.navbar button{
+    margin:0;
     padding:8px 13px;
 
-    border-radius:11px;
+    border:none;
+    border-radius:10px;
 
-    background:rgba(255,255,255,.1);
-
-    color:white;
-
-    font-size:13px;
-    font-weight:600;
+    background:rgba(255,255,255,.08);
+    color:#fff;
 
     cursor:pointer;
 
-    transition:.25s ease;
+    transition:.2s ease;
 }
 
-.navbar .right button:hover{
-    background:rgba(255,255,255,.2);
-
+.navbar button:hover{
+    background:rgba(255,255,255,.16);
     transform:translateY(-1px);
 }
 
-
-/* =========================================================
-   MAIN GAME CONTAINER
-========================================================= */
+/* =========================
+   MAIN GAME AREA
+========================= */
 
 .container{
     width:100%;
-    max-width:560px;
+    max-width:620px;
 
     margin:0 auto;
 
-    padding:25px 15px 40px;
+    padding:24px 16px 40px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    text-align:center;
+}
+
+/* =========================
+   GAME TITLE
+========================= */
+
+.container h2{
+    width:100%;
+
+    margin:0 0 8px;
+
+    text-align:center;
+
+    font-size:28px;
+    line-height:1.2;
+    font-weight:700;
+
+    color:#fff;
+
+    text-shadow:
+        0 4px 20px rgba(0,0,0,.35);
+}
+
+/* =========================
+   SCORE
+========================= */
+
+#score{
+    width:100%;
+
+    margin:0 0 14px;
+
+    text-align:center;
+
+    font-size:18px;
+    font-weight:700;
+
+    color:#f8fafc;
+}
+
+#score::first-letter{
+    color:#38bdf8;
+}
+
+/* =========================
+   COUNTDOWN
+========================= */
+
+#countdown{
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    z-index:20;
+
+    width:90px;
+    height:90px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:rgba(0,0,0,.25);
+    backdrop-filter:blur(10px);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    font-size:58px;
+    font-weight:800;
+
+    color:#fff;
+
+    text-shadow:
+        0 0 25px rgba(56,189,248,.8);
+
+    pointer-events:none;
+}
+
+/* =========================
+   GAME WRAPPER
+========================= */
+
+.game-wrapper{
+    position:relative;
+
+    width:100%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* =========================
+   CANVAS
+========================= */
+
+#game{
+    display:block;
+
+    width:min(100%,420px);
+
+    /*
+       Keep the actual game ratio.
+       JS canvas dimensions can remain unchanged.
+    */
+    height:auto;
+
+    margin:0 auto;
+
+    background:#38bdf8;
+
+    border-radius:22px;
+
+    border:1px solid rgba(255,255,255,.16);
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.35),
+        0 0 0 5px rgba(255,255,255,.025);
+
+    touch-action:manipulation;
+}
+
+/* =========================
+   GAME OVER
+========================= */
+
+#gameOver{
+    position:absolute;
+
+    top:0;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:min(100%,420px);
+
+    height:100%;
 
     display:flex;
     flex-direction:column;
 
     align-items:center;
-    justify-content:flex-start;
-
-    text-align:center;
-}
-
-.container h2{
-    width:100%;
-
-    margin:0 0 10px;
+    justify-content:center;
 
     text-align:center;
 
-    font-size:28px;
-    font-weight:700;
-
-    text-shadow:
-        0 4px 15px rgba(0,0,0,.25);
-}
-
-
-/* =========================================================
-   SCORE
-========================================================= */
-
-#score{
-    display:inline-flex;
-
-    align-items:center;
-    justify-content:center;
-
-    margin:0 auto 8px;
-
-    padding:8px 18px;
-
-    border-radius:999px;
-
-    background:rgba(0,0,0,.22);
-
-    border:1px solid rgba(255,255,255,.15);
-
-    color:white;
-
-    font-size:18px;
-    font-weight:700;
-
-    box-shadow:
-        0 8px 20px rgba(0,0,0,.15);
-}
-
-
-/* =========================================================
-   COUNTDOWN
-========================================================= */
-
-#countdown{
-    width:100%;
-
-    height:70px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    font-size:60px;
-
-    font-weight:800;
-
-    color:white;
-
-    text-shadow:
-        0 4px 15px rgba(0,0,0,.4);
-
-    pointer-events:none;
-
-    z-index:20;
-}
-
-
-/* =========================================================
-   FLAPPY GAME BOARD
-========================================================= */
-
-#game{
-    display:block;
-
-    width:420px;
-    height:560px;
-
-    max-width:100%;
-
-    margin:0 auto;
+    padding:25px;
 
     border-radius:22px;
 
-    border:2px solid rgba(255,255,255,.35);
+    background:rgba(3,7,18,.78);
 
-    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
 
-    box-shadow:
-        0 20px 50px rgba(0,0,0,.35),
-        0 0 0 6px rgba(255,255,255,.04);
-
-    touch-action:none;
-
-    user-select:none;
-
-    -webkit-user-select:none;
-}
-
-
-/* =========================================================
-   GAME OVER OVERLAY
-========================================================= */
-
-#gameOver{
-    position:fixed;
-
-    inset:0;
-
-    width:100%;
-    height:100%;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    padding:20px;
-
-    background:rgba(2,15,25,.68);
-
-    backdrop-filter:blur(9px);
-    -webkit-backdrop-filter:blur(9px);
-
-    z-index:2000;
-}
-
-#gameOver.hide{
-    display:none !important;
-}
-
-
-/* Game over card */
-
-#gameOver > div{
-    width:min(360px,90vw);
-
-    padding:30px 25px;
-
-    border-radius:24px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.15),
-            rgba(255,255,255,.06)
-        );
-
-    border:1px solid rgba(255,255,255,.18);
-
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.12);
 
     box-shadow:
-        0 25px 70px rgba(0,0,0,.45);
+        0 20px 60px rgba(0,0,0,.4);
 
-    text-align:center;
+    z-index:50;
 }
 
 #gameOver h2{
-    margin-bottom:12px;
-
     font-size:30px;
-    font-weight:700;
+    margin-bottom:10px;
+
+    color:#fff;
 }
 
 #finalScore{
-    margin-bottom:15px;
-
-    color:#bae6fd;
+    margin:0 0 12px;
 
     font-size:17px;
-
+    color:#cbd5e1;
     line-height:1.6;
 }
 
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-button{
-    border:none;
-
-    padding:11px 18px;
-
-    border-radius:13px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #06b6d4,
-            #0284c7
-        );
-
-    color:white;
-
-    font-size:15px;
-    font-weight:700;
-
-    cursor:pointer;
-
-    box-shadow:
-        0 7px 20px rgba(2,132,199,.3);
-
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease,
-        background .2s ease;
-}
-
-button:hover{
-    transform:translateY(-2px);
-
-    box-shadow:
-        0 10px 25px rgba(2,132,199,.45);
-}
-
-button:active{
-    transform:scale(.97);
-}
-
-
-/* Game over buttons */
-
-#gameOver button{
-    margin:6px;
-}
-
-
-/* =========================================================
+/* =========================
    HIDDEN
-========================================================= */
+========================= */
 
 .hide,
 .hidden{
     display:none !important;
 }
 
+/* =========================
+   BUTTONS
+========================= */
 
-/* =========================================================
+button{
+    border:none;
+
+    padding:11px 20px;
+
+    border-radius:12px;
+
+    background:linear-gradient(
+        135deg,
+        #3b82f6,
+        #6366f1
+    );
+
+    color:#fff;
+
+    font-size:15px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 8px 20px rgba(59,130,246,.25);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        opacity .2s ease;
+}
+
+button:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(59,130,246,.35);
+}
+
+button:active{
+    transform:scale(.97);
+}
+
+/* =========================
+   GAME OVER BUTTONS
+========================= */
+
+#gameOver button{
+    min-width:160px;
+
+    margin-top:10px;
+}
+
+/* =========================
    TABLET
-========================================================= */
+========================= */
 
-@media(max-width:700px){
+@media(max-width:768px){
 
     body{
-        padding-top:82px;
+        padding-top:68px;
     }
 
     .navbar{
         height:auto;
+        min-height:60px;
 
-        min-height:64px;
-
-        padding:9px 12px;
+        padding:10px 14px;
 
         gap:8px;
     }
 
     .navbar h2{
-        font-size:18px;
+        font-size:17px;
     }
 
     .navbar .right{
@@ -493,70 +457,53 @@ button:active{
     #userName,
     #userPoints{
         font-size:11px;
-
         padding:5px 8px;
     }
 
-    .navbar .right button{
-        padding:7px 9px;
-
+    .navbar button{
+        padding:7px 10px;
         font-size:12px;
     }
 
     .container{
-        max-width:100%;
-
-        padding:
-            18px 10px 30px;
+        padding:20px 12px 30px;
     }
 
     .container h2{
-        font-size:24px;
+        font-size:25px;
     }
 
     #score{
-        font-size:16px;
-
-        padding:7px 15px;
-    }
-
-    #countdown{
-        height:60px;
-
-        font-size:50px;
+        font-size:17px;
+        margin-bottom:12px;
     }
 
     #game{
         width:min(94vw,420px);
+        border-radius:18px;
+    }
 
-        height:auto;
-
-        aspect-ratio:3 / 4;
-
-        margin-left:auto;
-        margin-right:auto;
-
-        border-radius:19px;
+    #gameOver{
+        width:min(94vw,420px);
+        border-radius:18px;
     }
 }
 
-
-/* =========================================================
+/* =========================
    MOBILE
-========================================================= */
+========================= */
 
 @media(max-width:480px){
 
     body{
-        padding-top:110px;
+        padding-top:118px;
     }
 
     .navbar{
         flex-direction:column;
 
         justify-content:center;
-
-        min-height:100px;
+        align-items:center;
 
         padding:9px 10px;
 
@@ -572,80 +519,77 @@ button:active{
 
         justify-content:center;
 
-        gap:5px;
+        flex-wrap:wrap;
+
+        gap:6px;
     }
 
     #userName,
     #userPoints{
         font-size:10px;
-
-        padding:5px 7px;
+        padding:5px 8px;
     }
 
-    .navbar .right button{
-        padding:6px 8px;
-
+    .navbar button{
+        padding:6px 9px;
         font-size:11px;
+        border-radius:9px;
     }
 
     .container{
         width:100%;
 
         padding:
-            12px 6px 25px;
+            12px
+            10px
+            25px;
     }
 
-    .container h2{
-        font-size:22px;
+    /*
+       IMPORTANT:
+       Title + score remain centered
+       independently of the navbar.
+    */
 
-        margin-bottom:7px;
+    .container h2{
+        width:100%;
+
+        text-align:center;
+
+        font-size:23px;
+
+        margin-bottom:6px;
     }
 
     #score{
-        font-size:15px;
+        width:100%;
 
-        padding:6px 14px;
+        text-align:center;
 
-        margin-bottom:4px;
-    }
+        font-size:16px;
 
-    #countdown{
-        height:55px;
-
-        font-size:45px;
+        margin-bottom:10px;
     }
 
     #game{
         width:94vw;
-
         max-width:420px;
 
-        height:auto;
-
-        aspect-ratio:3 / 4;
-
-        margin-left:auto;
-        margin-right:auto;
-
         border-radius:17px;
-
-        border-width:2px;
-
-        box-shadow:
-            0 15px 35px rgba(0,0,0,.35),
-            0 0 0 4px rgba(255,255,255,.04);
     }
 
     #gameOver{
-        padding:15px;
+        width:94vw;
+        max-width:420px;
+
+        border-radius:17px;
     }
 
-    #gameOver > div{
-        width:min(340px,92vw);
+    #countdown{
+        width:72px;
+        height:72px;
 
-        padding:25px 18px;
-
-        border-radius:20px;
+        font-size:44px;
     }
 
     #gameOver h2{
@@ -657,63 +601,55 @@ button:active{
     }
 
     button{
-        padding:10px 15px;
-
+        padding:10px 17px;
         font-size:14px;
     }
 }
 
-
-/* =========================================================
-   SMALL PHONES
-========================================================= */
+/* =========================
+   VERY SMALL PHONES
+========================= */
 
 @media(max-width:360px){
 
     body{
-        padding-top:106px;
-    }
-
-    .navbar{
-        min-height:96px;
+        padding-top:115px;
     }
 
     .navbar h2{
         font-size:16px;
     }
 
-    .navbar .right{
-        gap:4px;
-    }
-
-    #userName,
-    #userPoints{
-        font-size:9px;
-    }
-
-    .navbar .right button{
-        font-size:10px;
-
-        padding:6px 7px;
-    }
-
     .container h2{
-        font-size:20px;
+        font-size:21px;
     }
 
     #score{
-        font-size:14px;
-    }
-
-    #countdown{
-        height:50px;
-
-        font-size:40px;
+        font-size:15px;
     }
 
     #game{
-        width:94vw;
-
+        width:95vw;
         border-radius:15px;
+    }
+
+    #countdown{
+        width:64px;
+        height:64px;
+        font-size:38px;
+    }
+}
+
+/* =========================
+   REDUCE MOTION
+========================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+        animation:none !important;
+        transition:none !important;
     }
 }
