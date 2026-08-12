@@ -1,81 +1,358 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>GameXD | Tic Tac Toe</title>
 
-    <link rel="stylesheet" href="css/tictactoe.css">
-    <script type="module" src="./js/tictactoe.js" defer></script>
+    <link
+        rel="stylesheet"
+        href="css/tictactoe.css"
+    >
+
+    <script
+        type="module"
+        src="./js/tictactoe.js"
+        defer
+    ></script>
+
 </head>
+
 
 <body>
 
+
+<!-- =====================================================
+     BACKGROUND
+     ===================================================== -->
+
 <div class="background"></div>
 
-<!-- Navbar -->
+
+<!-- =====================================================
+     NAVBAR
+     ===================================================== -->
+
 <div class="navbar">
 
-    <h2 onclick="location.href='home.html'" style="cursor:pointer;">
+    <h2
+        onclick="location.href='home.html'"
+        style="cursor:pointer;"
+    >
         🎮 GameXD
     </h2>
 
+
     <div class="right">
-        <span id="userName">Loading...</span>
-        <span id="userPoints"> | ⭐ 0 pts</span>
-        <button id="logoutBtn">Logout</button>
-    </div>
 
-</div>
+        <span id="userName">
+            Loading...
+        </span>
 
-<!-- Main Content -->
-<div class="container">
+        <span id="userPoints">
+            | ⭐ 0 pts
+        </span>
 
-    <h1>Tic Tac Toe</h1>
-
-    <p id="status">Player X's Turn</p>
-<div class="difficulty">
-
-    <label>Difficulty:</label>
-
-    <select id="difficulty">
-
-        <option value="easy">Easy</option>
-
-        <option value="medium">Medium</option>
-
-        <option value="hard">Hard</option>
-
-    </select>
-
-</div>
-    <div id="board" class="board">
-
-        <div class="cell" data-index="0"></div>
-        <div class="cell" data-index="1"></div>
-        <div class="cell" data-index="2"></div>
-
-        <div class="cell" data-index="3"></div>
-        <div class="cell" data-index="4"></div>
-        <div class="cell" data-index="5"></div>
-
-        <div class="cell" data-index="6"></div>
-        <div class="cell" data-index="7"></div>
-        <div class="cell" data-index="8"></div>
-
-    </div>
-
-    <div class="buttons">
-
-        <button id="restartBtn">🔄 Restart</button>
-
-        <button onclick="location.href='home.html'">
-            🏠 Home
+        <button id="logoutBtn">
+            Logout
         </button>
 
     </div>
 
 </div>
 
+
+<!-- =====================================================
+     MAIN GAME
+     ===================================================== -->
+
+<div class="container">
+
+
+    <h1>
+        Tic Tac Toe
+    </h1>
+
+
+    <!-- =================================================
+         GAME MODE
+         ================================================= -->
+
+    <div class="game-mode">
+
+        <button
+            id="aiModeBtn"
+            class="mode-btn active"
+        >
+            🤖 AI Mode
+        </button>
+
+
+        <button
+            id="twoPlayerModeBtn"
+            class="mode-btn"
+        >
+            👥 2 Player
+        </button>
+
+    </div>
+
+
+    <!-- =================================================
+         PLAYER NAMES
+         Only visible in 2 Player mode
+         ================================================= -->
+
+    <div
+        id="playerNames"
+        class="player-names hidden"
+    >
+
+
+        <div class="player-input">
+
+            <span>
+                ❌
+            </span>
+
+            <input
+                id="playerXName"
+                type="text"
+                placeholder="Player X"
+                maxlength="15"
+            >
+
+        </div>
+
+
+        <div class="player-input">
+
+            <span>
+                ⭕
+            </span>
+
+            <input
+                id="playerOName"
+                type="text"
+                placeholder="Player O"
+                maxlength="15"
+            >
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =================================================
+         2 PLAYER SCOREBOARD
+         Only visible in 2 Player mode
+         ================================================= -->
+
+    <div
+        id="twoPlayerScoreboard"
+        class="two-player-scoreboard hidden"
+    >
+
+
+        <!-- Player X -->
+
+        <div class="score-player player-x">
+
+            <span id="scoreXName">
+                Player X
+            </span>
+
+            <strong id="scoreX">
+                0
+            </strong>
+
+        </div>
+
+
+        <!-- Draws -->
+
+        <div class="score-draw">
+
+            <span>
+                Draws
+            </span>
+
+            <strong id="scoreDraw">
+                0
+            </strong>
+
+        </div>
+
+
+        <!-- Player O -->
+
+        <div class="score-player player-o">
+
+            <span id="scoreOName">
+                Player O
+            </span>
+
+            <strong id="scoreO">
+                0
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =================================================
+         STATUS
+         ================================================= -->
+
+    <p id="status">
+        Your Turn
+    </p>
+
+
+    <!-- =================================================
+         DIFFICULTY
+         AI MODE ONLY
+         ================================================= -->
+
+    <div
+        id="difficultyContainer"
+        class="difficulty"
+    >
+
+        <label for="difficulty">
+            Difficulty:
+        </label>
+
+
+        <select id="difficulty">
+
+            <option value="easy">
+                Easy
+            </option>
+
+            <option value="medium">
+                Medium
+            </option>
+
+            <option value="hard">
+                Hard
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- =================================================
+         GAME BOARD
+         ================================================= -->
+
+    <div
+        id="board"
+        class="board"
+    >
+
+
+        <div
+            class="cell"
+            data-index="0"
+        ></div>
+
+
+        <div
+            class="cell"
+            data-index="1"
+        ></div>
+
+
+        <div
+            class="cell"
+            data-index="2"
+        ></div>
+
+
+        <div
+            class="cell"
+            data-index="3"
+        ></div>
+
+
+        <div
+            class="cell"
+            data-index="4"
+        ></div>
+
+
+        <div
+            class="cell"
+            data-index="5"
+        ></div>
+
+
+        <div
+            class="cell"
+            data-index="6"
+        ></div>
+
+
+        <div
+            class="cell"
+            data-index="7"
+        ></div>
+
+
+        <div
+            class="cell"
+            data-index="8"
+        ></div>
+
+
+    </div>
+
+
+    <!-- =================================================
+         GAME BUTTONS
+         ================================================= -->
+
+    <div class="buttons">
+
+
+        <button id="restartBtn">
+            🔄 Restart
+        </button>
+
+
+        <button
+            id="resetScoreBtn"
+            class="hidden"
+        >
+            🏆 Reset Score
+        </button>
+
+
+        <button
+            onclick="location.href='home.html'"
+        >
+            🏠 Home
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
 </body>
+
 </html>
