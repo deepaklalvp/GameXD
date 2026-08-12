@@ -28,7 +28,6 @@ let currentPoints = 0;
 let board = Array(9).fill("");
 
 let gameOver = false;
-
 let playerTurn = true;
 
 // "ai" or "2player"
@@ -87,6 +86,7 @@ let playerXInput;
 let playerOInput;
 
 let scoreboard;
+
 let scoreXName;
 let scoreOName;
 
@@ -106,7 +106,7 @@ let logoutBtn;
 
 
 // =====================================================
-// HELPER
+// GET EMPTY CELLS
 // =====================================================
 
 function getEmpty(b = board) {
@@ -198,16 +198,22 @@ function clearHighlights() {
 
 
 // =====================================================
-// UPDATE 2 PLAYER SCOREBOARD
+// UPDATE SCOREBOARD
 // =====================================================
 
 function updateScoreboard() {
 
-    if (!scoreX || !scoreO || !scoreDraw) return;
+    if (scoreX) {
+        scoreX.textContent = playerXScore;
+    }
 
-    scoreX.textContent = playerXScore;
-    scoreO.textContent = playerOScore;
-    scoreDraw.textContent = drawScore;
+    if (scoreO) {
+        scoreO.textContent = playerOScore;
+    }
+
+    if (scoreDraw) {
+        scoreDraw.textContent = drawScore;
+    }
 
     if (scoreXName) {
         scoreXName.textContent = playerXName;
@@ -226,7 +232,9 @@ function updateScoreboard() {
 
 function updatePlayerNames() {
 
-    if (!playerXInput || !playerOInput) return;
+    if (!playerXInput || !playerOInput) {
+        return;
+    }
 
     const xName =
         playerXInput.value.trim();
@@ -246,7 +254,7 @@ function updatePlayerNames() {
 
 
 // =====================================================
-// SHOW / HIDE ELEMENT SAFELY
+// SHOW ELEMENT
 // =====================================================
 
 function showElement(element) {
@@ -258,6 +266,10 @@ function showElement(element) {
 }
 
 
+// =====================================================
+// HIDE ELEMENT
+// =====================================================
+
 function hideElement(element) {
 
     if (!element) return;
@@ -268,14 +280,16 @@ function hideElement(element) {
 
 
 // =====================================================
-// SHOW AI MODE
+// AI MODE
 // =====================================================
 
 function showAIMode() {
 
     gameMode = "ai";
 
-    // Buttons
+
+    // Mode buttons
+
     if (aiModeBtn) {
         aiModeBtn.classList.add("active");
     }
@@ -286,30 +300,35 @@ function showAIMode() {
 
 
     // Hide 2-player UI
+
     hideElement(playerNamesBox);
     hideElement(scoreboard);
     hideElement(resetScoreBtn);
 
 
-    // Show AI difficulty
+    // Show difficulty
+
     showElement(difficultyContainer);
 
 
-    // Reset board only
+    // Reset board
+
     restart();
 
 }
 
 
 // =====================================================
-// SHOW 2 PLAYER MODE
+// 2 PLAYER MODE
 // =====================================================
 
 function showTwoPlayerMode() {
 
     gameMode = "2player";
 
-    // Buttons
+
+    // Mode buttons
+
     if (aiModeBtn) {
         aiModeBtn.classList.remove("active");
     }
@@ -320,12 +339,14 @@ function showTwoPlayerMode() {
 
 
     // Show 2-player UI
+
     showElement(playerNamesBox);
     showElement(scoreboard);
     showElement(resetScoreBtn);
 
 
     // Hide AI difficulty
+
     hideElement(difficultyContainer);
 
 
@@ -337,7 +358,7 @@ function showTwoPlayerMode() {
 
 
 // =====================================================
-// RESET CURRENT BOARD
+// RESET BOARD
 // =====================================================
 
 function restart() {
@@ -370,9 +391,7 @@ function restart() {
 
         updateStatus("Your Turn");
 
-    }
-
-    else {
+    } else {
 
         updateStatus(
             `${playerXName}'s Turn ❌`
@@ -389,14 +408,15 @@ function restart() {
 
 function resetTwoPlayerScore() {
 
-    // Only available in 2-player mode
     if (gameMode !== "2player") {
         return;
     }
 
+
     playerXScore = 0;
     playerOScore = 0;
     drawScore = 0;
+
 
     updateScoreboard();
 
@@ -453,7 +473,7 @@ function findWin(player) {
 
 
 // =====================================================
-// MINIMAX
+// MINIMAX AI
 // =====================================================
 
 function minimax(newBoard, player) {
@@ -462,6 +482,7 @@ function minimax(newBoard, player) {
 
 
     // X wins
+
     if (checkWin(newBoard, "X")) {
 
         return {
@@ -472,6 +493,7 @@ function minimax(newBoard, player) {
 
 
     // O wins
+
     if (checkWin(newBoard, "O")) {
 
         return {
@@ -482,6 +504,7 @@ function minimax(newBoard, player) {
 
 
     // Draw
+
     if (empty.length === 0) {
 
         return {
@@ -528,6 +551,7 @@ function minimax(newBoard, player) {
 
 
     // AI = O
+
     if (player === "O") {
 
         let bestScore = -Infinity;
@@ -549,6 +573,7 @@ function minimax(newBoard, player) {
 
 
     // Player = X
+
     else {
 
         let bestScore = Infinity;
@@ -589,6 +614,7 @@ function aiMove() {
 
 
     // EASY
+
     if (difficulty === "easy") {
 
         move = randomMove();
@@ -597,6 +623,7 @@ function aiMove() {
 
 
     // MEDIUM
+
     else if (difficulty === "medium") {
 
         move =
@@ -608,6 +635,7 @@ function aiMove() {
 
 
     // HARD
+
     else {
 
         const result =
@@ -623,6 +651,8 @@ function aiMove() {
     }
 
 
+    // Place AI move
+
     board[move] = "O";
 
     cells[move].textContent = "O";
@@ -631,22 +661,24 @@ function aiMove() {
 
 
     // AI wins
- if (checkWin(board, "O")) {
 
-    highlightWin(
-        getWinningPattern(board, "O")
-    );
+    if (checkWin(board, "O")) {
 
-    await endGame(
-        "😔 AI Wins! -5 ⭐",
-        -5
-    );
+        highlightWin(
+            getWinningPattern(board, "O")
+        );
 
-    return;
-}
+        endAIGame(
+            "😔 AI Wins! -5 ⭐",
+            -5
+        );
+
+        return;
+    }
 
 
     // Draw
+
     if (
         board.every(
             value => value !== ""
@@ -659,9 +691,10 @@ function aiMove() {
         );
 
         return;
-
     }
 
+
+    // Player's turn
 
     playerTurn = true;
 
@@ -671,7 +704,7 @@ function aiMove() {
 
 
 // =====================================================
-// PLAYER X MOVE - AI MODE
+// PLAYER MOVE - AI MODE
 // =====================================================
 
 function playerMoveAI(index) {
@@ -686,6 +719,8 @@ function playerMoveAI(index) {
     playerTurn = false;
 
 
+    // Place X
+
     board[index] = "X";
 
     cells[index].textContent = "X";
@@ -694,22 +729,24 @@ function playerMoveAI(index) {
 
 
     // Player wins
-if (checkWin(board, "X")) {
 
-    highlightWin(
-        getWinningPattern(board, "X")
-    );
+    if (checkWin(board, "X")) {
 
-    await endGame(
-        "🎉 You Win! +10 ⭐",
-        10
-    );
+        highlightWin(
+            getWinningPattern(board, "X")
+        );
 
-    return;
-}
+        endAIGame(
+            "🎉 You Win! +10 ⭐",
+            10
+        );
+
+        return;
+    }
 
 
     // Draw
+
     if (
         board.every(
             value => value !== ""
@@ -722,9 +759,10 @@ if (checkWin(board, "X")) {
         );
 
         return;
-
     }
 
+
+    // AI thinking
 
     updateStatus(
         "🤖 AI Thinking..."
@@ -733,9 +771,13 @@ if (checkWin(board, "X")) {
 
     setTimeout(() => {
 
-        // Make sure player hasn't changed mode
-        if (gameMode === "ai" && !gameOver) {
+        if (
+            gameMode === "ai" &&
+            !gameOver
+        ) {
+
             aiMove();
+
         }
 
     }, 450);
@@ -760,7 +802,10 @@ function playerMoveTwoPlayer(index) {
             : "O";
 
 
-    board[index] = currentPlayer;
+    // Place mark
+
+    board[index] =
+        currentPlayer;
 
 
     cells[index].textContent =
@@ -774,9 +819,7 @@ function playerMoveTwoPlayer(index) {
     );
 
 
-    // -----------------------------
-    // PLAYER WINS
-    // -----------------------------
+    // Check win
 
     if (
         checkWin(
@@ -800,6 +843,7 @@ function playerMoveTwoPlayer(index) {
 
             playerXScore++;
 
+
             updateStatus(
                 `🎉 ${playerXName} Wins!`
             );
@@ -809,6 +853,7 @@ function playerMoveTwoPlayer(index) {
         else {
 
             playerOScore++;
+
 
             updateStatus(
                 `🎉 ${playerOName} Wins!`
@@ -820,13 +865,10 @@ function playerMoveTwoPlayer(index) {
         updateScoreboard();
 
         return;
-
     }
 
 
-    // -----------------------------
-    // DRAW
-    // -----------------------------
+    // Check draw
 
     if (
         board.every(
@@ -845,13 +887,10 @@ function playerMoveTwoPlayer(index) {
         );
 
         return;
-
     }
 
 
-    // -----------------------------
-    // NEXT PLAYER
-    // -----------------------------
+    // Next player
 
     playerTurn = !playerTurn;
 
@@ -910,7 +949,9 @@ async function endAIGame(message, points) {
     updateStatus(message);
 
 
+    // IMPORTANT:
     // Firebase points ONLY in AI mode
+
     if (
         gameMode === "ai" &&
         points !== 0
@@ -929,11 +970,29 @@ async function endAIGame(message, points) {
 
 async function updatePoints(points) {
 
-    if (!currentUserUID) return;
+    if (!currentUserUID) {
 
-    if (gameMode !== "ai") return;
+        console.error(
+            "No logged-in user."
+        );
 
-    if (points === 0) return;
+        return;
+    }
+
+
+    if (gameMode !== "ai") {
+
+        console.log(
+            "Points disabled in 2-player mode."
+        );
+
+        return;
+    }
+
+
+    if (points === 0) {
+        return;
+    }
 
 
     try {
@@ -949,10 +1008,13 @@ async function updatePoints(points) {
         await updateDoc(
             userRef,
             {
-                points: increment(points)
+                points:
+                    increment(points)
             }
         );
 
+
+        // Update local value
 
         currentPoints += points;
 
@@ -964,12 +1026,17 @@ async function updatePoints(points) {
 
         }
 
+
+        console.log(
+            `Firebase points updated: ${points}`
+        );
+
     }
 
     catch (error) {
 
         console.error(
-            "Error updating points:",
+            "Error updating Firebase points:",
             error
         );
 
@@ -979,7 +1046,7 @@ async function updatePoints(points) {
 
 
 // =====================================================
-// FIREBASE USER
+// LOAD USER
 // =====================================================
 
 async function loadUser(user) {
@@ -990,7 +1057,6 @@ async function loadUser(user) {
             "index.html";
 
         return;
-
     }
 
 
@@ -1040,6 +1106,9 @@ async function loadUser(user) {
         }
 
         else {
+
+            currentPoints = 0;
+
 
             if (userNameEl) {
 
@@ -1233,10 +1302,13 @@ document.addEventListener(
 
 
         // -----------------------------
-        // Validate important elements
+        // Validate board
         // -----------------------------
 
-        if (!cells || cells.length !== 9) {
+        if (
+            !cells ||
+            cells.length !== 9
+        ) {
 
             console.error(
                 "Tic Tac Toe board cells not found."
@@ -1298,7 +1370,7 @@ document.addEventListener(
 
 
         // -----------------------------
-        // Player names
+        // Player X name
         // -----------------------------
 
         if (playerXInput) {
@@ -1310,6 +1382,10 @@ document.addEventListener(
 
         }
 
+
+        // -----------------------------
+        // Player O name
+        // -----------------------------
 
         if (playerOInput) {
 
@@ -1355,7 +1431,7 @@ document.addEventListener(
 
 
         // -----------------------------
-        // Reset 2-player scoreboard
+        // Reset 2-player score
         // -----------------------------
 
         if (resetScoreBtn) {
