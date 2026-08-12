@@ -1,170 +1,662 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Poppins, sans-serif;
+/* =========================================================
+   GAMEXD SUDOKU — MODERN FLUTTER-STYLE UI
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", Arial, sans-serif;
 }
 
-body{
-    background:#0f172a;
-    color:white;
-    min-height:100vh;
-    padding-top:70px; /* IMPORTANT so navbar doesn't overlap */
-    overflow-x:hidden;
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
 }
 
-/* BACKGROUND */
-.background{
-    position:fixed;
-    inset:0;
+body {
+    min-height: 100vh;
+    padding-top: 70px;
+    color: #f8fafc;
+
     background:
-        radial-gradient(circle at top left,#0ea5e9,transparent),
-        radial-gradient(circle at bottom right,#8b5cf6,transparent);
-    z-index:-1;
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(99, 102, 241, 0.25),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 85%,
+            rgba(20, 184, 166, 0.18),
+            transparent 35%
+        ),
+        #080d18;
 }
 
-/* ================= NAVBAR ================= */
-.navbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 30px;
-    background:rgba(255,255,255,0.05);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid rgba(255,255,255,0.1);
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    z-index:1000;
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(99, 102, 241, 0.12),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(45, 212, 191, 0.10),
+            transparent 30%
+        );
 }
 
-.navbar h2{
-    font-size:20px;
+
+/* Decorative glowing circles */
+
+.background::before,
+.background::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.35;
 }
 
-.navbar .right{
-    display:flex;
-    gap:15px;
-    align-items:center;
+.background::before {
+    width: 260px;
+    height: 260px;
+    background: #6366f1;
+    top: -100px;
+    left: -100px;
 }
 
-.navbar button{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    padding:8px 12px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    background:#2563eb;
-    color:white;
-    transition:0.3s;
+.background::after {
+    width: 240px;
+    height: 240px;
+    background: #14b8a6;
+    right: -100px;
+    bottom: -80px;
 }
 
-.navbar button:hover{
-    background:#1d4ed8;
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 24px;
+
+    background: rgba(10, 15, 28, 0.78);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+    z-index: 1000;
 }
 
-#userPoints{
-    color:gold;
-    font-weight:bold;
+
+.navbar h2 {
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    white-space: nowrap;
 }
 
-/* ================= MAIN CONTAINER ================= */
-.container{
-    text-align:center;
-    margin-top:20px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+
+.navbar .right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
-/* TITLE */
-h1{
-    margin-bottom:10px;
+
+#userName,
+#userPoints {
+    padding: 6px 10px;
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    font-size: 12px;
+    white-space: nowrap;
 }
 
-/* ================= SUDOKU BOARD ================= */
-#sudoku-board{
-    display:grid;
-    grid-template-columns:repeat(9,40px);
-    grid-template-rows:repeat(9,40px);
-    gap:0;
-    justify-content:center;
-    margin:20px auto;
+
+#userPoints {
+    color: #facc15;
+    font-weight: 700;
 }
 
-/* CELL */
-.cell{
-    width:40px;
-    height:40px;
-    text-align:center;
-    font-size:18px;
-    border:1px solid #334155;
-    background:rgba(255,255,255,0.08);
-    color:white;
-    outline:none;
+
+/* Navbar button */
+
+.navbar button {
+    border: none;
+    outline: none;
+
+    padding: 8px 13px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
 }
 
-/* 3x3 GRID BORDERS */
-.top-border{
-    border-top:3px solid white !important;
+
+.navbar button:hover {
+    background: rgba(255, 255, 255, 0.14);
+    transform: translateY(-1px);
 }
 
-.left-border{
-    border-left:3px solid white !important;
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+.container {
+    width: min(100%, 600px);
+
+    margin: 0 auto;
+    padding: 24px 16px 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
 }
 
-.right-border{
-    border-right:3px solid white !important;
+
+.container h1 {
+    font-size: clamp(24px, 5vw, 32px);
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
+
+    margin-bottom: 5px;
+
+    background: linear-gradient(
+        90deg,
+        #ffffff,
+        #a5b4fc
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
-.bottom-border{
-    border-bottom:3px solid white !important;
+
+.container::before {
+    content: "🧩  Focus • Think • Solve";
+
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+
+    color: #94a3b8;
 }
 
-/* FIXED CELLS */
-input:disabled{
-    background:rgba(255,255,255,0.2);
-    font-weight:bold;
+
+/* =========================================================
+   SUDOKU BOARD WRAPPER
+   ========================================================= */
+
+#sudoku-board {
+    width: min(92vw, 450px);
+    aspect-ratio: 1 / 1;
+
+    display: grid;
+
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+
+    gap: 1px;
+
+    margin: 18px auto;
+
+    padding: 5px;
+
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.35),
+        0 0 40px rgba(99, 102, 241, 0.08);
+
+    overflow: hidden;
 }
 
-/* BUTTONS */
-.buttons{
-    margin-top:20px;
-    display:flex;
-    gap:10px;
-    justify-content:center;
-    flex-wrap:wrap;
+
+/* =========================================================
+   SUDOKU CELL
+   ========================================================= */
+
+.cell {
+    width: 100%;
+    height: 100%;
+
+    min-width: 0;
+    min-height: 0;
+
+    border: 1px solid rgba(148, 163, 184, 0.14);
+
+    outline: none;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    color: #f8fafc;
+
+    text-align: center;
+
+    font-size: clamp(16px, 4vw, 22px);
+    font-weight: 600;
+
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        color 0.18s ease;
+
+    caret-color: #818cf8;
 }
 
-button{
-    padding:10px 15px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    background:#2563eb;
-    color:white;
-    transition:0.3s;
-    display:flex;
-    align-items:center;
-    gap:8px;
+
+/* Remove browser arrows / weird input behavior */
+
+.cell::-webkit-outer-spin-button,
+.cell::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
-button:hover{
-    background:#1d4ed8;
+.cell[type="number"] {
+    -moz-appearance: textfield;
 }
 
-/* MESSAGE */
-#message{
-    margin-top:15px;
-    color:gold;
-    font-weight:bold;
+
+/* Hover */
+
+.cell:hover {
+    background: rgba(129, 140, 248, 0.12);
 }
 
-/* CONFLICT HIGHLIGHT */
-.conflict{
-    background:rgba(255,70,70,0.45) !important;
-    border:2px solid #ff4d4d !important;
+
+/* Focus */
+
+.cell:focus {
+    position: relative;
+    z-index: 2;
+
+    background: rgba(99, 102, 241, 0.20);
+
+    color: #c7d2fe;
+
+    box-shadow:
+        inset 0 0 0 2px rgba(129, 140, 248, 0.8),
+        0 0 14px rgba(99, 102, 241, 0.22);
+}
+
+
+/* =========================================================
+   FIXED / GIVEN NUMBERS
+   ========================================================= */
+
+input:disabled {
+    background: rgba(255, 255, 255, 0.085);
+
+    color: #e2e8f0;
+
+    font-weight: 800;
+
+    cursor: default;
+}
+
+
+/* =========================================================
+   3 × 3 BLOCK BORDERS
+   ========================================================= */
+
+.top-border {
+    border-top: 2px solid rgba(165, 180, 252, 0.65) !important;
+}
+
+.bottom-border {
+    border-bottom: 2px solid rgba(165, 180, 252, 0.65) !important;
+}
+
+.left-border {
+    border-left: 2px solid rgba(165, 180, 252, 0.65) !important;
+}
+
+.right-border {
+    border-right: 2px solid rgba(165, 180, 252, 0.65) !important;
+}
+
+
+/* =========================================================
+   CONFLICT / WRONG NUMBER
+   ========================================================= */
+
+.conflict {
+    background: rgba(239, 68, 68, 0.18) !important;
+
+    color: #fca5a5 !important;
+
+    border-color: rgba(248, 113, 113, 0.85) !important;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(248, 113, 113, 0.5),
+        0 0 12px rgba(239, 68, 68, 0.18);
+}
+
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
+#message {
+    min-height: 24px;
+
+    margin-top: 4px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    color: #a5b4fc;
+
+    transition: 0.2s ease;
+}
+
+
+/* =========================================================
+   BUTTON AREA
+   ========================================================= */
+
+.buttons {
+    width: 100%;
+
+    margin-top: 18px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+
+.buttons button,
+button {
+    min-height: 42px;
+
+    padding: 10px 17px;
+
+    border: none;
+    outline: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6366f1,
+            #4f46e5
+        );
+
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 20px rgba(79, 70, 229, 0.22);
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        filter 0.18s ease;
+}
+
+
+.buttons button:hover,
+button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(79, 70, 229, 0.32);
+
+    filter: brightness(1.08);
+}
+
+
+.buttons button:active,
+button:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    body {
+        padding-top: 112px;
+    }
+
+
+    .navbar {
+        height: auto;
+        min-height: 62px;
+
+        padding: 10px 12px;
+
+        flex-direction: column;
+        gap: 8px;
+    }
+
+
+    .navbar h2 {
+        font-size: 17px;
+    }
+
+
+    .navbar .right {
+        width: 100%;
+
+        justify-content: center;
+
+        gap: 6px;
+    }
+
+
+    #userName,
+    #userPoints {
+        font-size: 11px;
+        padding: 5px 8px;
+    }
+
+
+    .navbar button {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+
+
+    .container {
+        padding: 18px 10px 30px;
+    }
+
+
+    .container h1 {
+        font-size: 24px;
+    }
+
+
+    .container::before {
+        font-size: 10px;
+        margin-bottom: 8px;
+    }
+
+
+    #sudoku-board {
+        width: min(94vw, 430px);
+
+        margin: 14px auto;
+
+        padding: 4px;
+
+        border-radius: 14px;
+    }
+
+
+    .cell {
+        font-size: clamp(15px, 5vw, 20px);
+    }
+
+
+    .buttons {
+        gap: 8px;
+        margin-top: 14px;
+    }
+
+
+    .buttons button {
+        min-height: 40px;
+        padding: 9px 13px;
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    body {
+        padding-top: 108px;
+    }
+
+
+    .navbar .right {
+        gap: 4px;
+    }
+
+
+    #userName,
+    #userPoints {
+        font-size: 10px;
+        padding: 4px 6px;
+    }
+
+
+    .navbar button {
+        font-size: 10px;
+        padding: 5px 8px;
+    }
+
+
+    .container {
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+
+
+    #sudoku-board {
+        width: 96vw;
+        padding: 3px;
+        border-radius: 12px;
+    }
+
+
+    .cell {
+        font-size: 15px;
+    }
+
+
+    .buttons button {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+}
+
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 900px) {
+
+    .container {
+        padding-top: 35px;
+    }
+
+
+    #sudoku-board {
+        width: 450px;
+    }
+
+
+    .cell:hover {
+        transform: scale(1.02);
+    }
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
 }
