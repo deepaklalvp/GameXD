@@ -1,60 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    >
+
     <title>GameXD | Sudoku</title>
 
     <link rel="stylesheet" href="css/sudoku.css">
     <script type="module" src="./js/sudoku.js" defer></script>
 </head>
-    
 
 <body>
 
 <div class="background"></div>
 
-<!-- NAVBAR (ADD THIS) -->
+<!-- ================= NAVBAR ================= -->
+
 <div class="navbar">
 
     <h2>🎮 GameXD</h2>
 
     <div class="right">
-    <span id="userName">Loading...</span>
-    <span id="userPoints"> | ⭐ 0 pts</span>
 
-    <button onclick="location.href='home.html'">
-        <i class="fa-solid fa-house"></i> Home
-    </button>
+        <span id="userName">
+            Loading...
+        </span>
 
-    <button id="logoutBtn">
-        <i class="fa-solid fa-right-from-bracket"></i> Logout
-    </button>
+        <span id="userPoints">
+            ⭐ 0 pts
+        </span>
+
+        <button onclick="location.href='home.html'">
+            <i class="fa-solid fa-house"></i>
+            Home
+        </button>
+
+        <button id="logoutBtn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </button>
+
+    </div>
+
 </div>
 
-</div>
+
+<!-- ================= MAIN GAME ================= -->
 
 <div class="container">
 
     <h1>🧠 Sudoku</h1>
-    <p>Fill the grid correctly</p>
+
+    <p class="subtitle">
+        Complete the grid and test your brain!
+    </p>
+
+
+    <!-- ================= GAME INFO ================= -->
+
+    <div class="game-info">
+
+        <!-- Difficulty -->
+
+        <div class="info-box">
+
+            <span class="info-label">
+                🎯 Difficulty
+            </span>
+
+            <select id="difficulty">
+
+                <option value="easy">
+                    🟢 Easy
+                </option>
+
+                <option value="medium" selected>
+                    🟡 Medium
+                </option>
+
+                <option value="hard">
+                    🔴 Hard
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Timer -->
+
+        <div class="info-box">
+
+            <span class="info-label">
+                ⏱️ Time
+            </span>
+
+            <span id="timer">
+                00:00
+            </span>
+
+        </div>
+
+
+        <!-- Mistakes -->
+
+        <div class="info-box">
+
+            <span class="info-label">
+                ❤️ Mistakes
+            </span>
+
+            <span id="mistakes">
+                0 / 3
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SUDOKU BOARD ================= -->
 
     <div id="sudoku-board"></div>
 
-    <div class="buttons">
-    <button id="newGame">
-        <i class="fa-solid fa-dice"></i> New Game
-    </button>
 
-    <button id="check">
-        <i class="fa-solid fa-check"></i> Check
-    </button>
-</div>
+    <!-- ================= BUTTONS ================= -->
+
+    <div class="buttons">
+
+        <button id="newGame">
+
+            <i class="fa-solid fa-dice"></i>
+
+            New Game
+
+        </button>
+
+
+        <button id="check">
+
+            <i class="fa-solid fa-check"></i>
+
+            Check
+
+        </button>
+
+    </div>
+
+
+    <!-- ================= MESSAGE ================= -->
 
     <p id="message"></p>
+
+
+    <!-- ================= GAME OVER ================= -->
+
+    <div id="gameOver" class="game-over hidden">
+
+        <div class="game-over-box">
+
+            <div class="game-over-icon">
+                🎮
+            </div>
+
+            <h2 id="gameOverTitle">
+                Game Over
+            </h2>
+
+            <p id="gameOverMessage">
+                Better luck next time!
+            </p>
+
+            <div class="final-stats">
+
+                <div>
+                    <span>⏱️ Time</span>
+                    <strong id="finalTime">
+                        00:00
+                    </strong>
+                </div>
+
+                <div>
+                    <span>❤️ Mistakes</span>
+                    <strong id="finalMistakes">
+                        0
+                    </strong>
+                </div>
+
+            </div>
+
+            <button id="playAgain">
+
+                <i class="fa-solid fa-rotate-right"></i>
+
+                Play Again
+
+            </button>
+
+            <button
+                class="home-button"
+                onclick="location.href='home.html'"
+            >
+
+                <i class="fa-solid fa-house"></i>
+
+                Home
+
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
 
 </body>
+
 </html>
