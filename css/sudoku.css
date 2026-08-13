@@ -1,5 +1,13 @@
 /* =========================================================
-   GAMEXD SUDOKU — MODERN FLUTTER-STYLE UI
+   GAMEXD SUDOKU — MODERN GAMING UI
+   Timer • Mistakes • Difficulty
+   Responsive: Mobile + Tablet + Desktop
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+/* =========================================================
+   GLOBAL
    ========================================================= */
 
 * {
@@ -7,6 +15,10 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 html,
@@ -19,6 +31,7 @@ body {
 body {
     min-height: 100vh;
     padding-top: 70px;
+
     color: #f8fafc;
 
     background:
@@ -43,7 +56,9 @@ body {
 .background {
     position: fixed;
     inset: 0;
+
     z-index: -1;
+
     overflow: hidden;
     pointer-events: none;
 
@@ -61,21 +76,27 @@ body {
 }
 
 
-/* Decorative glowing circles */
+/* Glowing circles */
 
 .background::before,
 .background::after {
     content: "";
+
     position: absolute;
+
     border-radius: 50%;
+
     filter: blur(80px);
+
     opacity: 0.35;
 }
 
 .background::before {
     width: 260px;
     height: 260px;
+
     background: #6366f1;
+
     top: -100px;
     left: -100px;
 }
@@ -83,7 +104,9 @@ body {
 .background::after {
     width: 240px;
     height: 240px;
+
     background: #14b8a6;
+
     right: -100px;
     bottom: -80px;
 }
@@ -95,18 +118,22 @@ body {
 
 .navbar {
     position: fixed;
+
     top: 0;
     left: 0;
+
     width: 100%;
     height: 64px;
 
     display: flex;
+
     justify-content: space-between;
     align-items: center;
 
     padding: 0 24px;
 
     background: rgba(10, 15, 28, 0.78);
+
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
 
@@ -116,44 +143,70 @@ body {
 }
 
 
+/* Logo */
+
 .navbar h2 {
     font-size: 19px;
+
     font-weight: 700;
+
     letter-spacing: 0.3px;
+
     cursor: pointer;
+
     white-space: nowrap;
 }
 
 
+/* Right side */
+
 .navbar .right {
     display: flex;
+
     align-items: center;
+
+    justify-content: flex-end;
+
     gap: 8px;
+
     flex-wrap: wrap;
 }
 
 
+/* User */
+
 #userName,
 #userPoints {
+    display: inline-flex;
+
+    align-items: center;
+
     padding: 6px 10px;
+
+    min-height: 30px;
 
     border-radius: 999px;
 
     background: rgba(255, 255, 255, 0.07);
+
     border: 1px solid rgba(255, 255, 255, 0.06);
 
     font-size: 12px;
+
     white-space: nowrap;
 }
 
 
+/* Points */
+
 #userPoints {
     color: #facc15;
+
     font-weight: 700;
 }
 
 
-/* Navbar button */
+/* Navbar buttons */
 
 .navbar button {
     border: none;
@@ -164,17 +217,26 @@ body {
     border-radius: 10px;
 
     background: rgba(255, 255, 255, 0.08);
+
     color: #fff;
 
     cursor: pointer;
 
-    transition: 0.2s ease;
-}
+    font-size: 12px;
 
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
 
 .navbar button:hover {
     background: rgba(255, 255, 255, 0.14);
+
     transform: translateY(-1px);
+}
+
+.navbar button:active {
+    transform: scale(0.97);
 }
 
 
@@ -183,82 +245,294 @@ body {
    ========================================================= */
 
 .container {
-    width: min(100%, 600px);
+    width: min(100%, 620px);
 
     margin: 0 auto;
-    padding: 24px 16px 40px;
+
+    padding: 25px 16px 50px;
 
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
 
     text-align: center;
 }
 
 
+/* Small tagline */
+
+.container::before {
+    content: "🧩  FOCUS • THINK • SOLVE";
+
+    display: inline-block;
+
+    margin-bottom: 10px;
+
+    color: #94a3b8;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 1.5px;
+}
+
+
+/* Title */
+
 .container h1 {
-    font-size: clamp(24px, 5vw, 32px);
+    font-size: clamp(25px, 5vw, 34px);
+
     font-weight: 700;
 
-    letter-spacing: -0.5px;
+    letter-spacing: -0.6px;
 
     margin-bottom: 5px;
 
-    background: linear-gradient(
-        90deg,
-        #ffffff,
-        #a5b4fc
-    );
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #a5b4fc,
+            #67e8f9
+        );
 
     -webkit-background-clip: text;
+
     background-clip: text;
+
     color: transparent;
 }
 
 
-.container::before {
-    content: "🧩  Focus • Think • Solve";
+/* Subtitle */
 
-    display: inline-block;
-
-    margin-bottom: 12px;
-
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1px;
-
+.container > p {
     color: #94a3b8;
+
+    font-size: 13px;
+
+    margin-bottom: 10px;
 }
 
 
 /* =========================================================
-   SUDOKU BOARD WRAPPER
+   GAME INFO PANEL
+   ========================================================= */
+
+.game-info {
+    width: min(92vw, 450px);
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 8px;
+
+    margin: 12px auto 5px;
+}
+
+
+/* Individual info item */
+
+.info-box {
+    min-height: 60px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 2px;
+
+    padding: 8px;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.08),
+            rgba(255,255,255,0.035)
+        );
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.18);
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+
+/* Info icon */
+
+.info-box i {
+    font-size: 14px;
+
+    color: #a5b4fc;
+}
+
+
+/* Info label */
+
+.info-box span:first-of-type {
+    color: #94a3b8;
+
+    font-size: 9px;
+
+    font-weight: 500;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.7px;
+}
+
+
+/* Info value */
+
+.info-box span:last-child {
+    color: #f8fafc;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+/* Timer */
+
+#timer {
+    color: #67e8f9;
+}
+
+
+/* Mistakes */
+
+#mistakes {
+    color: #fb7185;
+}
+
+
+/* Difficulty */
+
+#difficulty {
+    color: #facc15;
+}
+
+
+/* =========================================================
+   DIFFICULTY SELECTOR
+   ========================================================= */
+
+.difficulty-container {
+    width: min(92vw, 450px);
+
+    margin: 10px auto 5px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    flex-wrap: wrap;
+}
+
+
+/* Difficulty button */
+
+.difficulty-btn {
+    padding: 6px 12px;
+
+    border-radius: 999px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    background: rgba(255,255,255,0.05);
+
+    color: #cbd5e1;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.difficulty-btn:hover {
+    transform: translateY(-1px);
+
+    background: rgba(255,255,255,0.09);
+
+    color: white;
+}
+
+
+/* Active difficulty */
+
+.difficulty-btn.active {
+    background:
+        linear-gradient(
+            135deg,
+            #6366f1,
+            #4f46e5
+        );
+
+    border-color: rgba(129,140,248,0.5);
+
+    color: white;
+
+    box-shadow:
+        0 5px 18px rgba(99,102,241,0.25);
+}
+
+
+/* =========================================================
+   SUDOKU BOARD
    ========================================================= */
 
 #sudoku-board {
     width: min(92vw, 450px);
+
     aspect-ratio: 1 / 1;
 
     display: grid;
 
     grid-template-columns: repeat(9, 1fr);
+
     grid-template-rows: repeat(9, 1fr);
 
     gap: 1px;
 
-    margin: 18px auto;
+    margin: 16px auto;
 
     padding: 5px;
 
     border-radius: 18px;
 
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255,255,255,0.08);
 
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255,255,255,0.1);
 
     box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.35),
-        0 0 40px rgba(99, 102, 241, 0.08);
+        0 20px 50px rgba(0,0,0,0.35),
+        0 0 40px rgba(99,102,241,0.08);
 
     overflow: hidden;
 }
@@ -275,34 +549,38 @@ body {
     min-width: 0;
     min-height: 0;
 
-    border: 1px solid rgba(148, 163, 184, 0.14);
+    padding: 0;
+
+    border: 1px solid rgba(148,163,184,0.14);
 
     outline: none;
 
-    background: rgba(255, 255, 255, 0.035);
+    background: rgba(255,255,255,0.035);
 
     color: #f8fafc;
 
     text-align: center;
 
     font-size: clamp(16px, 4vw, 22px);
+
     font-weight: 600;
+
+    caret-color: #818cf8;
 
     transition:
         background 0.18s ease,
         transform 0.18s ease,
         box-shadow 0.18s ease,
         color 0.18s ease;
-
-    caret-color: #818cf8;
 }
 
 
-/* Remove browser arrows / weird input behavior */
+/* Remove input arrows */
 
 .cell::-webkit-outer-spin-button,
 .cell::-webkit-inner-spin-button {
     -webkit-appearance: none;
+
     margin: 0;
 }
 
@@ -314,7 +592,7 @@ body {
 /* Hover */
 
 .cell:hover {
-    background: rgba(129, 140, 248, 0.12);
+    background: rgba(129,140,248,0.12);
 }
 
 
@@ -322,24 +600,25 @@ body {
 
 .cell:focus {
     position: relative;
+
     z-index: 2;
 
-    background: rgba(99, 102, 241, 0.20);
+    background: rgba(99,102,241,0.20);
 
     color: #c7d2fe;
 
     box-shadow:
-        inset 0 0 0 2px rgba(129, 140, 248, 0.8),
-        0 0 14px rgba(99, 102, 241, 0.22);
+        inset 0 0 0 2px rgba(129,140,248,0.8),
+        0 0 14px rgba(99,102,241,0.22);
 }
 
 
 /* =========================================================
-   FIXED / GIVEN NUMBERS
+   FIXED NUMBERS
    ========================================================= */
 
-input:disabled {
-    background: rgba(255, 255, 255, 0.085);
+.cell:disabled {
+    background: rgba(255,255,255,0.085);
 
     color: #e2e8f0;
 
@@ -350,23 +629,27 @@ input:disabled {
 
 
 /* =========================================================
-   3 × 3 BLOCK BORDERS
+   3 × 3 BORDERS
    ========================================================= */
 
 .top-border {
-    border-top: 2px solid rgba(165, 180, 252, 0.65) !important;
+    border-top:
+        2px solid rgba(165,180,252,0.65) !important;
 }
 
 .bottom-border {
-    border-bottom: 2px solid rgba(165, 180, 252, 0.65) !important;
+    border-bottom:
+        2px solid rgba(165,180,252,0.65) !important;
 }
 
 .left-border {
-    border-left: 2px solid rgba(165, 180, 252, 0.65) !important;
+    border-left:
+        2px solid rgba(165,180,252,0.65) !important;
 }
 
 .right-border {
-    border-right: 2px solid rgba(165, 180, 252, 0.65) !important;
+    border-right:
+        2px solid rgba(165,180,252,0.65) !important;
 }
 
 
@@ -375,15 +658,30 @@ input:disabled {
    ========================================================= */
 
 .conflict {
-    background: rgba(239, 68, 68, 0.18) !important;
+    background: rgba(239,68,68,0.18) !important;
 
     color: #fca5a5 !important;
 
-    border-color: rgba(248, 113, 113, 0.85) !important;
+    border-color:
+        rgba(248,113,113,0.85) !important;
 
     box-shadow:
-        inset 0 0 0 1px rgba(248, 113, 113, 0.5),
-        0 0 12px rgba(239, 68, 68, 0.18);
+        inset 0 0 0 1px rgba(248,113,113,0.5),
+        0 0 12px rgba(239,68,68,0.18);
+}
+
+
+/* =========================================================
+   CORRECT CELL
+   ========================================================= */
+
+.correct-cell {
+    background: rgba(34,197,94,0.14) !important;
+
+    color: #86efac !important;
+
+    border-color:
+        rgba(34,197,94,0.5) !important;
 }
 
 
@@ -392,16 +690,21 @@ input:disabled {
    ========================================================= */
 
 #message {
-    min-height: 24px;
+    width: min(92vw, 450px);
 
-    margin-top: 4px;
+    min-height: 25px;
 
-    font-size: 15px;
+    margin-top: 2px;
+
+    font-size: 14px;
+
     font-weight: 600;
 
     color: #a5b4fc;
 
-    transition: 0.2s ease;
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
 
@@ -410,12 +713,14 @@ input:disabled {
    ========================================================= */
 
 .buttons {
-    width: 100%;
+    width: min(92vw, 450px);
 
-    margin-top: 18px;
+    margin-top: 14px;
 
     display: flex;
+
     justify-content: center;
+
     align-items: center;
 
     gap: 10px;
@@ -424,13 +729,15 @@ input:disabled {
 }
 
 
-.buttons button,
-button {
+/* Main buttons */
+
+.buttons button {
     min-height: 42px;
 
     padding: 10px 17px;
 
     border: none;
+
     outline: none;
 
     border-radius: 12px;
@@ -444,13 +751,14 @@ button {
 
     color: #fff;
 
-    font-size: 14px;
+    font-size: 13px;
+
     font-weight: 600;
 
     cursor: pointer;
 
     box-shadow:
-        0 7px 20px rgba(79, 70, 229, 0.22);
+        0 7px 20px rgba(79,70,229,0.22);
 
     transition:
         transform 0.18s ease,
@@ -459,20 +767,174 @@ button {
 }
 
 
-.buttons button:hover,
-button:hover {
+/* Button icons */
+
+.buttons button i {
+    margin-right: 6px;
+}
+
+
+/* Hover */
+
+.buttons button:hover {
     transform: translateY(-2px);
 
     box-shadow:
-        0 10px 25px rgba(79, 70, 229, 0.32);
+        0 10px 25px rgba(79,70,229,0.32);
 
     filter: brightness(1.08);
 }
 
 
-.buttons button:active,
-button:active {
+/* Active */
+
+.buttons button:active {
     transform: scale(0.97);
+}
+
+
+/* =========================================================
+   SECONDARY BUTTON
+   ========================================================= */
+
+#check {
+    background:
+        linear-gradient(
+            135deg,
+            #14b8a6,
+            #0d9488
+        );
+
+    box-shadow:
+        0 7px 20px rgba(20,184,166,0.2);
+}
+
+#check:hover {
+    box-shadow:
+        0 10px 25px rgba(20,184,166,0.3);
+}
+
+
+/* =========================================================
+   NEW GAME BUTTON
+   ========================================================= */
+
+#newGame {
+    background:
+        linear-gradient(
+            135deg,
+            #6366f1,
+            #4f46e5
+        );
+}
+
+
+/* =========================================================
+   PAUSE / RESET BUTTONS
+   If added later, already styled
+   ========================================================= */
+
+#pauseGame,
+#resetGame {
+    background:
+        rgba(255,255,255,0.08);
+
+    border:
+        1px solid rgba(255,255,255,0.1);
+
+    box-shadow: none;
+}
+
+#pauseGame:hover,
+#resetGame:hover {
+    background:
+        rgba(255,255,255,0.14);
+}
+
+
+/* =========================================================
+   GAME OVER / COMPLETED STATE
+   ========================================================= */
+
+.game-complete {
+    animation: gameComplete 0.5s ease;
+}
+
+@keyframes gameComplete {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   TIMER WARNING
+   ========================================================= */
+
+.timer-warning {
+    color: #facc15 !important;
+
+    animation: timerPulse 1s infinite;
+}
+
+@keyframes timerPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.55;
+    }
+}
+
+
+/* =========================================================
+   MISTAKE WARNING
+   ========================================================= */
+
+.mistake-warning {
+    color: #fb7185 !important;
+
+    animation: mistakePulse 0.4s ease;
+}
+
+@keyframes mistakePulse {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   DISABLED GAME STATE
+   ========================================================= */
+
+.game-disabled {
+    pointer-events: none;
+
+    opacity: 0.55;
+
+    filter: grayscale(0.25);
 }
 
 
@@ -487,13 +949,17 @@ button:active {
     }
 
 
+    /* Navbar */
+
     .navbar {
         height: auto;
+
         min-height: 62px;
 
         padding: 10px 12px;
 
         flex-direction: column;
+
         gap: 8px;
     }
 
@@ -515,18 +981,24 @@ button:active {
     #userName,
     #userPoints {
         font-size: 11px;
+
         padding: 5px 8px;
     }
 
 
     .navbar button {
         font-size: 11px;
+
         padding: 6px 10px;
     }
 
 
+    /* Main */
+
     .container {
-        padding: 18px 10px 30px;
+        padding:
+            18px 10px
+            30px;
     }
 
 
@@ -536,10 +1008,69 @@ button:active {
 
 
     .container::before {
-        font-size: 10px;
-        margin-bottom: 8px;
+        font-size: 9px;
+
+        margin-bottom: 7px;
     }
 
+
+    .container > p {
+        font-size: 12px;
+    }
+
+
+    /* Info */
+
+    .game-info {
+        width: min(94vw, 430px);
+
+        gap: 6px;
+
+        margin-top: 10px;
+    }
+
+
+    .info-box {
+        min-height: 55px;
+
+        padding: 6px;
+
+        border-radius: 12px;
+    }
+
+
+    .info-box i {
+        font-size: 12px;
+    }
+
+
+    .info-box span:first-of-type {
+        font-size: 8px;
+    }
+
+
+    .info-box span:last-child {
+        font-size: 12px;
+    }
+
+
+    /* Difficulty */
+
+    .difficulty-container {
+        width: min(94vw, 430px);
+
+        margin-top: 8px;
+    }
+
+
+    .difficulty-btn {
+        padding: 5px 10px;
+
+        font-size: 9px;
+    }
+
+
+    /* Board */
 
     #sudoku-board {
         width: min(94vw, 430px);
@@ -557,15 +1088,27 @@ button:active {
     }
 
 
+    /* Buttons */
+
     .buttons {
         gap: 8px;
-        margin-top: 14px;
+
+        margin-top: 12px;
     }
 
 
     .buttons button {
         min-height: 40px;
+
         padding: 9px 13px;
+
+        font-size: 12px;
+    }
+
+
+    /* Message */
+
+    #message {
         font-size: 13px;
     }
 }
@@ -582,6 +1125,16 @@ button:active {
     }
 
 
+    .navbar {
+        padding: 9px;
+    }
+
+
+    .navbar h2 {
+        font-size: 16px;
+    }
+
+
     .navbar .right {
         gap: 4px;
     }
@@ -590,25 +1143,59 @@ button:active {
     #userName,
     #userPoints {
         font-size: 10px;
+
         padding: 4px 6px;
     }
 
 
     .navbar button {
         font-size: 10px;
+
         padding: 5px 8px;
     }
 
 
     .container {
         padding-left: 7px;
+
         padding-right: 7px;
+    }
+
+
+    .container h1 {
+        font-size: 22px;
+    }
+
+
+    .game-info {
+        gap: 4px;
+    }
+
+
+    .info-box {
+        min-height: 52px;
+
+        border-radius: 10px;
+    }
+
+
+    .info-box span:last-child {
+        font-size: 11px;
+    }
+
+
+    .difficulty-btn {
+        padding: 5px 8px;
+
+        font-size: 8px;
     }
 
 
     #sudoku-board {
         width: 96vw;
+
         padding: 3px;
+
         border-radius: 12px;
     }
 
@@ -620,7 +1207,35 @@ button:active {
 
     .buttons button {
         padding: 8px 10px;
-        font-size: 12px;
+
+        font-size: 11px;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (min-width: 601px) and (max-width: 899px) {
+
+    .container {
+        padding-top: 30px;
+    }
+
+
+    #sudoku-board {
+        width: min(80vw, 450px);
+    }
+
+
+    .game-info {
+        width: min(80vw, 450px);
+    }
+
+
+    .difficulty-container {
+        width: min(80vw, 450px);
     }
 }
 
@@ -632,7 +1247,7 @@ button:active {
 @media (min-width: 900px) {
 
     .container {
-        padding-top: 35px;
+        padding-top: 32px;
     }
 
 
@@ -641,9 +1256,32 @@ button:active {
     }
 
 
+    .game-info {
+        width: 450px;
+    }
+
+
+    .difficulty-container {
+        width: 450px;
+    }
+
+
     .cell:hover {
         transform: scale(1.02);
     }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+button:focus-visible,
+.cell:focus-visible {
+    outline:
+        2px solid rgba(129,140,248,0.9);
+
+    outline-offset: 2px;
 }
 
 
@@ -657,6 +1295,11 @@ button:active {
     *::before,
     *::after {
         animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
         transition-duration: 0.01ms !important;
+
+        scroll-behavior: auto !important;
     }
 }
