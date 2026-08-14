@@ -10,7 +10,6 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <!-- Font Awesome -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -18,13 +17,8 @@
 
     <title>GameXD | Home</title>
 
-    <!-- Home CSS -->
-    <link
-        rel="stylesheet"
-        href="css/home.css"
-    >
+    <link rel="stylesheet" href="css/home.css">
 
-    <!-- Home JS -->
     <script
         type="module"
         src="./js/home.js"
@@ -36,11 +30,6 @@
 
 <body>
 
-
-<!-- =========================================================
-     BACKGROUND
-     ========================================================= -->
-
 <div class="background"></div>
 
 
@@ -50,51 +39,23 @@
 
 <nav class="navbar">
 
-    <!-- Logo -->
-
-    <h2>
+    <div class="logo">
         🎮 GameXD
-    </h2>
+    </div>
 
 
-    <!-- Navbar Right -->
-
-    <div class="right">
-
-
-        <!-- User Name -->
+    <div class="nav-right">
 
         <span id="userName">
             Loading...
         </span>
 
-
-        <!-- Points -->
-
         <span id="userPoints">
-            <i class="fa-solid fa-star"></i>
-            0 pts
+            <i class="fa-solid fa-star"></i> 0 pts
         </span>
 
 
-        <!-- Leaderboard -->
-
-        <button
-            id="leaderboardBtn"
-            type="button"
-            onclick="location.href='leaderboard.html'"
-        >
-
-            <i class="fa-solid fa-trophy"></i>
-
-            <span class="leaderboard-text">
-                Leaderboard
-            </span>
-
-        </button>
-
-
-        <!-- Profile Button -->
+        <!-- PROFILE BUTTON -->
 
         <button
             id="profileBtn"
@@ -103,25 +64,14 @@
             aria-label="Open profile"
             aria-expanded="false"
         >
-
-            <i class="fa-solid fa-user"></i>
-
+            <span id="profileBtnAvatar">
+                P
+            </span>
         </button>
 
     </div>
 
 </nav>
-
-
-
-<!-- =========================================================
-     DRAWER BACKDROP
-     ========================================================= -->
-
-<div
-    id="drawerBackdrop"
-    class="drawer-backdrop"
-></div>
 
 
 
@@ -132,15 +82,13 @@
 <main class="container">
 
 
-    <!-- Page Heading -->
-
     <h1>
         🎮 Pick Your Challenge
     </h1>
 
 
-    <p>
-        Play, compete, and have fun!
+    <p class="subtitle">
+        Play • Compete • Climb the Leaderboard
     </p>
 
 
@@ -149,31 +97,115 @@
          GAMES
          ===================================================== -->
 
-    <section class="games">
+    <div class="games">
 
 
-        <!-- Sudoku -->
+        <!-- ================= SUDOKU ================= -->
 
         <div
             class="card"
             onclick="location.href='sudoku.html'"
         >
 
-            <i class="fa-solid fa-border-all"></i>
+            <i class="fa-solid fa-table-cells-large"></i>
 
             <h3>
                 Sudoku
             </h3>
 
             <p>
-                Test your logic and solve the puzzle.
+                Test your brain
             </p>
 
         </div>
 
 
 
-        <!-- Impostor -->
+        <!-- ================= TIC TAC TOE ================= -->
+
+        <div
+            class="card"
+            onclick="location.href='tictactoe.html'"
+        >
+
+            <i class="fa-solid fa-xmark"></i>
+
+            <h3>
+                Tic Tac Toe
+            </h3>
+
+            <p>
+                Play with friends or AI
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= MEMORY ================= -->
+
+        <div
+            class="card"
+            onclick="location.href='memory.html'"
+        >
+
+            <i class="fa-solid fa-clone"></i>
+
+            <h3>
+                Memory Game
+            </h3>
+
+            <p>
+                Match the pairs
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= NUMBER GUESS ================= -->
+
+        <div
+            class="card"
+            onclick="location.href='guess.html'"
+        >
+
+            <i class="fa-solid fa-question"></i>
+
+            <h3>
+                Number Guessing
+            </h3>
+
+            <p>
+                Guess the hidden number
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= SNAKE ================= -->
+
+        <div
+            class="card"
+            onclick="location.href='snake.html'"
+        >
+
+            <i class="fa-solid fa-staff-snake"></i>
+
+            <h3>
+                Snake Game
+            </h3>
+
+            <p>
+                Eat and grow
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= IMPOSTOR ================= -->
 
         <div
             class="card"
@@ -187,35 +219,271 @@
             </h3>
 
             <p>
-                Find the impostor before it's too late.
+                Find the hidden impostor among players
             </p>
 
         </div>
 
 
 
-        <!-- More Games -->
+        <!-- ================= FLAPPY BIRD ================= -->
 
         <div
             class="card"
-            onclick="location.href='games.html'"
+            onclick="location.href='flappy.html'"
         >
 
-            <i class="fa-solid fa-gamepad"></i>
+            <i class="fa-solid fa-dove"></i>
 
             <h3>
-                More Games
+                Flappy Bird
             </h3>
 
             <p>
-                Explore more exciting games.
+                Tap to fly, avoid pipes
             </p>
 
         </div>
 
-    </section>
+
+
+        <!-- ================= PENALTY ================= -->
+
+        <div
+            class="card"
+            onclick="location.href='penalty.html'"
+        >
+
+            <i class="fa-solid fa-futbol"></i>
+
+            <h3>
+                Penalty Kick
+            </h3>
+
+            <p>
+                Beat the goalkeeper with perfect shots
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= CONNECT FOUR ================= -->
+
+        <div
+            class="card"
+            onclick="location.href='connect4.html'"
+        >
+
+            <i class="fa-solid fa-grip"></i>
+
+            <h3>
+                Connect Four
+            </h3>
+
+            <p>
+                Connect four discs to win
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             COMING SOON
+             ================================================= -->
+
+
+        <!-- ================= SOLITAIRE ================= -->
+
+        <div class="card coming-soon">
+
+            <span class="coming-badge">
+                Coming Soon
+            </span>
+
+            <i class="fa-solid fa-clone"></i>
+
+            <h3>
+                Solitaire
+            </h3>
+
+            <p>
+                Classic card game
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= 2048 ================= -->
+
+        <div class="card coming-soon">
+
+            <span class="coming-badge">
+                Coming Soon
+            </span>
+
+            <i class="fa-solid fa-cubes"></i>
+
+            <h3>
+                2048
+            </h3>
+
+            <p>
+                Merge tiles to reach 2048
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= SPOT DIFFERENCE ================= -->
+
+        <div class="card coming-soon">
+
+            <span class="coming-badge">
+                Coming Soon
+            </span>
+
+            <i class="fa-solid fa-eye"></i>
+
+            <h3>
+                Spot the Difference
+            </h3>
+
+            <p>
+                Find all the hidden differences
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= CHESS ================= -->
+
+        <div class="card coming-soon">
+
+            <span class="coming-badge">
+                Coming Soon
+            </span>
+
+            <i class="fa-solid fa-chess"></i>
+
+            <h3>
+                Chess
+            </h3>
+
+            <p>
+                Challenge the AI or a friend
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= CAR DODGER ================= -->
+
+        <div class="card coming-soon">
+
+            <span class="coming-badge">
+                Coming Soon
+            </span>
+
+            <i class="fa-solid fa-car"></i>
+
+            <h3>
+                Car Dodger
+            </h3>
+
+            <p>
+                Dodge traffic and survive
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= ARCHERY ================= -->
+
+        <div class="card coming-soon">
+
+            <span class="coming-badge">
+                Coming Soon
+            </span>
+
+            <i class="fa-solid fa-bullseye"></i>
+
+            <h3>
+                Archery
+            </h3>
+
+            <p>
+                Aim carefully and hit the bullseye
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= BASKETBALL ================= -->
+
+        <div class="card coming-soon">
+
+            <span class="coming-badge">
+                Coming Soon
+            </span>
+
+            <i class="fa-solid fa-basketball"></i>
+
+            <h3>
+                Basketball Shoot
+            </h3>
+
+            <p>
+                Score as many baskets as you can
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= BOWLING ================= -->
+
+        <div class="card coming-soon">
+
+            <span class="coming-badge">
+                Coming Soon
+            </span>
+
+            <i class="fa-solid fa-bowling-ball"></i>
+
+            <h3>
+                Bowling
+            </h3>
+
+            <p>
+                Knock down all the pins for a strike
+            </p>
+
+        </div>
+
+
+    </div>
 
 </main>
+
+
+
+<!-- =========================================================
+     DRAWER BACKDROP
+     ========================================================= -->
+
+<div
+    id="drawerBackdrop"
+    class="drawer-backdrop"
+    aria-hidden="true"
+></div>
 
 
 
@@ -223,7 +491,7 @@
      PROFILE DRAWER
      
      IMPORTANT:
-     There is ONLY ONE #profileMenu.
+     There is ONLY ONE element with id="profileMenu".
      ========================================================= -->
 
 <aside
@@ -233,49 +501,45 @@
 >
 
 
-    <!-- =====================================================
-         PROFILE HEADER
-         ===================================================== -->
+    <!-- ================= PROFILE HEADER ================= -->
 
     <div class="profile-header">
 
 
-        <!-- Avatar -->
+        <button
+            id="closeProfileBtn"
+            class="drawer-close"
+            type="button"
+            aria-label="Close profile"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
 
         <div
+            class="profile-avatar"
             id="profileAvatar"
-            class="avatar-circle"
         >
             P
         </div>
 
 
-        <!-- Name -->
+        <h2 id="profileName">
+            Player
+        </h2>
 
-        <h3 id="profileName">
-            Loading...
-        </h3>
-
-
-        <!-- Email -->
 
         <p id="profileEmail">
-            Loading...
+            email@example.com
         </p>
 
-
-        <!-- Points -->
 
         <div class="profile-points">
 
             <i class="fa-solid fa-star"></i>
 
             <span id="profilePoints">
-                0
-            </span>
-
-            <span>
-                Points
+                0 Points
             </span>
 
         </div>
@@ -284,42 +548,32 @@
 
 
 
-    <!-- =====================================================
-         PLAYER STATISTICS
-         ===================================================== -->
+    <!-- ================= QUICK STATS ================= -->
 
     <div class="profile-stats">
 
 
-        <!-- Games -->
-
-        <div class="stat-box">
-
-            <i class="fa-solid fa-gamepad"></i>
+        <div class="stat">
 
             <strong id="profileGames">
                 0
             </strong>
 
             <span>
-                Games
+                🎮 Games
             </span>
 
         </div>
 
 
-        <!-- Wins -->
-
-        <div class="stat-box">
-
-            <i class="fa-solid fa-trophy"></i>
+        <div class="stat">
 
             <strong id="profileWins">
                 0
             </strong>
 
             <span>
-                Wins
+                🏆 Wins
             </span>
 
         </div>
@@ -328,212 +582,166 @@
 
 
 
-    <!-- Divider -->
+    <!-- ================= PROFILE ACTIONS ================= -->
 
-    <hr>
+    <div class="drawer-section">
 
 
+        <button
+            class="drawer-item"
+            id="viewProfileBtn"
+            type="button"
+        >
 
-    <!-- =====================================================
-         PROFILE OPTIONS
-         ===================================================== -->
+            <span>
+                👤
+                <span>View Profile</span>
+            </span>
 
+            <i class="fa-solid fa-chevron-right"></i>
 
-    <!-- View Profile -->
+        </button>
 
-    <button
-        id="viewProfileBtn"
-        type="button"
-    >
 
-        <i class="fa-solid fa-user"></i>
 
-        <span>
-            View Profile
-        </span>
+        <button
+            class="drawer-item"
+            id="editProfileBtn"
+            type="button"
+        >
 
-        <i class="fa-solid fa-chevron-right arrow"></i>
+            <span>
+                ✏️
+                <span>Edit Profile</span>
+            </span>
 
-    </button>
+            <i class="fa-solid fa-chevron-right"></i>
 
+        </button>
 
 
-    <!-- Edit Profile -->
 
-    <button
-        id="editProfileBtn"
-        type="button"
-    >
+        <button
+            class="drawer-item"
+            id="achievementsBtn"
+            type="button"
+        >
 
-        <i class="fa-solid fa-user-pen"></i>
+            <span>
+                🏅
+                <span>Achievements</span>
+            </span>
 
-        <span>
-            Edit Profile
-        </span>
+            <i class="fa-solid fa-chevron-right"></i>
 
-        <i class="fa-solid fa-chevron-right arrow"></i>
+        </button>
 
-    </button>
 
 
+        <button
+            class="drawer-item"
+            id="settingsBtn"
+            type="button"
+        >
 
-    <!-- Achievements -->
+            <span>
+                ⚙️
+                <span>Settings</span>
+            </span>
 
-    <button
-        id="achievementsBtn"
-        type="button"
-    >
+            <i class="fa-solid fa-chevron-right"></i>
 
-        <i class="fa-solid fa-medal"></i>
+        </button>
 
-        <span>
-            Achievements
-        </span>
 
-        <i class="fa-solid fa-chevron-right arrow"></i>
+    </div>
 
-    </button>
 
 
+    <!-- ================= INFORMATION ================= -->
 
-    <!-- Settings -->
+    <div class="drawer-section">
 
-    <button
-        id="settingsBtn"
-        type="button"
-    >
 
-        <i class="fa-solid fa-gear"></i>
+        <button
+            class="drawer-item"
+            id="termsBtn"
+            type="button"
+        >
 
-        <span>
-            Settings
-        </span>
+            <span>
+                📄
+                <span>Terms &amp; Conditions</span>
+            </span>
 
-        <i class="fa-solid fa-chevron-right arrow"></i>
+            <i class="fa-solid fa-chevron-right"></i>
 
-    </button>
+        </button>
 
 
 
-    <!-- Divider -->
+        <button
+            class="drawer-item"
+            id="privacyBtn"
+            type="button"
+        >
 
-    <hr>
+            <span>
+                🛡️
+                <span>Privacy Policy</span>
+            </span>
 
+            <i class="fa-solid fa-chevron-right"></i>
 
+        </button>
 
-    <!-- =====================================================
-         INFORMATION
-         ===================================================== -->
 
 
-    <!-- Terms -->
+        <button
+            class="drawer-item"
+            id="helpBtn"
+            type="button"
+        >
 
-    <button
-        id="termsBtn"
-        type="button"
-        onclick="location.href='terms.html'"
-    >
+            <span>
+                ❓
+                <span>Help &amp; Support</span>
+            </span>
 
-        <i class="fa-solid fa-file-contract"></i>
+            <i class="fa-solid fa-chevron-right"></i>
 
-        <span>
-            Terms &amp; Conditions
-        </span>
+        </button>
 
-        <i class="fa-solid fa-chevron-right arrow"></i>
 
-    </button>
+    </div>
 
 
 
-    <!-- Privacy -->
+    <!-- ================= LOGOUT ================= -->
 
-    <button
-        id="privacyBtn"
-        type="button"
-        onclick="location.href='privacy.html'"
-    >
+    <div class="drawer-section logout-section">
 
-        <i class="fa-solid fa-shield-halved"></i>
 
-        <span>
-            Privacy Policy
-        </span>
+        <button
+            class="drawer-item logout-item"
+            id="logoutBtn"
+            type="button"
+        >
 
-        <i class="fa-solid fa-chevron-right arrow"></i>
+            <span>
+                🚪
+                <span>Logout</span>
+            </span>
 
-    </button>
+            <i class="fa-solid fa-chevron-right"></i>
 
+        </button>
 
 
-    <!-- Help -->
-
-    <button
-        id="helpBtn"
-        type="button"
-        onclick="location.href='help.html'"
-    >
-
-        <i class="fa-solid fa-circle-question"></i>
-
-        <span>
-            Help &amp; Support
-        </span>
-
-        <i class="fa-solid fa-chevron-right arrow"></i>
-
-    </button>
-
-
-
-    <!-- Divider -->
-
-    <hr>
-
-
-
-    <!-- =====================================================
-         LOGOUT
-         ===================================================== -->
-
-    <button
-        id="logoutBtn"
-        class="logout"
-        type="button"
-    >
-
-        <i class="fa-solid fa-right-from-bracket"></i>
-
-        <span>
-            Logout
-        </span>
-
-    </button>
+    </div>
 
 
 </aside>
-
-
-
-<!-- =========================================================
-     FOOTER
-     ========================================================= -->
-
-<footer class="footer">
-
-    <span>
-        © 2026 GameXD
-    </span>
-
-    <span>
-        <i class="fa-solid fa-circle"></i>
-        <span id="onlinePlayers">
-            124
-        </span>
-        players online
-    </span>
-
-</footer>
 
 
 </body>
