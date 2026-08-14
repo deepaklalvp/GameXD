@@ -15,10 +15,17 @@ import {
    ELEMENTS
    ========================================================= */
 
-const profileBtn = document.getElementById("profileBtn");
-const profileMenu = document.getElementById("profileMenu");
-const drawerBackdrop = document.getElementById("drawerBackdrop");
-const logoutBtn = document.getElementById("logoutBtn");
+const profileBtn =
+    document.getElementById("profileBtn");
+
+const profileMenu =
+    document.getElementById("profileMenu");
+
+const drawerBackdrop =
+    document.getElementById("drawerBackdrop");
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
 
 
 /* =========================================================
@@ -34,10 +41,16 @@ function openProfile() {
 
     document.body.classList.add("drawer-open");
 
-    profileMenu.setAttribute("aria-hidden", "false");
+    profileMenu.setAttribute(
+        "aria-hidden",
+        "false"
+    );
 
     if (profileBtn) {
-        profileBtn.setAttribute("aria-expanded", "true");
+        profileBtn.setAttribute(
+            "aria-expanded",
+            "true"
+        );
     }
 }
 
@@ -51,10 +64,16 @@ function closeProfile() {
 
     document.body.classList.remove("drawer-open");
 
-    profileMenu.setAttribute("aria-hidden", "true");
+    profileMenu.setAttribute(
+        "aria-hidden",
+        "true"
+    );
 
     if (profileBtn) {
-        profileBtn.setAttribute("aria-expanded", "false");
+        profileBtn.setAttribute(
+            "aria-expanded",
+            "false"
+        );
     }
 }
 
@@ -64,9 +83,13 @@ function toggleProfile() {
     if (!profileMenu) return;
 
     if (profileMenu.classList.contains("show")) {
+
         closeProfile();
+
     } else {
+
         openProfile();
+
     }
 }
 
@@ -77,31 +100,37 @@ function toggleProfile() {
 
 if (profileBtn) {
 
-    profileBtn.addEventListener("click", (event) => {
+    profileBtn.addEventListener(
+        "click",
+        (event) => {
 
-        event.stopPropagation();
-
-        toggleProfile();
-
-    });
-
-
-    /* Keyboard support */
-
-    profileBtn.addEventListener("keydown", (event) => {
-
-        if (
-            event.key === "Enter" ||
-            event.key === " "
-        ) {
-
-            event.preventDefault();
+            event.stopPropagation();
 
             toggleProfile();
 
         }
+    );
 
-    });
+
+    /* Keyboard support */
+
+    profileBtn.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key === "Enter" ||
+                event.key === " "
+            ) {
+
+                event.preventDefault();
+
+                toggleProfile();
+
+            }
+
+        }
+    );
 
 }
 
@@ -110,27 +139,19 @@ if (profileBtn) {
    BACKDROP
    ========================================================= */
 
-/*
-   IMPORTANT:
-
-   Clicking outside the drawer means clicking
-   the backdrop.
-
-   It closes ONLY the drawer.
-
-   It does NOT trigger buttons underneath.
-*/
-
 if (drawerBackdrop) {
 
-    drawerBackdrop.addEventListener("click", (event) => {
+    drawerBackdrop.addEventListener(
+        "click",
+        (event) => {
 
-        event.preventDefault();
-        event.stopPropagation();
+            event.preventDefault();
+            event.stopPropagation();
 
-        closeProfile();
+            closeProfile();
 
-    });
+        }
+    );
 
 }
 
@@ -139,27 +160,24 @@ if (drawerBackdrop) {
    DRAWER CLICK
    ========================================================= */
 
-/*
-   Clicking inside the drawer should NOT close it.
-
-   However, we do NOT prevent normal button behavior.
-
-   So:
-   - Edit Profile works
-   - View Profile works
-   - Terms works
-   - Privacy works
-   - Help works
-   - Logout works
-*/
-
 if (profileMenu) {
 
-    profileMenu.addEventListener("click", (event) => {
+    profileMenu.addEventListener(
+        "click",
+        (event) => {
 
-        event.stopPropagation();
+            /*
+             * Keep clicks inside the drawer
+             * from closing it.
+             *
+             * Buttons inside the drawer still
+             * work normally.
+             */
 
-    });
+            event.stopPropagation();
+
+        }
+    );
 
 }
 
@@ -168,337 +186,455 @@ if (profileMenu) {
    ESCAPE KEY
    ========================================================= */
 
-document.addEventListener("keydown", (event) => {
+document.addEventListener(
+    "keydown",
+    (event) => {
 
-    if (
-        event.key === "Escape" &&
-        profileMenu &&
-        profileMenu.classList.contains("show")
-    ) {
+        if (
+            event.key === "Escape" &&
+            profileMenu &&
+            profileMenu.classList.contains("show")
+        ) {
 
-        closeProfile();
+            closeProfile();
+
+        }
 
     }
-
-});
+);
 
 
 /* =========================================================
    AUTHENTICATION
    ========================================================= */
 
-onAuthStateChanged(auth, async (user) => {
-
-    /* -----------------------------------------------------
-       USER NOT LOGGED IN
-       ----------------------------------------------------- */
-
-    if (!user) {
-
-        window.location.href = "index.html";
-
-        return;
-
-    }
-
-
-    try {
+onAuthStateChanged(
+    auth,
+    async (user) => {
 
         /* -------------------------------------------------
-           FIRESTORE USER DOCUMENT
+           NOT LOGGED IN
            ------------------------------------------------- */
 
-        const userRef = doc(
-            db,
-            "users",
-            user.uid
-        );
+        if (!user) {
 
-        const userSnap = await getDoc(userRef);
+            window.location.href =
+                "index.html";
 
+            return;
 
-        /* -------------------------------------------------
-           DEFAULT USER DATA
-           ------------------------------------------------- */
-
-        let userData = {
-
-            name: "Player",
-
-            email: user.email || "",
-
-            points: 0,
-
-            gamesPlayed: 0,
-
-            wins: 0
-
-        };
+        }
 
 
-        /* -------------------------------------------------
-           GET FIRESTORE DATA
-           ------------------------------------------------- */
+        try {
 
-        if (userSnap.exists()) {
+            /* -------------------------------------------------
+               FIRESTORE USER DOCUMENT
+               ------------------------------------------------- */
 
-            const data = userSnap.data();
+            const userRef =
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                );
 
-            userData = {
 
-                ...userData,
+            const userSnap =
+                await getDoc(userRef);
 
-                ...data
+
+            /* =================================================
+               DEFAULT USER DATA
+               ================================================= */
+
+            let userData = {
+
+                name: "Player",
+
+                email:
+                    user.email || "",
+
+                points: 0,
+
+                gamesPlayed: 0,
+
+                gamesWon: 0,
+
+                gamesDrawn: 0
 
             };
 
-        }
 
+            /* =================================================
+               FIRESTORE DATA
+               ================================================= */
 
-        /* =================================================
-           CLEAN VALUES
-           ================================================= */
+            if (userSnap.exists()) {
 
-        const name =
-            userData.name ||
-            "Player";
+                const data =
+                    userSnap.data();
 
 
-        const email =
-            userData.email ||
-            user.email ||
-            "";
+                userData = {
 
+                    ...userData,
 
-        const points =
-            Number(userData.points) || 0;
+                    ...data
 
+                };
 
-        const gamesPlayed =
-            Number(
-                userData.gamesPlayed ??
-                userData.games ??
-                0
-            ) || 0;
+            }
 
 
-        const wins =
-            Number(
-                userData.wins ??
-                userData.gameWins ??
-                0
-            ) || 0;
+            /* =================================================
+               CLEAN VALUES
+               ================================================= */
 
-
-        /* =================================================
-           NAVBAR
-           ================================================= */
-
-        const userName =
-            document.getElementById("userName");
-
-
-        const userPoints =
-            document.getElementById("userPoints");
-
-
-        if (userName) {
-
-            userName.textContent =
-                `Hi, ${name}`;
-
-        }
-
-
-        if (userPoints) {
-
-            userPoints.innerHTML =
-                `<i class="fa-solid fa-star"></i> ${points} pts`;
-
-        }
-
-
-        /* =================================================
-           PROFILE DRAWER
-           ================================================= */
-
-        const profileName =
-            document.getElementById("profileName");
-
-
-        const profileEmail =
-            document.getElementById("profileEmail");
-
-
-        const profileAvatar =
-            document.getElementById("profileAvatar");
-
-
-        const profilePoints =
-            document.getElementById("profilePoints");
-
-
-        const profileGames =
-            document.getElementById("profileGames");
-
-
-        const profileWins =
-            document.getElementById("profileWins");
-
-
-        /* -------------------------------------------------
-           NAME
-           ------------------------------------------------- */
-
-        if (profileName) {
-
-            profileName.textContent =
-                name;
-
-        }
-
-
-        /* -------------------------------------------------
-           EMAIL
-           ------------------------------------------------- */
-
-        if (profileEmail) {
-
-            profileEmail.textContent =
-                email;
-
-        }
-
-
-        /* -------------------------------------------------
-           AVATAR
-           ------------------------------------------------- */
-
-        if (profileAvatar) {
-
-            const firstLetter =
-                name
-                    .trim()
-                    .charAt(0)
-                    .toUpperCase() || "P";
-
-
-            profileAvatar.textContent =
-                firstLetter;
-
-        }
-
-
-        /* -------------------------------------------------
-           PROFILE POINTS
-           ------------------------------------------------- */
-
-        if (profilePoints) {
-
-            profilePoints.textContent =
-                `⭐ ${points} Points`;
-
-        }
-
-
-        /* -------------------------------------------------
-           GAMES PLAYED
-           ------------------------------------------------- */
-
-        if (profileGames) {
-
-            profileGames.textContent =
-                gamesPlayed;
-
-        }
-
-
-        /* -------------------------------------------------
-           WINS
-           ------------------------------------------------- */
-
-        if (profileWins) {
-
-            profileWins.textContent =
-                wins;
-
-        }
-
-
-    } catch (error) {
-
-        console.error(
-            "Error loading user profile:",
-            error
-        );
-
-
-        /* -------------------------------------------------
-           FALLBACK UI
-           ------------------------------------------------- */
-
-        const userName =
-            document.getElementById("userName");
-
-
-        const userPoints =
-            document.getElementById("userPoints");
-
-
-        if (userName) {
-
-            userName.textContent =
-                "Hi, Player";
-
-        }
-
-
-        if (userPoints) {
-
-            userPoints.innerHTML =
-                `<i class="fa-solid fa-star"></i> 0 pts`;
-
-        }
-
-
-        const profileName =
-            document.getElementById("profileName");
-
-
-        const profileEmail =
-            document.getElementById("profileEmail");
-
-
-        const profileAvatar =
-            document.getElementById("profileAvatar");
-
-
-        if (profileName) {
-
-            profileName.textContent =
+            const name =
+                userData.name ||
                 "Player";
 
+
+            const email =
+                userData.email ||
+                user.email ||
+                "";
+
+
+            const points =
+                Number(
+                    userData.points
+                ) || 0;
+
+
+            /*
+             * IMPORTANT:
+             *
+             * These names MUST match
+             * the fields used by the games.
+             *
+             * gamesPlayed
+             * gamesWon
+             * gamesDrawn
+             */
+
+            const gamesPlayed =
+                Number(
+                    userData.gamesPlayed
+                ) || 0;
+
+
+            const gamesWon =
+                Number(
+                    userData.gamesWon
+                ) || 0;
+
+
+            const gamesDrawn =
+                Number(
+                    userData.gamesDrawn
+                ) || 0;
+
+
+            /* =================================================
+               NAVBAR
+               ================================================= */
+
+            const userName =
+                document.getElementById(
+                    "userName"
+                );
+
+
+            const userPoints =
+                document.getElementById(
+                    "userPoints"
+                );
+
+
+            if (userName) {
+
+                userName.textContent =
+                    `Hi, ${name}`;
+
+            }
+
+
+            if (userPoints) {
+
+                userPoints.innerHTML =
+                    `<i class="fa-solid fa-star"></i> ${points} pts`;
+
+            }
+
+
+            /* =================================================
+               PROFILE DRAWER ELEMENTS
+               ================================================= */
+
+            const profileName =
+                document.getElementById(
+                    "profileName"
+                );
+
+
+            const profileEmail =
+                document.getElementById(
+                    "profileEmail"
+                );
+
+
+            const profileAvatar =
+                document.getElementById(
+                    "profileAvatar"
+                );
+
+
+            const profilePoints =
+                document.getElementById(
+                    "profilePoints"
+                );
+
+
+            const profileGames =
+                document.getElementById(
+                    "profileGames"
+                );
+
+
+            const profileWins =
+                document.getElementById(
+                    "profileWins"
+                );
+
+
+            /* =================================================
+               PROFILE NAME
+               ================================================= */
+
+            if (profileName) {
+
+                profileName.textContent =
+                    name;
+
+            }
+
+
+            /* =================================================
+               PROFILE EMAIL
+               ================================================= */
+
+            if (profileEmail) {
+
+                profileEmail.textContent =
+                    email;
+
+            }
+
+
+            /* =================================================
+               PROFILE AVATAR
+               ================================================= */
+
+            if (profileAvatar) {
+
+                const firstLetter =
+                    name
+                        .trim()
+                        .charAt(0)
+                        .toUpperCase() || "P";
+
+
+                profileAvatar.textContent =
+                    firstLetter;
+
+            }
+
+
+            /* =================================================
+               PROFILE POINTS
+               ================================================= */
+
+            if (profilePoints) {
+
+                profilePoints.textContent =
+                    `⭐ ${points} Points`;
+
+            }
+
+
+            /* =================================================
+               GAMES PLAYED
+               ================================================= */
+
+            if (profileGames) {
+
+                profileGames.textContent =
+                    gamesPlayed;
+
+            }
+
+
+            /* =================================================
+               GAMES WON
+               ================================================= */
+
+            if (profileWins) {
+
+                profileWins.textContent =
+                    gamesWon;
+
+            }
+
+
+            /* =================================================
+               DEBUG
+               ================================================= */
+
+            console.log(
+                "Profile statistics:",
+                {
+                    gamesPlayed,
+                    gamesWon,
+                    gamesDrawn
+                }
+            );
+
         }
 
 
-        if (profileEmail) {
+        catch (error) {
 
-            profileEmail.textContent =
-                user.email || "";
+            console.error(
+                "Error loading user profile:",
+                error
+            );
 
-        }
+
+            /* =================================================
+               FALLBACK NAVBAR
+               ================================================= */
+
+            const userName =
+                document.getElementById(
+                    "userName"
+                );
 
 
-        if (profileAvatar) {
+            const userPoints =
+                document.getElementById(
+                    "userPoints"
+                );
 
-            profileAvatar.textContent =
-                "P";
+
+            if (userName) {
+
+                userName.textContent =
+                    "Hi, Player";
+
+            }
+
+
+            if (userPoints) {
+
+                userPoints.innerHTML =
+                    `<i class="fa-solid fa-star"></i> 0 pts`;
+
+            }
+
+
+            /* =================================================
+               FALLBACK PROFILE
+               ================================================= */
+
+            const profileName =
+                document.getElementById(
+                    "profileName"
+                );
+
+
+            const profileEmail =
+                document.getElementById(
+                    "profileEmail"
+                );
+
+
+            const profileAvatar =
+                document.getElementById(
+                    "profileAvatar"
+                );
+
+
+            const profilePoints =
+                document.getElementById(
+                    "profilePoints"
+                );
+
+
+            const profileGames =
+                document.getElementById(
+                    "profileGames"
+                );
+
+
+            const profileWins =
+                document.getElementById(
+                    "profileWins"
+                );
+
+
+            if (profileName) {
+
+                profileName.textContent =
+                    "Player";
+
+            }
+
+
+            if (profileEmail) {
+
+                profileEmail.textContent =
+                    user.email || "";
+
+            }
+
+
+            if (profileAvatar) {
+
+                profileAvatar.textContent =
+                    "P";
+
+            }
+
+
+            if (profilePoints) {
+
+                profilePoints.textContent =
+                    "⭐ 0 Points";
+
+            }
+
+
+            if (profileGames) {
+
+                profileGames.textContent =
+                    "0";
+
+            }
+
+
+            if (profileWins) {
+
+                profileWins.textContent =
+                    "0";
+
+            }
 
         }
 
     }
-
-});
+);
 
 
 /* =========================================================
@@ -507,40 +643,34 @@ onAuthStateChanged(auth, async (user) => {
 
 if (logoutBtn) {
 
-    logoutBtn.addEventListener("click", async (event) => {
+    logoutBtn.addEventListener(
+        "click",
+        async (event) => {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        try {
+            try {
 
-            /*
-             * Close drawer before signing out
-             */
+                closeProfile();
 
-            closeProfile();
+                await signOut(auth);
 
+                window.location.href =
+                    "index.html";
 
-            await signOut(auth);
+            }
 
+            catch (error) {
 
-            /*
-             * Redirect after successful logout
-             */
+                console.error(
+                    "Logout error:",
+                    error
+                );
 
-            window.location.href =
-                "index.html";
-
-
-        } catch (error) {
-
-            console.error(
-                "Logout error:",
-                error
-            );
+            }
 
         }
-
-    });
+    );
 
 }
 
@@ -550,14 +680,16 @@ if (logoutBtn) {
    ========================================================= */
 
 /*
-   Temporary value.
-
-   Later this can be replaced with
-   real-time Firebase presence.
-*/
+ * Temporary value.
+ *
+ * Later this can be replaced with
+ * real-time Firebase presence.
+ */
 
 const onlinePlayers =
-    document.getElementById("onlinePlayers");
+    document.getElementById(
+        "onlinePlayers"
+    );
 
 
 if (onlinePlayers) {
