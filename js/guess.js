@@ -50,16 +50,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const logoutButton =
         document.getElementById("logoutBtn");
 
+    const userNameElement =
+        document.getElementById("userName");
+
+    const userPointsElement =
+        document.getElementById("userPoints");
+
 
     // =====================================================
     // GAME STATE
     // =====================================================
 
-    let secretNumber = null;
+    let secretNumber = 0;
 
-    let attempts = 0;
+    let attempts = 10;
 
-    let gameFinished = false;
+    let gameOver = false;
 
 
     // =====================================================
@@ -84,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             // ---------------------------------------------
-            // SAVE UID
+            // SAVE USER UID
             // ---------------------------------------------
 
             currentUserUID =
@@ -122,66 +128,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     currentPoints =
                         Number(
-                            data.points ?? 0
+                            data.points
                         ) || 0;
 
 
-                    // -------------------------------------
-                    // NAVBAR NAME
-                    // -------------------------------------
+                    if (userNameElement) {
 
-                    const userName =
-                        document.getElementById(
-                            "userName"
-                        );
-
-
-                    if (userName) {
-
-                        userName.textContent =
+                        userNameElement.textContent =
                             `Hi, ${name}`;
                     }
 
 
-                    // -------------------------------------
-                    // NAVBAR POINTS
-                    // -------------------------------------
+                    updatePointsDisplay();
 
-                    updatePointsUI();
-
-
-                    // -------------------------------------
-                    // PROFILE DRAWER
-                    // -------------------------------------
-
-                    updateProfileUI(data);
-
-
-                    console.log(
-                        "Guess Game profile loaded:",
-                        {
-                            gamesPlayed:
-                                Number(
-                                    data.gamesPlayed ?? 0
-                                ) || 0,
-
-                            wins:
-                                Number(
-                                    data.wins ??
-                                    data.gamesWon ??
-                                    0
-                                ) || 0,
-
-                            gamesDrawn:
-                                Number(
-                                    data.gamesDrawn ?? 0
-                                ) || 0,
-
-                            points:
-                                currentPoints
-                        }
-                    );
                 }
+
 
                 // -----------------------------------------
                 // USER DOCUMENT DOES NOT EXIST
@@ -191,7 +152,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     currentPoints = 0;
 
-                    setDefaultProfileUI();
+
+                    if (userNameElement) {
+
+                        userNameElement.textContent =
+                            "Hi, Player";
+                    }
+
+
+                    updatePointsDisplay();
                 }
 
             }
@@ -203,10 +172,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     error
                 );
 
-                currentPoints = 0;
-
-                setDefaultProfileUI();
             }
+
         }
     );
 
@@ -236,9 +203,29 @@ document.addEventListener("DOMContentLoaded", () => {
                         "Logout error:",
                         error
                     );
+
                 }
+
             }
         );
+
+    }
+
+
+    // =====================================================
+    // UPDATE POINTS DISPLAY
+    // =====================================================
+
+    function updatePointsDisplay() {
+
+        if (!userPointsElement) {
+            return;
+        }
+
+
+        userPointsElement.textContent =
+            ` | ⭐ ${currentPoints} pts`;
+
     }
 
 
@@ -256,19 +243,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         attempts = 10;
 
-        gameFinished = false;
+        gameOver = false;
 
 
         if (attemptsText) {
 
             attemptsText.textContent =
                 `Attempts Left : ${attempts}`;
+
         }
 
 
         if (message) {
 
             message.textContent = "";
+
         }
 
 
@@ -279,20 +268,26 @@ document.addEventListener("DOMContentLoaded", () => {
             guessInput.disabled = false;
 
             guessInput.focus();
+
         }
 
 
         if (guessButton) {
 
             guessButton.disabled = false;
+
         }
 
 
-        // Remove this after testing
+        // ---------------------------------------------
+        // REMOVE THIS IN PRODUCTION
+        // ---------------------------------------------
+
         console.log(
             "Secret number:",
             secretNumber
         );
+
     }
 
 
@@ -302,19 +297,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function endGame() {
 
-        gameFinished = true;
+        gameOver = true;
 
 
         if (guessInput) {
 
             guessInput.disabled = true;
+
         }
 
 
         if (guessButton) {
 
             guessButton.disabled = true;
+
         }
+
     }
 
 
@@ -324,23 +322,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function checkGuess() {
 
-        // -----------------------------------------------
-        // GAME ALREADY FINISHED
-        // -----------------------------------------------
+        // ---------------------------------------------
+        // DO NOTHING IF GAME HAS ENDED
+        // ---------------------------------------------
 
-        if (gameFinished) {
+        if (gameOver) {
             return;
         }
 
 
-        // -----------------------------------------------
-        // INPUT CHECK
-        // -----------------------------------------------
-
-        if (!guessInput) {
-            return;
-        }
-
+        // ---------------------------------------------
+        // CHECK USER INPUT
+        // ---------------------------------------------
 
         const guess =
             parseInt(
@@ -359,15 +352,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 message.textContent =
                     "⚠️ Enter a number between 1 and 100.";
+
             }
 
             return;
         }
 
 
-        // -----------------------------------------------
-        // REMOVE ONE ATTEMPT
-        // -----------------------------------------------
+        // ---------------------------------------------
+        // REDUCE ATTEMPT
+        // ---------------------------------------------
 
         attempts--;
 
@@ -376,6 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             attemptsText.textContent =
                 `Attempts Left : ${attempts}`;
+
         }
 
 
@@ -383,27 +378,34 @@ document.addEventListener("DOMContentLoaded", () => {
         // PLAYER WINS
         // =================================================
 
-        if (guess === secretNumber) {
+        if (
+            guess === secretNumber
+        ) {
 
             if (message) {
 
                 message.textContent =
                     "🎉 Correct! +10 points!";
+
             }
 
 
-            endGame();
+            // -----------------------------------------
+            // IMPORTANT:
+            // UPDATE BOTH:
+            //
+            // gamesPlayed +1
+            // wins +1
+            // points +10
+            // -----------------------------------------
 
-
-            // ---------------------------------------------
-            // UPDATE FIRESTORE
-            // ---------------------------------------------
-
-            await finishGuessGame(
+            await finishGame(
                 "win",
                 10
             );
 
+
+            endGame();
 
             return;
         }
@@ -413,27 +415,33 @@ document.addEventListener("DOMContentLoaded", () => {
         // PLAYER LOSES
         // =================================================
 
-        if (attempts === 0) {
+        if (
+            attempts === 0
+        ) {
 
             if (message) {
 
                 message.textContent =
                     `❌ You Lost! Number was ${secretNumber}. -5 points!`;
+
             }
 
 
-            endGame();
+            // -----------------------------------------
+            // UPDATE:
+            //
+            // gamesPlayed +1
+            // wins unchanged
+            // points -5
+            // -----------------------------------------
 
-
-            // ---------------------------------------------
-            // UPDATE FIRESTORE
-            // ---------------------------------------------
-
-            await finishGuessGame(
+            await finishGame(
                 "loss",
                 -5
             );
 
+
+            endGame();
 
             return;
         }
@@ -443,12 +451,15 @@ document.addEventListener("DOMContentLoaded", () => {
         // HINT
         // =================================================
 
-        if (guess < secretNumber) {
+        if (
+            guess < secretNumber
+        ) {
 
             if (message) {
 
                 message.textContent =
                     "📈 Too Low! Try Again.";
+
             }
 
         }
@@ -459,17 +470,150 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 message.textContent =
                     "📉 Too High! Try Again.";
+
             }
+
         }
 
 
-        // -----------------------------------------------
-        // CLEAR INPUT
-        // -----------------------------------------------
+        // Clear input
 
-        guessInput.value = "";
+        if (guessInput) {
 
-        guessInput.focus();
+            guessInput.value = "";
+
+            guessInput.focus();
+
+        }
+
+    }
+
+
+    // =====================================================
+    // FINISH GAME
+    // =====================================================
+    //
+    // This is the important part.
+    //
+    // WIN:
+    // gamesPlayed +1
+    // wins +1
+    // points +10
+    //
+    // LOSS:
+    // gamesPlayed +1
+    // wins unchanged
+    // points -5
+    //
+    // =====================================================
+
+    async function finishGame(
+        result,
+        points
+    ) {
+
+        // ---------------------------------------------
+        // USER MUST BE LOGGED IN
+        // ---------------------------------------------
+
+        if (!currentUserUID) {
+
+            console.error(
+                "Cannot save game result: user not logged in."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const userRef =
+                doc(
+                    db,
+                    "users",
+                    currentUserUID
+                );
+
+
+            // ---------------------------------------------
+            // ALWAYS COUNT GAME
+            // ---------------------------------------------
+
+            const updates = {
+
+                gamesPlayed:
+                    increment(1),
+
+                points:
+                    increment(points)
+
+            };
+
+
+            // ---------------------------------------------
+            // ONLY WIN INCREASES WINS
+            // ---------------------------------------------
+
+            if (
+                result === "win"
+            ) {
+
+                updates.wins =
+                    increment(1);
+
+            }
+
+
+            // ---------------------------------------------
+            // UPDATE FIRESTORE
+            // ---------------------------------------------
+
+            await updateDoc(
+                userRef,
+                updates
+            );
+
+
+            // ---------------------------------------------
+            // UPDATE LOCAL POINT VALUE
+            // ---------------------------------------------
+
+            currentPoints += points;
+
+
+            updatePointsDisplay();
+
+
+            // ---------------------------------------------
+            // LOG RESULT
+            // ---------------------------------------------
+
+            console.log(
+                "Guess Game statistics updated:",
+                {
+                    result: result,
+                    gamesPlayed: "+1",
+                    wins:
+                        result === "win"
+                            ? "+1"
+                            : "+0",
+                    points: points
+                }
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Failed to update Guess Game statistics:",
+                error
+            );
+
+        }
+
     }
 
 
@@ -483,14 +627,19 @@ document.addEventListener("DOMContentLoaded", () => {
             "keydown",
             (event) => {
 
-                if (event.key === "Enter") {
+                if (
+                    event.key === "Enter"
+                ) {
 
                     event.preventDefault();
 
                     checkGuess();
+
                 }
+
             }
         );
+
     }
 
 
@@ -504,6 +653,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             checkGuess
         );
+
     }
 
 
@@ -517,6 +667,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             newGame
         );
+
     }
 
 
@@ -527,579 +678,3 @@ document.addEventListener("DOMContentLoaded", () => {
     newGame();
 
 });
-
-
-// =========================================================
-// FINISH GUESS GAME
-// =========================================================
-//
-// WIN:
-// gamesPlayed +1
-// wins +1
-// points +10
-//
-// LOSS:
-// gamesPlayed +1
-// points -5
-//
-// LOCAL DRAWER IS REFRESHED AFTER FIRESTORE UPDATE
-// =========================================================
-
-async function finishGuessGame(
-    result,
-    points
-) {
-
-    if (!currentUserUID) {
-
-        console.error(
-            "Cannot update game statistics: no logged-in user."
-        );
-
-        return;
-    }
-
-
-    try {
-
-        const userRef =
-            doc(
-                db,
-                "users",
-                currentUserUID
-            );
-
-
-        // -----------------------------------------------
-        // GAME STATISTICS
-        // -----------------------------------------------
-
-        const updates = {
-
-            gamesPlayed:
-                increment(1)
-
-        };
-
-
-        // -----------------------------------------------
-        // WIN
-        // -----------------------------------------------
-
-        if (result === "win") {
-
-            updates.wins =
-                increment(1);
-        }
-
-
-        // -----------------------------------------------
-        // POINTS
-        // -----------------------------------------------
-
-        if (points !== 0) {
-
-            updates.points =
-                increment(points);
-        }
-
-
-        // -----------------------------------------------
-        // SINGLE FIRESTORE UPDATE
-        // -----------------------------------------------
-
-        await updateDoc(
-            userRef,
-            updates
-        );
-
-
-        console.log(
-            "Guess Game statistics updated:",
-            {
-                result,
-                points
-            }
-        );
-
-
-        // -----------------------------------------------
-        // UPDATE LOCAL POINT VALUE
-        // -----------------------------------------------
-
-        currentPoints += points;
-
-
-        updatePointsUI();
-
-
-        // -----------------------------------------------
-        // REFRESH PROFILE DRAWER
-        // -----------------------------------------------
-
-        await refreshProfileDrawer();
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Failed to update Guess Game statistics:",
-            error
-        );
-    }
-}
-
-
-// =========================================================
-// REFRESH PROFILE DRAWER
-// =========================================================
-//
-// Reads Firestore again after the game.
-//
-// This makes:
-//
-// Games
-// Wins
-// Points
-//
-// update immediately without page refresh.
-// =========================================================
-
-async function refreshProfileDrawer() {
-
-    if (!currentUserUID) {
-        return;
-    }
-
-
-    try {
-
-        const userRef =
-            doc(
-                db,
-                "users",
-                currentUserUID
-            );
-
-
-        const snapshot =
-            await getDoc(userRef);
-
-
-        if (!snapshot.exists()) {
-            return;
-        }
-
-
-        const data =
-            snapshot.data();
-
-
-        // -----------------------------------------------
-        // GAMES PLAYED
-        // -----------------------------------------------
-
-        const gamesPlayed =
-            Number(
-                data.gamesPlayed ?? 0
-            ) || 0;
-
-
-        // -----------------------------------------------
-        // WINS
-        // -----------------------------------------------
-
-        const wins =
-            Number(
-                data.wins ??
-                data.gamesWon ??
-                0
-            ) || 0;
-
-
-        // -----------------------------------------------
-        // DRAWS
-        // -----------------------------------------------
-
-        const gamesDrawn =
-            Number(
-                data.gamesDrawn ?? 0
-            ) || 0;
-
-
-        // -----------------------------------------------
-        // POINTS
-        // -----------------------------------------------
-
-        const points =
-            Number(
-                data.points ?? 0
-            ) || 0;
-
-
-        currentPoints =
-            points;
-
-
-        // -----------------------------------------------
-        // PROFILE GAMES
-        // -----------------------------------------------
-
-        const profileGames =
-            document.getElementById(
-                "profileGames"
-            );
-
-
-        if (profileGames) {
-
-            profileGames.textContent =
-                gamesPlayed;
-        }
-
-
-        // -----------------------------------------------
-        // PROFILE WINS
-        // -----------------------------------------------
-
-        const profileWins =
-            document.getElementById(
-                "profileWins"
-            );
-
-
-        if (profileWins) {
-
-            profileWins.textContent =
-                wins;
-        }
-
-
-        // -----------------------------------------------
-        // PROFILE POINTS
-        // -----------------------------------------------
-
-        const profilePoints =
-            document.getElementById(
-                "profilePoints"
-            );
-
-
-        if (profilePoints) {
-
-            profilePoints.textContent =
-                `⭐ ${points} Points`;
-        }
-
-
-        // -----------------------------------------------
-        // NAVBAR POINTS
-        // -----------------------------------------------
-
-        updatePointsUI();
-
-
-        console.log(
-            "Guess Game profile drawer refreshed:",
-            {
-                gamesPlayed,
-                wins,
-                gamesDrawn,
-                points
-            }
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Failed to refresh profile drawer:",
-            error
-        );
-    }
-}
-
-
-// =========================================================
-// UPDATE POINTS UI
-// =========================================================
-
-function updatePointsUI() {
-
-    const userPoints =
-        document.getElementById(
-            "userPoints"
-        );
-
-
-    if (userPoints) {
-
-        userPoints.innerHTML =
-            `<i class="fa-solid fa-star"></i> ${currentPoints} pts`;
-    }
-
-
-    const profilePoints =
-        document.getElementById(
-            "profilePoints"
-        );
-
-
-    if (profilePoints) {
-
-        profilePoints.textContent =
-            `⭐ ${currentPoints} Points`;
-    }
-}
-
-
-// =========================================================
-// UPDATE PROFILE UI
-// =========================================================
-
-function updateProfileUI(data) {
-
-    const name =
-        data.name ||
-        "Player";
-
-
-    const email =
-        data.email ||
-        auth.currentUser?.email ||
-        "";
-
-
-    const gamesPlayed =
-        Number(
-            data.gamesPlayed ?? 0
-        ) || 0;
-
-
-    const wins =
-        Number(
-            data.wins ??
-            data.gamesWon ??
-            0
-        ) || 0;
-
-
-    const profileName =
-        document.getElementById(
-            "profileName"
-        );
-
-
-    const profileEmail =
-        document.getElementById(
-            "profileEmail"
-        );
-
-
-    const profileAvatar =
-        document.getElementById(
-            "profileAvatar"
-        );
-
-
-    const profileGames =
-        document.getElementById(
-            "profileGames"
-        );
-
-
-    const profileWins =
-        document.getElementById(
-            "profileWins"
-        );
-
-
-    const profilePoints =
-        document.getElementById(
-            "profilePoints"
-        );
-
-
-    // -----------------------------------------------
-    // NAME
-    // -----------------------------------------------
-
-    if (profileName) {
-
-        profileName.textContent =
-            name;
-    }
-
-
-    // -----------------------------------------------
-    // EMAIL
-    // -----------------------------------------------
-
-    if (profileEmail) {
-
-        profileEmail.textContent =
-            email;
-    }
-
-
-    // -----------------------------------------------
-    // AVATAR
-    // -----------------------------------------------
-
-    if (profileAvatar) {
-
-        profileAvatar.textContent =
-            name
-                .trim()
-                .charAt(0)
-                .toUpperCase() ||
-            "P";
-    }
-
-
-    // -----------------------------------------------
-    // GAMES
-    // -----------------------------------------------
-
-    if (profileGames) {
-
-        profileGames.textContent =
-            gamesPlayed;
-    }
-
-
-    // -----------------------------------------------
-    // WINS
-    // -----------------------------------------------
-
-    if (profileWins) {
-
-        profileWins.textContent =
-            wins;
-    }
-
-
-    // -----------------------------------------------
-    // POINTS
-    // -----------------------------------------------
-
-    if (profilePoints) {
-
-        profilePoints.textContent =
-            `⭐ ${currentPoints} Points`;
-    }
-}
-
-
-// =========================================================
-// DEFAULT PROFILE UI
-// =========================================================
-
-function setDefaultProfileUI() {
-
-    const userName =
-        document.getElementById(
-            "userName"
-        );
-
-
-    const userPoints =
-        document.getElementById(
-            "userPoints"
-        );
-
-
-    const profileName =
-        document.getElementById(
-            "profileName"
-        );
-
-
-    const profileEmail =
-        document.getElementById(
-            "profileEmail"
-        );
-
-
-    const profileAvatar =
-        document.getElementById(
-            "profileAvatar"
-        );
-
-
-    const profileGames =
-        document.getElementById(
-            "profileGames"
-        );
-
-
-    const profileWins =
-        document.getElementById(
-            "profileWins"
-        );
-
-
-    const profilePoints =
-        document.getElementById(
-            "profilePoints"
-        );
-
-
-    if (userName) {
-
-        userName.textContent =
-            "Hi, Player";
-    }
-
-
-    if (userPoints) {
-
-        userPoints.innerHTML =
-            `<i class="fa-solid fa-star"></i> 0 pts`;
-    }
-
-
-    if (profileName) {
-
-        profileName.textContent =
-            "Player";
-    }
-
-
-    if (profileEmail) {
-
-        profileEmail.textContent =
-            auth.currentUser?.email ||
-            "";
-    }
-
-
-    if (profileAvatar) {
-
-        profileAvatar.textContent =
-            "P";
-    }
-
-
-    if (profileGames) {
-
-        profileGames.textContent =
-            "0";
-    }
-
-
-    if (profileWins) {
-
-        profileWins.textContent =
-            "0";
-    }
-
-
-    if (profilePoints) {
-
-        profilePoints.textContent =
-            "⭐ 0 Points";
-    }
-}
