@@ -116,7 +116,6 @@ function getEmpty(b = board) {
             value === "" ? index : null
         )
         .filter(index => index !== null);
-
 }
 
 
@@ -131,7 +130,6 @@ function checkWin(b, player) {
             b[index] === player
         )
     );
-
 }
 
 
@@ -146,7 +144,6 @@ function getWinningPattern(b, player) {
             b[index] === player
         )
     );
-
 }
 
 
@@ -159,7 +156,6 @@ function updateStatus(message) {
     if (statusEl) {
         statusEl.textContent = message;
     }
-
 }
 
 
@@ -178,7 +174,6 @@ function highlightWin(pattern) {
         }
 
     });
-
 }
 
 
@@ -193,7 +188,6 @@ function clearHighlights() {
     cells.forEach(cell => {
         cell.classList.remove("win");
     });
-
 }
 
 
@@ -222,7 +216,6 @@ function updateScoreboard() {
     if (scoreOName) {
         scoreOName.textContent = playerOName;
     }
-
 }
 
 
@@ -249,7 +242,6 @@ function updatePlayerNames() {
         oName || "Player O";
 
     updateScoreboard();
-
 }
 
 
@@ -262,7 +254,6 @@ function showElement(element) {
     if (!element) return;
 
     element.classList.remove("hidden");
-
 }
 
 
@@ -275,7 +266,6 @@ function hideElement(element) {
     if (!element) return;
 
     element.classList.add("hidden");
-
 }
 
 
@@ -286,7 +276,6 @@ function hideElement(element) {
 function showAIMode() {
 
     gameMode = "ai";
-
 
     // Mode buttons
 
@@ -314,7 +303,6 @@ function showAIMode() {
     // Reset board
 
     restart();
-
 }
 
 
@@ -353,7 +341,6 @@ function showTwoPlayerMode() {
     updatePlayerNames();
 
     restart();
-
 }
 
 
@@ -398,7 +385,6 @@ function restart() {
         );
 
     }
-
 }
 
 
@@ -412,16 +398,13 @@ function resetTwoPlayerScore() {
         return;
     }
 
-
     playerXScore = 0;
     playerOScore = 0;
     drawScore = 0;
 
-
     updateScoreboard();
 
     restart();
-
 }
 
 
@@ -442,7 +425,6 @@ function randomMove() {
             Math.random() * empty.length
         )
     ];
-
 }
 
 
@@ -464,11 +446,9 @@ function findWin(player) {
         if (win) {
             return index;
         }
-
     }
 
     return null;
-
 }
 
 
@@ -488,7 +468,6 @@ function minimax(newBoard, player) {
         return {
             score: -10
         };
-
     }
 
 
@@ -499,7 +478,6 @@ function minimax(newBoard, player) {
         return {
             score: 10
         };
-
     }
 
 
@@ -510,7 +488,6 @@ function minimax(newBoard, player) {
         return {
             score: 0
         };
-
     }
 
 
@@ -543,7 +520,6 @@ function minimax(newBoard, player) {
 
 
         moves.push(move);
-
     }
 
 
@@ -564,9 +540,7 @@ function minimax(newBoard, player) {
                 bestScore = move.score;
 
                 bestMove = move;
-
             }
-
         }
 
     }
@@ -586,16 +560,12 @@ function minimax(newBoard, player) {
                 bestScore = move.score;
 
                 bestMove = move;
-
             }
-
         }
-
     }
 
 
     return bestMove;
-
 }
 
 
@@ -618,7 +588,6 @@ function aiMove() {
     if (difficulty === "easy") {
 
         move = randomMove();
-
     }
 
 
@@ -630,7 +599,6 @@ function aiMove() {
             findWin("O") ??
             findWin("X") ??
             randomMove();
-
     }
 
 
@@ -642,7 +610,6 @@ function aiMove() {
             minimax(board, "O");
 
         move = result?.index;
-
     }
 
 
@@ -670,7 +637,8 @@ function aiMove() {
 
         endAIGame(
             "😔 AI Wins! -5 ⭐",
-            -5
+            -5,
+            "loss"
         );
 
         return;
@@ -687,7 +655,8 @@ function aiMove() {
 
         endAIGame(
             "🤝 Draw!",
-            0
+            0,
+            "draw"
         );
 
         return;
@@ -699,7 +668,6 @@ function aiMove() {
     playerTurn = true;
 
     updateStatus("Your Turn");
-
 }
 
 
@@ -738,7 +706,8 @@ function playerMoveAI(index) {
 
         endAIGame(
             "🎉 You Win! +10 ⭐",
-            10
+            10,
+            "win"
         );
 
         return;
@@ -755,7 +724,8 @@ function playerMoveAI(index) {
 
         endAIGame(
             "🤝 Draw!",
-            0
+            0,
+            "draw"
         );
 
         return;
@@ -777,11 +747,9 @@ function playerMoveAI(index) {
         ) {
 
             aiMove();
-
         }
 
     }, 450);
-
 }
 
 
@@ -807,10 +775,8 @@ function playerMoveTwoPlayer(index) {
     board[index] =
         currentPlayer;
 
-
     cells[index].textContent =
         currentPlayer;
-
 
     cells[index].classList.add(
         currentPlayer === "X"
@@ -843,7 +809,6 @@ function playerMoveTwoPlayer(index) {
 
             playerXScore++;
 
-
             updateStatus(
                 `🎉 ${playerXName} Wins!`
             );
@@ -854,11 +819,9 @@ function playerMoveTwoPlayer(index) {
 
             playerOScore++;
 
-
             updateStatus(
                 `🎉 ${playerOName} Wins!`
             );
-
         }
 
 
@@ -908,9 +871,7 @@ function playerMoveTwoPlayer(index) {
         updateStatus(
             `${playerOName}'s Turn ⭕`
         );
-
     }
-
 }
 
 
@@ -929,9 +890,7 @@ function handleCellClick(index) {
     else {
 
         playerMoveTwoPlayer(index);
-
     }
-
 }
 
 
@@ -939,7 +898,17 @@ function handleCellClick(index) {
 // AI GAME END
 // =====================================================
 
-async function endAIGame(message, points) {
+async function endAIGame(
+    message,
+    points,
+    result
+) {
+
+    // Prevent duplicate game completion
+
+    if (gameOver) {
+        return;
+    }
 
     gameOver = true;
 
@@ -949,8 +918,16 @@ async function endAIGame(message, points) {
     updateStatus(message);
 
 
-    // IMPORTANT:
-    // Firebase points ONLY in AI mode
+    // ---------------------------------------------
+    // Update personal game statistics
+    // ---------------------------------------------
+
+    await updateGameStats(result);
+
+
+    // ---------------------------------------------
+    // Existing points system
+    // ---------------------------------------------
 
     if (
         gameMode === "ai" &&
@@ -958,9 +935,95 @@ async function endAIGame(message, points) {
     ) {
 
         await updatePoints(points);
+    }
+}
+
+
+// =====================================================
+// FIREBASE GAME STATISTICS
+// =====================================================
+//
+// AI mode only.
+//
+// result:
+// "win"
+// "loss"
+// "draw"
+//
+// Firestore:
+// gamesPlayed
+// gamesWon
+// gamesDrawn
+// =====================================================
+
+async function updateGameStats(result) {
+
+    if (!currentUserUID) {
+
+        console.error(
+            "Cannot update game statistics: no logged-in user."
+        );
+
+        return;
+    }
+
+
+    if (gameMode !== "ai") {
+        return;
+    }
+
+
+    try {
+
+        const userRef =
+            doc(
+                db,
+                "users",
+                currentUserUID
+            );
+
+
+        const updates = {
+
+            gamesPlayed:
+                increment(1)
+
+        };
+
+
+        if (result === "win") {
+
+            updates.gamesWon =
+                increment(1);
+        }
+
+
+        if (result === "draw") {
+
+            updates.gamesDrawn =
+                increment(1);
+        }
+
+
+        await updateDoc(
+            userRef,
+            updates
+        );
+
+
+        console.log(
+            `Game statistics updated: ${result}`
+        );
 
     }
 
+    catch (error) {
+
+        console.error(
+            "Error updating game statistics:",
+            error
+        );
+    }
 }
 
 
@@ -1023,7 +1086,6 @@ async function updatePoints(points) {
 
             userPointsEl.textContent =
                 ` | ⭐ ${currentPoints} pts`;
-
         }
 
 
@@ -1039,9 +1101,7 @@ async function updatePoints(points) {
             "Error updating Firebase points:",
             error
         );
-
     }
-
 }
 
 
@@ -1092,7 +1152,6 @@ async function loadUser(user) {
 
                 userNameEl.textContent =
                     `Hi, ${data.name || "Player"}`;
-
             }
 
 
@@ -1100,7 +1159,6 @@ async function loadUser(user) {
 
                 userPointsEl.textContent =
                     ` | ⭐ ${currentPoints} pts`;
-
             }
 
         }
@@ -1114,7 +1172,6 @@ async function loadUser(user) {
 
                 userNameEl.textContent =
                     "Hi, Player";
-
             }
 
 
@@ -1122,9 +1179,7 @@ async function loadUser(user) {
 
                 userPointsEl.textContent =
                     " | ⭐ 0 pts";
-
             }
-
         }
 
     }
@@ -1135,9 +1190,7 @@ async function loadUser(user) {
             "Error loading user:",
             error
         );
-
     }
-
 }
 
 
@@ -1162,9 +1215,7 @@ async function logout() {
             "Logout failed:",
             error
         );
-
     }
-
 }
 
 
@@ -1315,7 +1366,6 @@ document.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -1351,7 +1401,6 @@ document.addEventListener(
                 "click",
                 showAIMode
             );
-
         }
 
 
@@ -1365,7 +1414,6 @@ document.addEventListener(
                 "click",
                 showTwoPlayerMode
             );
-
         }
 
 
@@ -1379,7 +1427,6 @@ document.addEventListener(
                 "input",
                 updatePlayerNames
             );
-
         }
 
 
@@ -1393,7 +1440,6 @@ document.addEventListener(
                 "input",
                 updatePlayerNames
             );
-
         }
 
 
@@ -1412,7 +1458,6 @@ document.addEventListener(
 
                 }
             );
-
         }
 
 
@@ -1426,7 +1471,6 @@ document.addEventListener(
                 "click",
                 restart
             );
-
         }
 
 
@@ -1440,7 +1484,6 @@ document.addEventListener(
                 "click",
                 resetTwoPlayerScore
             );
-
         }
 
 
@@ -1454,7 +1497,6 @@ document.addEventListener(
                 "click",
                 logout
             );
-
         }
 
 
