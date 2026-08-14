@@ -18,11 +18,15 @@
 
 html {
     scroll-behavior: smooth;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 html,
 body {
     width: 100%;
+    max-width: 100%;
     min-height: 100%;
     overflow-x: hidden;
 }
@@ -43,6 +47,7 @@ body {
     inset: 0;
     overflow: hidden;
     z-index: -10;
+    pointer-events: none;
 
     background:
         radial-gradient(
@@ -216,6 +221,7 @@ body {
     z-index: 1000;
 
     width: 100%;
+    max-width: 100%;
 
     display: flex;
 
@@ -237,7 +243,9 @@ body {
 }
 
 
-/* Logo */
+/* =========================================================
+   LOGO
+   ========================================================= */
 
 .navbar h2 {
     font-size: 20px;
@@ -259,10 +267,14 @@ body {
     background-clip: text;
 
     color: transparent;
+
+    white-space: nowrap;
 }
 
 
-/* Right side */
+/* =========================================================
+   NAVBAR RIGHT
+   ========================================================= */
 
 .navbar .right {
     display: flex;
@@ -273,10 +285,14 @@ body {
     gap: 8px;
 
     flex-wrap: wrap;
+
+    min-width: 0;
 }
 
 
-/* User pills */
+/* =========================================================
+   USER PILLS
+   ========================================================= */
 
 #userName,
 #userPoints {
@@ -311,7 +327,9 @@ body {
 }
 
 
-/* Navbar button */
+/* =========================================================
+   NAVBAR BUTTON
+   ========================================================= */
 
 .navbar .right button {
     border:
@@ -362,6 +380,8 @@ body {
     align-items: center;
     justify-content: center;
 
+    flex-shrink: 0;
+
     border-radius: 50%;
 
     background:
@@ -410,6 +430,9 @@ body {
 
     inset: 0;
 
+    width: 100%;
+    height: 100%;
+
     background:
         rgba(0, 0, 0, .55);
 
@@ -432,9 +455,6 @@ body {
     z-index: 1500;
 }
 
-
-/* Backdrop becomes active */
-
 .drawer-backdrop.show {
     opacity: 1;
 
@@ -452,6 +472,8 @@ body {
     width:
         min(1180px, 100%);
 
+    max-width: 100%;
+
     margin:
         0 auto;
 
@@ -461,7 +483,9 @@ body {
 }
 
 
-/* Heading */
+/* =========================================================
+   MAIN HEADING
+   ========================================================= */
 
 .container > h1 {
     font-size:
@@ -488,7 +512,9 @@ body {
 }
 
 
-/* Subtitle */
+/* =========================================================
+   SUBTITLE
+   ========================================================= */
 
 .container > p {
     margin-top: 10px;
@@ -514,6 +540,8 @@ body {
     gap: 18px;
 
     margin-top: 30px;
+
+    width: 100%;
 }
 
 
@@ -524,6 +552,7 @@ body {
 .card {
     position: relative;
 
+    min-width: 0;
     min-height: 190px;
 
     padding: 22px;
@@ -644,6 +673,7 @@ body {
 
 .card i {
     position: relative;
+
     z-index: 2;
 
     width: 58px;
@@ -653,6 +683,8 @@ body {
 
     align-items: center;
     justify-content: center;
+
+    flex-shrink: 0;
 
     border-radius: 18px;
 
@@ -685,7 +717,9 @@ body {
 }
 
 
-/* Icon colors */
+/* =========================================================
+   ICON COLORS
+   ========================================================= */
 
 .card:nth-child(2) i {
     background:
@@ -721,6 +755,7 @@ body {
 
 .card h3 {
     position: relative;
+
     z-index: 2;
 
     font-size: 17px;
@@ -732,6 +767,7 @@ body {
 
 .card p {
     position: relative;
+
     z-index: 2;
 
     margin: 0;
@@ -810,22 +846,26 @@ body {
    PROFILE DRAWER
    ========================================================= */
 
-/* =========================================================
-   PROFILE DRAWER
-   ========================================================= */
-
 .profile-menu {
     position: fixed;
 
     top: 0;
     right: 0;
 
-    width: min(360px, 90vw);
-    height: 100vh;
+    width: 360px;
+    max-width: 90vw;
+
+    height: 100dvh;
+    max-height: 100dvh;
 
     padding: 25px 20px;
 
+    box-sizing: border-box;
+
+    overflow-x: hidden;
     overflow-y: auto;
+
+    overscroll-behavior: contain;
 
     background:
         linear-gradient(
@@ -837,9 +877,11 @@ body {
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
 
-    border-left: 1px solid rgba(255,255,255,.08);
+    border-left:
+        1px solid rgba(255,255,255,.08);
 
-    transform: translateX(100%);
+    transform:
+        translate3d(100%, 0, 0);
 
     transition:
         transform .3s cubic-bezier(.4,0,.2,1);
@@ -848,10 +890,13 @@ body {
 
     box-shadow:
         -20px 0 60px rgba(0,0,0,.45);
+
+    contain: layout paint;
 }
 
 .profile-menu.show {
-    transform: translateX(0);
+    transform:
+        translate3d(0, 0, 0);
 }
 
 
@@ -862,9 +907,10 @@ body {
 .profile-header {
     text-align: center;
 
-    padding: 30px 10px 22px;
+    padding:
+        30px 10px
+        22px;
 }
-
 
 .avatar-circle {
     width: 88px;
@@ -886,7 +932,8 @@ body {
             #06b6d4
         );
 
-    border: 3px solid rgba(255,255,255,.15);
+    border:
+        3px solid rgba(255,255,255,.15);
 
     box-shadow:
         0 0 35px rgba(99,102,241,.3);
@@ -900,7 +947,6 @@ body {
     text-transform: uppercase;
 }
 
-
 .profile-header h3 {
     margin-top: 14px;
 
@@ -909,8 +955,9 @@ body {
     font-weight: 700;
 
     color: #f8fafc;
-}
 
+    overflow-wrap: anywhere;
+}
 
 .profile-header p {
     margin-top: 5px;
@@ -940,9 +987,11 @@ body {
 
     border-radius: 999px;
 
-    background: rgba(250,204,21,.08);
+    background:
+        rgba(250,204,21,.08);
 
-    border: 1px solid rgba(250,204,21,.15);
+    border:
+        1px solid rgba(250,204,21,.15);
 
     color: #facc15;
 
@@ -963,13 +1012,15 @@ body {
 .profile-stats {
     display: grid;
 
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
     gap: 10px;
 
-    margin: 5px 0 15px;
+    margin:
+        5px 0
+        15px;
 }
-
 
 .stat-box {
     display: flex;
@@ -980,6 +1031,7 @@ body {
 
     justify-content: center;
 
+    min-width: 0;
     min-height: 82px;
 
     padding: 12px;
@@ -993,18 +1045,19 @@ body {
             rgba(255,255,255,.025)
         );
 
-    border: 1px solid rgba(255,255,255,.07);
+    border:
+        1px solid rgba(255,255,255,.07);
 
     transition: .2s ease;
 }
 
-
 .stat-box:hover {
-    background: rgba(255,255,255,.10);
+    background:
+        rgba(255,255,255,.10);
 
-    transform: translateY(-2px);
+    transform:
+        translateY(-2px);
 }
-
 
 .stat-box i {
     margin-bottom: 5px;
@@ -1014,7 +1067,6 @@ body {
     font-size: 16px;
 }
 
-
 .stat-box strong {
     color: #f8fafc;
 
@@ -1022,7 +1074,6 @@ body {
 
     font-weight: 800;
 }
-
 
 .stat-box span {
     margin-top: 2px;
@@ -1048,7 +1099,8 @@ body {
 
     border: none;
 
-    background: rgba(255,255,255,.07);
+    background:
+        rgba(255,255,255,.07);
 }
 
 
@@ -1058,6 +1110,7 @@ body {
 
 .profile-menu button {
     width: 100%;
+    max-width: 100%;
 
     min-height: 48px;
 
@@ -1093,11 +1146,14 @@ body {
         background .2s ease,
         transform .2s ease,
         color .2s ease;
-}
 
+    overflow: hidden;
+}
 
 .profile-menu button > i:first-child {
     width: 22px;
+
+    min-width: 22px;
 
     text-align: center;
 
@@ -1106,40 +1162,51 @@ body {
     font-size: 15px;
 }
 
-
 .profile-menu button:hover {
-    background: rgba(255,255,255,.07);
+    background:
+        rgba(255,255,255,.07);
 
-    transform: translateX(3px);
+    /*
+     * Do not translate the entire button horizontally.
+     * This prevents horizontal overflow.
+     */
+    transform:
+        translateY(-1px);
 
     color: #fff;
 }
-
 
 .profile-menu button:hover > i:first-child {
     color: #818cf8;
 }
 
 
-/* Arrow */
+/* =========================================================
+   ARROW
+   ========================================================= */
 
 .profile-menu .arrow {
     width: auto !important;
 
+    min-width: auto !important;
+
     margin-left: auto;
+
+    flex-shrink: 0;
 
     color: #475569 !important;
 
     font-size: 10px !important;
 
-    transition: transform .2s ease;
+    transition:
+        transform .2s ease;
 }
-
 
 .profile-menu button:hover .arrow {
     color: #94a3b8 !important;
 
-    transform: translateX(3px);
+    transform:
+        translateX(3px);
 }
 
 
@@ -1151,18 +1218,19 @@ body {
     color: #fb7185;
 }
 
-
 .profile-menu .logout > i:first-child {
     color: #fb7185;
 }
 
-
 .profile-menu .logout:hover {
-    background: rgba(244,63,94,.10);
+    background:
+        rgba(244,63,94,.10);
 
     color: #fda4af;
-}
 
+    transform:
+        translateY(-1px);
+}
 
 .profile-menu .logout:hover > i:first-child {
     color: #fb7185;
@@ -1170,33 +1238,16 @@ body {
 
 
 /* =========================================================
-   MOBILE
+   DRAWER OPEN — PREVENT BACKGROUND SCROLL
    ========================================================= */
 
-@media (max-width: 600px) {
+html.drawer-open,
+body.drawer-open {
+    overflow: hidden;
 
-    .profile-menu {
-        width: 88vw;
-
-        padding: 20px 15px;
-    }
-
-    .profile-header {
-        padding-top: 25px;
-    }
-
-    .avatar-circle {
-        width: 78px;
-        height: 78px;
-
-        font-size: 27px;
-    }
-
-    .profile-header h3 {
-        font-size: 18px;
-    }
-
+    overscroll-behavior: none;
 }
+
 
 /* =========================================================
    FOOTER
@@ -1266,6 +1317,7 @@ body {
     display: flex;
 
     justify-content: center;
+
     align-items: center;
 
     gap: 7px;
@@ -1293,12 +1345,16 @@ body {
     0%,
     100% {
         opacity: .45;
-        transform: scale(1);
+
+        transform:
+            scale(1);
     }
 
     50% {
         opacity: 1;
-        transform: scale(1.5);
+
+        transform:
+            scale(1.5);
     }
 }
 
@@ -1470,8 +1526,33 @@ body {
         line-height: 1.4;
     }
 
+    /* Drawer */
     .profile-menu {
         width: 88vw;
+        max-width: 88vw;
+
+        height: 100dvh;
+
+        padding:
+            20px 15px;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .profile-header {
+        padding-top: 25px;
+    }
+
+    .avatar-circle {
+        width: 78px;
+        height: 78px;
+
+        font-size: 27px;
+    }
+
+    .profile-header h3 {
+        font-size: 18px;
     }
 }
 
@@ -1519,15 +1600,24 @@ body {
 
         font-size: 20px;
     }
-}
 
+    .profile-menu {
+        width: 92vw;
+        max-width: 92vw;
 
-/* =========================================================
-   DRAWER OPEN — PREVENT BACKGROUND SCROLL
-   ========================================================= */
+        padding:
+            18px 13px;
+    }
 
-body.drawer-open {
-    overflow: hidden;
+    .profile-header {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .profile-menu button {
+        padding-left: 11px;
+        padding-right: 11px;
+    }
 }
 
 
