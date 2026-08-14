@@ -360,97 +360,116 @@
         aria-hidden="true"
     >
 
-        <div class="profile-header">
+       <!-- Profile Drawer -->
+<div class="profile-menu" id="profileMenu">
 
-            <div
-                id="profileAvatar"
-                class="avatar-circle"
-            >
-                D
-            </div>
+    <!-- Profile Header -->
+    <div class="profile-header">
 
-            <h3 id="profileName">
-                Loading...
-            </h3>
-
-            <p id="profileEmail">
-                Loading...
-            </p>
-
+        <div id="profileAvatar" class="avatar-circle">
+            D
         </div>
 
+        <h3 id="profileName">Loading...</h3>
 
-        <hr>
+        <p id="profileEmail">Loading...</p>
 
+        <div class="profile-points">
+            <i class="fa-solid fa-star"></i>
+            <span id="profilePoints">0</span> Points
+        </div>
 
-        <button id="editProfileBtn">
-
-            <i class="fa-solid fa-user-pen"></i>
-
-            <span>
-                Edit Profile
-            </span>
-
-        </button>
+    </div>
 
 
-        <button
-            type="button"
-            onclick="location.href='terms.html'"
-        >
+    <!-- Player Stats -->
+    <div class="profile-stats">
 
-            <i class="fa-solid fa-file-contract"></i>
+        <div class="stat-box">
+            <i class="fa-solid fa-gamepad"></i>
+            <strong id="gamesPlayed">0</strong>
+            <span>Games</span>
+        </div>
 
-            <span>
-                Terms & Conditions
-            </span>
+        <div class="stat-box">
+            <i class="fa-solid fa-trophy"></i>
+            <strong id="gamesWon">0</strong>
+            <span>Wins</span>
+        </div>
 
-        </button>
-
-
-        <button
-            type="button"
-            onclick="location.href='privacy.html'"
-        >
-
-            <i class="fa-solid fa-shield-halved"></i>
-
-            <span>
-                Privacy Policy
-            </span>
-
-        </button>
+    </div>
 
 
-        <button
-            type="button"
-            onclick="location.href='help.html'"
-        >
-
-            <i class="fa-solid fa-circle-question"></i>
-
-            <span>
-                Help & Support
-            </span>
-
-        </button>
+    <hr>
 
 
-        <hr>
+    <!-- Main Profile Options -->
+
+    <button id="viewProfileBtn">
+        <i class="fa-solid fa-user"></i>
+        <span>View Profile</span>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+    </button>
 
 
-        <button
-            id="logoutBtn"
-            class="logout"
-        >
+    <button id="editProfileBtn">
+        <i class="fa-solid fa-user-pen"></i>
+        <span>Edit Profile</span>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+    </button>
 
-            <i class="fa-solid fa-right-from-bracket"></i>
 
-            <span>
-                Logout
-            </span>
+    <button id="achievementsBtn">
+        <i class="fa-solid fa-medal"></i>
+        <span>Achievements</span>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+    </button>
 
-        </button>
+
+    <button id="settingsBtn">
+        <i class="fa-solid fa-gear"></i>
+        <span>Settings</span>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+    </button>
+
+
+    <hr>
+
+
+    <!-- Information -->
+
+    <button onclick="location.href='terms.html'">
+        <i class="fa-solid fa-file-contract"></i>
+        <span>Terms & Conditions</span>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+    </button>
+
+
+    <button onclick="location.href='privacy.html'">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>Privacy Policy</span>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+    </button>
+
+
+    <button onclick="location.href='help.html'">
+        <i class="fa-solid fa-circle-question"></i>
+        <span>Help & Support</span>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+    </button>
+
+
+    <hr>
+
+
+    <!-- Logout -->
+
+    <button id="logoutBtn" class="logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+    </button>
+
+</div>
 
     </aside>
 
