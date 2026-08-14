@@ -13,34 +13,35 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 
-// =========================================================
+// =========================================
 // CONNECT FOUR SETTINGS
-// =========================================================
+// =========================================
 
 const ROWS = 6;
 const COLS = 7;
 
 
-// =========================================================
+// =========================================
 // GAME STATE
-// =========================================================
+// =========================================
 
 let board = [];
 
 let gameOver = false;
 
+// AI mode
 let playerTurn = true;
 
+// Local 2-player mode
 let currentPlayer = "R";
 
+// "ai" or "local"
 let gameMode = "ai";
 
-let lastMove = null;
 
-
-// =========================================================
+// =========================================
 // LOCAL SCOREBOARD
-// =========================================================
+// =========================================
 
 let player1Score = 0;
 let player2Score = 0;
@@ -49,18 +50,17 @@ let player1Name = "Player 1";
 let player2Name = "Player 2";
 
 
-// =========================================================
+// =========================================
 // FIREBASE STATE
-// =========================================================
+// =========================================
 
 let currentUserUID = null;
-
 let currentPoints = 0;
 
 
-// =========================================================
+// =========================================
 // HTML ELEMENTS
-// =========================================================
+// =========================================
 
 const boardElement =
     document.getElementById("board");
@@ -105,15 +105,26 @@ const player2ScoreElement =
     document.getElementById("player2Score");
 
 
-// =========================================================
+// =========================================
+// LAST MOVE
+// =========================================
+
+let lastMove = null;
+
+
+// =========================================
 // CREATE / RESET BOARD
-// =========================================================
+// =========================================
 
 function createBoard() {
 
     board = [];
 
-    for (let row = 0; row < ROWS; row++) {
+    for (
+        let row = 0;
+        row < ROWS;
+        row++
+    ) {
 
         board.push(
             Array(COLS).fill("")
@@ -134,9 +145,9 @@ function createBoard() {
 }
 
 
-// =========================================================
+// =========================================
 // DRAW BOARD
-// =========================================================
+// =========================================
 
 function drawBoard() {
 
@@ -146,9 +157,17 @@ function drawBoard() {
 
     boardElement.innerHTML = "";
 
-    for (let row = 0; row < ROWS; row++) {
+    for (
+        let row = 0;
+        row < ROWS;
+        row++
+    ) {
 
-        for (let col = 0; col < COLS; col++) {
+        for (
+            let col = 0;
+            col < COLS;
+            col++
+        ) {
 
             const cell =
                 document.createElement("div");
@@ -157,30 +176,33 @@ function drawBoard() {
 
 
             // RED PIECE
-
-            if (board[row][col] === "R") {
+            if (
+                board[row][col] === "R"
+            ) {
 
                 cell.classList.add("red");
             }
 
 
             // YELLOW PIECE
-
-            if (board[row][col] === "Y") {
+            if (
+                board[row][col] === "Y"
+            ) {
 
                 cell.classList.add("yellow");
             }
 
 
             // LAST MOVE
-
             if (
                 lastMove &&
                 lastMove.row === row &&
                 lastMove.col === col
             ) {
 
-                cell.classList.add("last-move");
+                cell.classList.add(
+                    "last-move"
+                );
             }
 
 
@@ -200,9 +222,9 @@ function drawBoard() {
 }
 
 
-// =========================================================
+// =========================================
 // LAST MOVE
-// =========================================================
+// =========================================
 
 function highlightLastMove(row, col) {
 
@@ -215,9 +237,9 @@ function highlightLastMove(row, col) {
 }
 
 
-// =========================================================
+// =========================================
 // HANDLE CELL CLICK
-// =========================================================
+// =========================================
 
 function handleCellClick(col) {
 
@@ -226,9 +248,10 @@ function handleCellClick(col) {
     }
 
 
-    // LOCAL TWO PLAYER
-
-    if (gameMode === "local") {
+    // LOCAL 2 PLAYER
+    if (
+        gameMode === "local"
+    ) {
 
         localPlayerMove(col);
 
@@ -237,8 +260,9 @@ function handleCellClick(col) {
 
 
     // VS AI
-
-    if (gameMode === "ai") {
+    if (
+        gameMode === "ai"
+    ) {
 
         if (!playerTurn) {
             return;
@@ -249,9 +273,9 @@ function handleCellClick(col) {
 }
 
 
-// =========================================================
+// =========================================
 // GET EMPTY ROW
-// =========================================================
+// =========================================
 
 function getEmptyRow(col) {
 
@@ -261,7 +285,9 @@ function getEmptyRow(col) {
         row--
     ) {
 
-        if (board[row][col] === "") {
+        if (
+            board[row][col] === ""
+        ) {
 
             return row;
         }
@@ -271,34 +297,43 @@ function getEmptyRow(col) {
 }
 
 
-// =========================================================
+// =========================================
 // PLAYER MOVE - AI MODE
-// =========================================================
+// =========================================
 
 function playerMove(col) {
 
-    if (gameOver || !playerTurn) {
+    if (gameOver) {
         return;
     }
 
+    if (!playerTurn) {
+        return;
+    }
+
+
     const row =
         getEmptyRow(col);
+
 
     if (row === -1) {
         return;
     }
 
 
-    // PLACE PLAYER PIECE
-
+    // PLACE RED
     board[row][col] = "R";
 
-    highlightLastMove(row, col);
+    highlightLastMove(
+        row,
+        col
+    );
 
 
     // PLAYER WIN
-
-    if (checkWin("R")) {
+    if (
+        checkWin("R")
+    ) {
 
         endAIGame(
             "🎉 You Win! +10 Points",
@@ -311,8 +346,9 @@ function playerMove(col) {
 
 
     // DRAW
-
-    if (isDraw()) {
+    if (
+        isDraw()
+    ) {
 
         endAIGame(
             "🤝 Draw!",
@@ -325,36 +361,41 @@ function playerMove(col) {
 
 
     // AI TURN
-
     playerTurn = false;
 
     updateTurnStatus();
 
 
-    setTimeout(() => {
+    setTimeout(
+        () => {
 
-        if (
-            gameOver ||
-            gameMode !== "ai"
-        ) {
+            if (
+                gameOver ||
+                gameMode !== "ai"
+            ) {
 
-            return;
-        }
+                return;
+            }
 
-        aiMove();
+            aiMove();
 
-    }, 500);
+        },
+        500
+    );
 }
 
 
-// =========================================================
+// =========================================
 // AI MOVE
-// =========================================================
+// =========================================
 
 function aiMove() {
 
+    if (gameOver) {
+        return;
+    }
+
     if (
-        gameOver ||
         gameMode !== "ai"
     ) {
 
@@ -371,26 +412,29 @@ function aiMove() {
         col++
     ) {
 
-        if (getEmptyRow(col) !== -1) {
+        if (
+            getEmptyRow(col) !== -1
+        ) {
 
             availableColumns.push(col);
         }
     }
 
 
-    if (availableColumns.length === 0) {
+    if (
+        availableColumns.length === 0
+    ) {
+
         return;
     }
 
 
     // TRY TO WIN
-
     const winningColumn =
         findWinningMove("Y");
 
 
-    // TRY TO BLOCK PLAYER
-
+    // BLOCK PLAYER
     const blockingColumn =
         findWinningMove("R");
 
@@ -398,23 +442,34 @@ function aiMove() {
     let selectedColumn;
 
 
-    if (winningColumn !== -1) {
+    // AI WINNING MOVE
+    if (
+        winningColumn !== -1
+    ) {
 
         selectedColumn =
             winningColumn;
-
     }
 
-    else if (blockingColumn !== -1) {
+
+    // BLOCK PLAYER
+    else if (
+        blockingColumn !== -1
+    ) {
 
         selectedColumn =
             blockingColumn;
-
     }
 
-    else if (availableColumns.includes(3)) {
 
-        if (Math.random() < 0.65) {
+    // PREFER CENTER
+    else if (
+        availableColumns.includes(3)
+    ) {
+
+        if (
+            Math.random() < 0.65
+        ) {
 
             selectedColumn = 3;
 
@@ -428,6 +483,8 @@ function aiMove() {
 
     }
 
+
+    // RANDOM
     else {
 
         selectedColumn =
@@ -438,7 +495,9 @@ function aiMove() {
 
 
     const row =
-        getEmptyRow(selectedColumn);
+        getEmptyRow(
+            selectedColumn
+        );
 
 
     if (row === -1) {
@@ -446,9 +505,10 @@ function aiMove() {
     }
 
 
-    // PLACE AI PIECE
+    // PLACE YELLOW
+    board[row][selectedColumn] =
+        "Y";
 
-    board[row][selectedColumn] = "Y";
 
     highlightLastMove(
         row,
@@ -457,8 +517,9 @@ function aiMove() {
 
 
     // AI WIN
-
-    if (checkWin("Y")) {
+    if (
+        checkWin("Y")
+    ) {
 
         endAIGame(
             "😔 AI Wins! -5 Points",
@@ -471,8 +532,9 @@ function aiMove() {
 
 
     // DRAW
-
-    if (isDraw()) {
+    if (
+        isDraw()
+    ) {
 
         endAIGame(
             "🤝 Draw!",
@@ -485,30 +547,30 @@ function aiMove() {
 
 
     // PLAYER TURN
-
     playerTurn = true;
 
     updateTurnStatus();
 }
 
 
-// =========================================================
+// =========================================
 // RANDOM COLUMN
-// =========================================================
+// =========================================
 
 function randomColumn(columns) {
 
     return columns[
         Math.floor(
-            Math.random() * columns.length
+            Math.random() *
+            columns.length
         )
     ];
 }
 
 
-// =========================================================
+// =========================================
 // FIND WINNING MOVE
-// =========================================================
+// =========================================
 
 function findWinningMove(player) {
 
@@ -527,17 +589,21 @@ function findWinningMove(player) {
         }
 
 
+        // Temporarily place piece
         board[row][col] = player;
 
 
         const win =
-            findWinningPattern(player) !== null;
+            findWinningPattern(player)
+            !== null;
 
 
+        // Remove temporary piece
         board[row][col] = "";
 
 
         if (win) {
+
             return col;
         }
     }
@@ -547,9 +613,9 @@ function findWinningMove(player) {
 }
 
 
-// =========================================================
+// =========================================
 // LOCAL PLAYER MOVE
-// =========================================================
+// =========================================
 
 function localPlayerMove(col) {
 
@@ -567,6 +633,7 @@ function localPlayerMove(col) {
     }
 
 
+    // PLACE CURRENT PLAYER
     board[row][col] =
         currentPlayer;
 
@@ -578,10 +645,13 @@ function localPlayerMove(col) {
 
 
     // WIN
+    if (
+        checkWin(currentPlayer)
+    ) {
 
-    if (checkWin(currentPlayer)) {
-
-        if (currentPlayer === "R") {
+        if (
+            currentPlayer === "R"
+        ) {
 
             player1Score++;
 
@@ -602,13 +672,15 @@ function localPlayerMove(col) {
             );
         }
 
+
         return;
     }
 
 
     // DRAW
-
-    if (isDraw()) {
+    if (
+        isDraw()
+    ) {
 
         endLocalGame(
             "🤝 Draw!"
@@ -619,20 +691,25 @@ function localPlayerMove(col) {
 
 
     // SWITCH PLAYER
-
-    currentPlayer =
+    if (
         currentPlayer === "R"
-            ? "Y"
-            : "R";
+    ) {
+
+        currentPlayer = "Y";
+
+    } else {
+
+        currentPlayer = "R";
+    }
 
 
     updateTurnStatus();
 }
 
 
-// =========================================================
-// SCOREBOARD
-// =========================================================
+// =========================================
+// UPDATE SCOREBOARD
+// =========================================
 
 function updateScoreboard() {
 
@@ -665,9 +742,9 @@ function updateScoreboard() {
 }
 
 
-// =========================================================
-// PLAYER NAMES
-// =========================================================
+// =========================================
+// UPDATE PLAYER NAMES
+// =========================================
 
 function updatePlayerNames() {
 
@@ -680,23 +757,29 @@ function updatePlayerNames() {
     }
 
 
+    const name1 =
+        player1NameInput.value.trim();
+
+
+    const name2 =
+        player2NameInput.value.trim();
+
+
     player1Name =
-        player1NameInput.value.trim()
-        || "Player 1";
+        name1 || "Player 1";
 
 
     player2Name =
-        player2NameInput.value.trim()
-        || "Player 2";
+        name2 || "Player 2";
 
 
     updateScoreboard();
 }
 
 
-// =========================================================
-// TURN STATUS
-// =========================================================
+// =========================================
+// UPDATE TURN STATUS
+// =========================================
 
 function updateTurnStatus() {
 
@@ -706,33 +789,49 @@ function updateTurnStatus() {
 
 
     // AI MODE
+    if (
+        gameMode === "ai"
+    ) {
 
-    if (gameMode === "ai") {
+        if (playerTurn) {
 
-        statusElement.textContent =
-            playerTurn
-                ? "Your Turn 🔴"
-                : "🤖 AI Thinking...";
+            statusElement.textContent =
+                "Your Turn 🔴";
+
+        } else {
+
+            statusElement.textContent =
+                "🤖 AI Thinking...";
+        }
 
         return;
     }
 
 
     // LOCAL MODE
+    if (
+        gameMode === "local"
+    ) {
 
-    if (gameMode === "local") {
-
-        statusElement.textContent =
+        if (
             currentPlayer === "R"
-                ? `${player1Name}'s Turn 🔴`
-                : `${player2Name}'s Turn 🟡`;
+        ) {
+
+            statusElement.textContent =
+                `${player1Name}'s Turn 🔴`;
+
+        } else {
+
+            statusElement.textContent =
+                `${player2Name}'s Turn 🟡`;
+        }
     }
 }
 
 
-// =========================================================
+// =========================================
 // CHECK WIN
-// =========================================================
+// =========================================
 
 function checkWin(player) {
 
@@ -752,13 +851,15 @@ function checkWin(player) {
 }
 
 
-// =========================================================
+// =========================================
 // FIND WINNING PATTERN
-// =========================================================
+// =========================================
 
 function findWinningPattern(player) {
 
+    // -------------------------------------
     // HORIZONTAL
+    // -------------------------------------
 
     for (
         let row = 0;
@@ -790,7 +891,9 @@ function findWinningPattern(player) {
     }
 
 
+    // -------------------------------------
     // VERTICAL
+    // -------------------------------------
 
     for (
         let row = 0;
@@ -822,7 +925,9 @@ function findWinningPattern(player) {
     }
 
 
+    // -------------------------------------
     // DIAGONAL \
+    // -------------------------------------
 
     for (
         let row = 0;
@@ -854,7 +959,9 @@ function findWinningPattern(player) {
     }
 
 
+    // -------------------------------------
     // DIAGONAL /
+    // -------------------------------------
 
     for (
         let row = 0;
@@ -890,9 +997,9 @@ function findWinningPattern(player) {
 }
 
 
-// =========================================================
+// =========================================
 // HIGHLIGHT WIN
-// =========================================================
+// =========================================
 
 function highlightWin(pattern) {
 
@@ -902,7 +1009,9 @@ function highlightWin(pattern) {
 
 
     const cells =
-        document.querySelectorAll(".cell");
+        document.querySelectorAll(
+            ".cell"
+        );
 
 
     pattern.forEach(
@@ -923,9 +1032,9 @@ function highlightWin(pattern) {
 }
 
 
-// =========================================================
+// =========================================
 // DRAW CHECK
-// =========================================================
+// =========================================
 
 function isDraw() {
 
@@ -935,9 +1044,9 @@ function isDraw() {
 }
 
 
-// =========================================================
+// =========================================
 // AI GAME END
-// =========================================================
+// =========================================
 
 async function endAIGame(
     message,
@@ -945,6 +1054,7 @@ async function endAIGame(
     result
 ) {
 
+    // Prevent duplicate completion
     if (gameOver) {
         return;
     }
@@ -962,61 +1072,71 @@ async function endAIGame(
     }
 
 
-    // -----------------------------------------------------
-    // UPDATE FIREBASE GAME STATISTICS
-    // -----------------------------------------------------
+    // =====================================
+    // UPDATE PROFILE STATISTICS
+    // =====================================
 
     await updateGameStats(result);
 
 
-    // -----------------------------------------------------
+    // =====================================
     // UPDATE POINTS
-    // -----------------------------------------------------
+    // =====================================
 
-    if (points !== 0) {
+    if (
+        points !== 0
+    ) {
 
         await updatePoints(points);
     }
-
-
-    // -----------------------------------------------------
-    // REFRESH PROFILE DRAWER
-    // -----------------------------------------------------
-
-    await refreshProfileDrawer();
 }
 
 
-// =========================================================
-// UPDATE GAME STATISTICS
-// =========================================================
+// =========================================
+// FIRESTORE GAME STATISTICS
+// =========================================
+//
+// AI games:
+//
+// Win:
+// gamesPlayed +1
+// gamesWon +1
+//
+// Loss:
+// gamesPlayed +1
+//
+// Draw:
+// gamesPlayed +1
+// gamesDrawn +1
 //
 // IMPORTANT:
-//
-// Firestore fields:
+// The fields are EXACTLY:
 //
 // gamesPlayed
-// wins
+// gamesWon
 // gamesDrawn
 //
-// NOT gamesWon.
-//
-// This matches your profile drawer.
-//
+// =========================================
 
 async function updateGameStats(result) {
 
     if (!currentUserUID) {
 
         console.error(
-            "Cannot update statistics: user not logged in."
+            "Cannot update game statistics: no logged-in user."
         );
 
         return;
     }
 
 
-    if (gameMode !== "ai") {
+    // Local multiplayer does not
+    // affect Firebase profile stats.
+
+    if (
+        gameMode !== "ai"
+    ) {
+
         return;
     }
 
@@ -1031,6 +1151,9 @@ async function updateGameStats(result) {
             );
 
 
+        // Every completed AI game
+        // increases gamesPlayed.
+
         const updates = {
 
             gamesPlayed:
@@ -1039,14 +1162,20 @@ async function updateGameStats(result) {
         };
 
 
-        if (result === "win") {
+        // Player won
+        if (
+            result === "win"
+        ) {
 
-            updates.wins =
+            updates.gamesWon =
                 increment(1);
         }
 
 
-        if (result === "draw") {
+        // Game draw
+        if (
+            result === "draw"
+        ) {
 
             updates.gamesDrawn =
                 increment(1);
@@ -1061,12 +1190,14 @@ async function updateGameStats(result) {
 
         console.log(
             "Connect 4 statistics updated:",
-            result
+            {
+                result,
+                fields: updates
+            }
         );
 
-    }
 
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Failed to update Connect 4 statistics:",
@@ -1076,18 +1207,50 @@ async function updateGameStats(result) {
 }
 
 
-// =========================================================
-// UPDATE POINTS
-// =========================================================
+// =========================================
+// LOCAL GAME END
+// =========================================
+
+function endLocalGame(message) {
+
+    gameOver = true;
+
+    playerTurn = false;
+
+
+    if (statusElement) {
+
+        statusElement.textContent =
+            `${message} — No points awarded`;
+    }
+}
+
+
+// =========================================
+// FIREBASE POINT UPDATE
+// =========================================
 
 async function updatePoints(value) {
 
     if (!currentUserUID) {
 
         console.error(
-            "Cannot update points: user not logged in."
+            "Cannot update points: no logged-in user."
         );
 
+        return;
+    }
+
+
+    if (
+        gameMode !== "ai"
+    ) {
+
+        return;
+    }
+
+
+    if (value === 0) {
         return;
     }
 
@@ -1116,17 +1279,25 @@ async function updatePoints(value) {
         currentPoints += value;
 
 
-        updatePointsUI();
+        const userPoints =
+            document.getElementById(
+                "userPoints"
+            );
+
+
+        if (userPoints) {
+
+            userPoints.innerHTML =
+                `<i class="fa-solid fa-star"></i> ${currentPoints} pts`;
+        }
 
 
         console.log(
-            "Connect 4 points updated:",
-            value
+            `Connect 4 points updated: ${value}`
         );
 
-    }
 
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Failed to update points:",
@@ -1136,213 +1307,9 @@ async function updatePoints(value) {
 }
 
 
-// =========================================================
-// UPDATE POINTS UI
-// =========================================================
-
-function updatePointsUI() {
-
-    const userPoints =
-        document.getElementById(
-            "userPoints"
-        );
-
-
-    if (userPoints) {
-
-        userPoints.innerHTML =
-            `<i class="fa-solid fa-star"></i> ${currentPoints} pts`;
-    }
-
-
-    const profilePoints =
-        document.getElementById(
-            "profilePoints"
-        );
-
-
-    if (profilePoints) {
-
-        profilePoints.textContent =
-            `⭐ ${currentPoints} Points`;
-    }
-}
-
-
-// =========================================================
-// REFRESH PROFILE DRAWER
-// =========================================================
-//
-// This is the important missing part.
-//
-// After Connect 4 finishes, we read Firestore again
-// and immediately update:
-//
-// profileGames
-// profileWins
-// profilePoints
-//
-// So you don't need to reload the page.
-//
-
-async function refreshProfileDrawer() {
-
-    if (!currentUserUID) {
-        return;
-    }
-
-
-    try {
-
-        const userRef =
-            doc(
-                db,
-                "users",
-                currentUserUID
-            );
-
-
-        const snapshot =
-            await getDoc(userRef);
-
-
-        if (!snapshot.exists()) {
-            return;
-        }
-
-
-        const data =
-            snapshot.data();
-
-
-        // -------------------------------------------------
-        // READ STATISTICS
-        // -------------------------------------------------
-
-        const gamesPlayed =
-            Number(
-                data.gamesPlayed ?? 0
-            ) || 0;
-
-
-        const wins =
-            Number(
-                data.wins ??
-                data.gamesWon ??
-                0
-            ) || 0;
-
-
-        const gamesDrawn =
-            Number(
-                data.gamesDrawn ?? 0
-            ) || 0;
-
-
-        const points =
-            Number(
-                data.points ?? 0
-            ) || 0;
-
-
-        currentPoints =
-            points;
-
-
-        // -------------------------------------------------
-        // PROFILE DRAWER
-        // -------------------------------------------------
-
-        const profileGames =
-            document.getElementById(
-                "profileGames"
-            );
-
-
-        const profileWins =
-            document.getElementById(
-                "profileWins"
-            );
-
-
-        const profilePoints =
-            document.getElementById(
-                "profilePoints"
-            );
-
-
-        if (profileGames) {
-
-            profileGames.textContent =
-                gamesPlayed;
-        }
-
-
-        if (profileWins) {
-
-            profileWins.textContent =
-                wins;
-        }
-
-
-        if (profilePoints) {
-
-            profilePoints.textContent =
-                `⭐ ${points} Points`;
-        }
-
-
-        // -------------------------------------------------
-        // NAVBAR POINTS
-        // -------------------------------------------------
-
-        updatePointsUI();
-
-
-        console.log(
-            "Profile drawer refreshed:",
-            {
-                gamesPlayed,
-                wins,
-                gamesDrawn,
-                points
-            }
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Failed to refresh profile drawer:",
-            error
-        );
-    }
-}
-
-
-// =========================================================
-// LOCAL GAME END
-// =========================================================
-
-function endLocalGame(message) {
-
-    gameOver = true;
-
-    playerTurn = false;
-
-
-    if (statusElement) {
-
-        statusElement.textContent =
-            `${message} — No points awarded`;
-    }
-}
-
-
-// =========================================================
+// =========================================
 // SHOW / HIDE MODE UI
-// =========================================================
+// =========================================
 
 function updateModeUI() {
 
@@ -1356,33 +1323,28 @@ function updateModeUI() {
     }
 
 
-    if (gameMode === "local") {
+    if (
+        gameMode === "local"
+    ) {
 
         playerSetup.style.display =
             "flex";
 
-
         scoreboard.style.display =
             "flex";
-
 
         resetScoreButton.style.display =
             "inline-block";
 
-
         updatePlayerNames();
 
-    }
-
-    else {
+    } else {
 
         playerSetup.style.display =
             "none";
 
-
         scoreboard.style.display =
             "none";
-
 
         resetScoreButton.style.display =
             "none";
@@ -1390,9 +1352,9 @@ function updateModeUI() {
 }
 
 
-// =========================================================
+// =========================================
 // GAME MODE CHANGE
-// =========================================================
+// =========================================
 
 if (gameModeElement) {
 
@@ -1404,7 +1366,12 @@ if (gameModeElement) {
                 gameModeElement.value;
 
 
-            if (gameMode === "local") {
+            // Reset local scoreboard
+            // when entering local mode.
+
+            if (
+                gameMode === "local"
+            ) {
 
                 player1Score = 0;
 
@@ -1422,9 +1389,9 @@ if (gameModeElement) {
 }
 
 
-// =========================================================
-// PLAYER 1 NAME
-// =========================================================
+// =========================================
+// PLAYER 1 NAME CHANGE
+// =========================================
 
 if (player1NameInput) {
 
@@ -1432,7 +1399,9 @@ if (player1NameInput) {
         "input",
         () => {
 
-            if (gameMode === "local") {
+            if (
+                gameMode === "local"
+            ) {
 
                 updatePlayerNames();
 
@@ -1443,9 +1412,9 @@ if (player1NameInput) {
 }
 
 
-// =========================================================
-// PLAYER 2 NAME
-// =========================================================
+// =========================================
+// PLAYER 2 NAME CHANGE
+// =========================================
 
 if (player2NameInput) {
 
@@ -1453,7 +1422,9 @@ if (player2NameInput) {
         "input",
         () => {
 
-            if (gameMode === "local") {
+            if (
+                gameMode === "local"
+            ) {
 
                 updatePlayerNames();
 
@@ -1464,9 +1435,9 @@ if (player2NameInput) {
 }
 
 
-// =========================================================
+// =========================================
 // RESET SCORE
-// =========================================================
+// =========================================
 
 if (resetScoreButton) {
 
@@ -1486,9 +1457,9 @@ if (resetScoreButton) {
 }
 
 
-// =========================================================
+// =========================================
 // RESTART ROUND
-// =========================================================
+// =========================================
 
 if (restartButton) {
 
@@ -1502,9 +1473,9 @@ if (restartButton) {
 }
 
 
-// =========================================================
+// =========================================
 // LOGOUT
-// =========================================================
+// =========================================
 
 if (logoutButton) {
 
@@ -1516,12 +1487,10 @@ if (logoutButton) {
 
                 await signOut(auth);
 
-                location.href =
+                window.location.href =
                     "index.html";
 
-            }
-
-            catch (error) {
+            } catch (error) {
 
                 console.error(
                     "Logout error:",
@@ -1533,17 +1502,17 @@ if (logoutButton) {
 }
 
 
-// =========================================================
+// =========================================
 // FIREBASE AUTHENTICATION
-// =========================================================
+// =========================================
 
 onAuthStateChanged(
     auth,
-    async user => {
+    async (user) => {
 
         if (!user) {
 
-            location.href =
+            window.location.href =
                 "index.html";
 
             return;
@@ -1568,11 +1537,9 @@ onAuthStateChanged(
                 await getDoc(userRef);
 
 
-            // -------------------------------------------------
-            // USER DOCUMENT EXISTS
-            // -------------------------------------------------
-
-            if (snapshot.exists()) {
+            if (
+                snapshot.exists()
+            ) {
 
                 const data =
                     snapshot.data();
@@ -1580,162 +1547,71 @@ onAuthStateChanged(
 
                 currentPoints =
                     Number(
-                        data.points ?? 0
+                        data.points
                     ) || 0;
 
-
-                const name =
-                    data.name ||
-                    "Player";
-
-
-                // -------------------------------------------------
-                // NAVBAR
-                // -------------------------------------------------
 
                 const userName =
                     document.getElementById(
                         "userName"
+                    );
+
+
+                const userPoints =
+                    document.getElementById(
+                        "userPoints"
                     );
 
 
                 if (userName) {
 
                     userName.textContent =
-                        `Hi, ${name}`;
+                        `Hi, ${data.name || "Player"}`;
                 }
 
 
-                updatePointsUI();
+                if (userPoints) {
 
-
-                // -------------------------------------------------
-                // PROFILE DRAWER
-                // -------------------------------------------------
-
-                const profileName =
-                    document.getElementById(
-                        "profileName"
-                    );
-
-
-                const profileEmail =
-                    document.getElementById(
-                        "profileEmail"
-                    );
-
-
-                const profileAvatar =
-                    document.getElementById(
-                        "profileAvatar"
-                    );
-
-
-                const profileGames =
-                    document.getElementById(
-                        "profileGames"
-                    );
-
-
-                const profileWins =
-                    document.getElementById(
-                        "profileWins"
-                    );
-
-
-                const profilePoints =
-                    document.getElementById(
-                        "profilePoints"
-                    );
-
-
-                if (profileName) {
-
-                    profileName.textContent =
-                        name;
+                    userPoints.innerHTML =
+                        `<i class="fa-solid fa-star"></i> ${currentPoints} pts`;
                 }
 
 
-                if (profileEmail) {
-
-                    profileEmail.textContent =
-                        data.email ||
-                        user.email ||
-                        "";
-                }
-
-
-                if (profileAvatar) {
-
-                    profileAvatar.textContent =
-                        name
-                            .trim()
-                            .charAt(0)
-                            .toUpperCase() ||
-                        "P";
-                }
-
-
-                if (profileGames) {
-
-                    profileGames.textContent =
-                        Number(
-                            data.gamesPlayed ?? 0
-                        ) || 0;
-                }
-
-
-                if (profileWins) {
-
-                    profileWins.textContent =
-                        Number(
-                            data.wins ??
-                            data.gamesWon ??
-                            0
-                        ) || 0;
-                }
-
-
-                if (profilePoints) {
-
-                    profilePoints.textContent =
-                        `⭐ ${currentPoints} Points`;
-                }
-
+                // Read the SAME fields
+                // used by the profile drawer.
 
                 console.log(
-                    "Profile statistics:",
+                    "Connect 4 profile statistics:",
                     {
                         gamesPlayed:
                             Number(
-                                data.gamesPlayed ?? 0
+                                data.gamesPlayed
                             ) || 0,
 
-                        wins:
+                        gamesWon:
                             Number(
-                                data.wins ??
-                                data.gamesWon ??
-                                0
+                                data.gamesWon
                             ) || 0,
 
                         gamesDrawn:
                             Number(
-                                data.gamesDrawn ?? 0
+                                data.gamesDrawn
                             ) || 0
                     }
                 );
 
-            }
 
-            // -------------------------------------------------
-            // USER DOCUMENT DOES NOT EXIST
-            // -------------------------------------------------
-
-            else {
+            } else {
 
                 const userName =
                     document.getElementById(
                         "userName"
+                    );
+
+
+                const userPoints =
+                    document.getElementById(
+                        "userPoints"
                     );
 
 
@@ -1746,40 +1622,15 @@ onAuthStateChanged(
                 }
 
 
-                currentPoints = 0;
+                if (userPoints) {
 
-                updatePointsUI();
-
-
-                const profileGames =
-                    document.getElementById(
-                        "profileGames"
-                    );
-
-
-                const profileWins =
-                    document.getElementById(
-                        "profileWins"
-                    );
-
-
-                if (profileGames) {
-
-                    profileGames.textContent =
-                        "0";
-                }
-
-
-                if (profileWins) {
-
-                    profileWins.textContent =
-                        "0";
+                    userPoints.innerHTML =
+                        `<i class="fa-solid fa-star"></i> 0 pts`;
                 }
             }
 
-        }
 
-        catch (error) {
+        } catch (error) {
 
             console.error(
                 "Failed to load user data:",
@@ -1790,15 +1641,15 @@ onAuthStateChanged(
 );
 
 
-// =========================================================
+// =========================================
 // INITIAL UI
-// =========================================================
+// =========================================
 
 updateModeUI();
 
 
-// =========================================================
+// =========================================
 // START GAME
-// =========================================================
+// =========================================
 
 createBoard();
