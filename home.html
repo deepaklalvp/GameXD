@@ -2,551 +2,540 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    >
 
     <title>GameXD | Home</title>
 
-    <link rel="stylesheet" href="css/home.css">
-    <script type="module" src="./js/home.js" defer></script>
+    <!-- Home CSS -->
+    <link
+        rel="stylesheet"
+        href="css/home.css"
+    >
+
+    <!-- Home JS -->
+    <script
+        type="module"
+        src="./js/home.js"
+        defer
+    ></script>
+
 </head>
+
 
 <body>
 
-    <!-- ================= BACKGROUND ================= -->
 
-    <div class="background">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+<!-- =========================================================
+     BACKGROUND
+     ========================================================= -->
+
+<div class="background"></div>
+
+
+<!-- =========================================================
+     NAVBAR
+     ========================================================= -->
+
+<nav class="navbar">
+
+    <!-- Logo -->
+
+    <h2>
+        🎮 GameXD
+    </h2>
+
+
+    <!-- Navbar Right -->
+
+    <div class="right">
+
+
+        <!-- User Name -->
+
+        <span id="userName">
+            Loading...
+        </span>
+
+
+        <!-- Points -->
+
+        <span id="userPoints">
+            <i class="fa-solid fa-star"></i>
+            0 pts
+        </span>
+
+
+        <!-- Leaderboard -->
+
+        <button
+            id="leaderboardBtn"
+            type="button"
+            onclick="location.href='leaderboard.html'"
+        >
+
+            <i class="fa-solid fa-trophy"></i>
+
+            <span class="leaderboard-text">
+                Leaderboard
+            </span>
+
+        </button>
+
+
+        <!-- Profile Button -->
+
+        <button
+            id="profileBtn"
+            class="profile-btn"
+            type="button"
+            aria-label="Open profile"
+            aria-expanded="false"
+        >
+
+            <i class="fa-solid fa-user"></i>
+
+        </button>
+
     </div>
 
-    <!-- ================= NAVBAR ================= -->
+</nav>
 
-    <div class="navbar">
 
-        <h2 onclick="location.href='home.html'">
-            🎮 GameXD
-        </h2>
 
-        <div class="right">
+<!-- =========================================================
+     DRAWER BACKDROP
+     ========================================================= -->
 
-            <span id="userName">
-                Loading...
-            </span>
+<div
+    id="drawerBackdrop"
+    class="drawer-backdrop"
+></div>
 
-            <span id="userPoints">
-                <i class="fa-solid fa-star"></i>
-                0 pts
-            </span>
 
-            <button onclick="location.href='leaderboard.html'">
-                <i class="fa-solid fa-trophy"></i>
-                <span class="leaderboard-text">Leaderboard</span>
-            </button>
 
-            <!-- Profile Button -->
-            <div
-                class="profile-btn"
-                id="profileBtn"
-                aria-label="Open profile"
-                role="button"
-                tabindex="0"
-            >
-                <i class="fa-solid fa-circle-user"></i>
-            </div>
+<!-- =========================================================
+     MAIN CONTENT
+     ========================================================= -->
+
+<main class="container">
+
+
+    <!-- Page Heading -->
+
+    <h1>
+        🎮 Pick Your Challenge
+    </h1>
+
+
+    <p>
+        Play, compete, and have fun!
+    </p>
+
+
+
+    <!-- =====================================================
+         GAMES
+         ===================================================== -->
+
+    <section class="games">
+
+
+        <!-- Sudoku -->
+
+        <div
+            class="card"
+            onclick="location.href='sudoku.html'"
+        >
+
+            <i class="fa-solid fa-border-all"></i>
+
+            <h3>
+                Sudoku
+            </h3>
+
+            <p>
+                Test your logic and solve the puzzle.
+            </p>
 
         </div>
 
-    </div>
 
 
-    <!-- ================= DRAWER BACKDROP ================= -->
+        <!-- Impostor -->
 
-    <div
-        class="drawer-backdrop"
-        id="drawerBackdrop"
-    ></div>
+        <div
+            class="card"
+            onclick="location.href='imposter.html'"
+        >
 
+            <i class="fa-solid fa-user-secret"></i>
 
-    <!-- ================= MAIN CONTENT ================= -->
+            <h3>
+                Impostor
+            </h3>
 
-    <main class="container">
-
-        <h1>🎮 Pick Your Challenge</h1>
-        <p>Play • Compete • Climb the Leaderboard</p>
-
-
-        <div class="games">
-
-            <!-- Sudoku -->
-            <div class="card" onclick="location.href='sudoku.html'">
-
-                <i class="fa-solid fa-table-cells-large"></i>
-
-                <h3>Sudoku</h3>
-
-                <p>
-                    Test your brain
-                </p>
-
-            </div>
-
-
-            <!-- Tic Tac Toe -->
-            <div class="card" onclick="location.href='tictactoe.html'">
-
-                <i class="fa-solid fa-xmark"></i>
-
-                <h3>Tic Tac Toe</h3>
-
-                <p>
-                    Play with friends or AI
-                </p>
-
-            </div>
-
-
-            <!-- Memory -->
-            <div class="card" onclick="location.href='memory.html'">
-
-                <i class="fa-solid fa-clone"></i>
-
-                <h3>Memory Game</h3>
-
-                <p>
-                    Match the pairs
-                </p>
-
-            </div>
-
-
-            <!-- Number Guess -->
-            <div class="card" onclick="location.href='guess.html'">
-
-                <i class="fa-solid fa-question"></i>
-
-                <h3>Number Guessing</h3>
-
-                <p>
-                    Guess the hidden number
-                </p>
-
-            </div>
-
-
-            <!-- Snake -->
-            <div class="card" onclick="location.href='snake.html'">
-
-                <i class="fa-solid fa-staff-snake"></i>
-
-                <h3>Snake Game</h3>
-
-                <p>
-                    Eat and grow
-                </p>
-
-            </div>
-
-
-            <!-- Impostor -->
-            <div class="card" onclick="location.href='imposter.html'">
-
-                <i class="fa-solid fa-user-secret"></i>
-
-                <h3>Impostor</h3>
-
-                <p>
-                    Find the hidden impostor among players
-                </p>
-
-            </div>
-
-
-            <!-- Flappy Bird -->
-            <div class="card" onclick="location.href='flappy.html'">
-
-                <i class="fa-solid fa-dove"></i>
-
-                <h3>Flappy Bird</h3>
-
-                <p>
-                    Tap to fly, avoid pipes
-                </p>
-
-            </div>
-
-
-            <!-- Penalty -->
-            <div class="card" onclick="location.href='penalty.html'">
-
-                <i class="fa-solid fa-futbol"></i>
-
-                <h3>Penalty Kick</h3>
-
-                <p>
-                    Beat the goalkeeper with perfect shots
-                </p>
-
-            </div>
-
-
-            <!-- Connect Four -->
-            <div class="card" onclick="location.href='connect4.html'">
-
-                <i class="fa-solid fa-grip"></i>
-
-                <h3>Connect Four</h3>
-
-                <p>
-                    Connect four discs to win
-                </p>
-
-            </div>
-
-
-            <!-- ================= COMING SOON ================= -->
-
-            <div class="card coming-soon">
-
-                <span class="coming-badge">
-                    Coming Soon
-                </span>
-
-                <i class="fa-solid fa-clone"></i>
-
-                <h3>Solitaire</h3>
-
-                <p>
-                    Classic card game
-                </p>
-
-            </div>
-
-
-            <div class="card coming-soon">
-
-                <span class="coming-badge">
-                    Coming Soon
-                </span>
-
-                <i class="fa-solid fa-cubes"></i>
-
-                <h3>2048</h3>
-
-                <p>
-                    Merge tiles to reach 2048
-                </p>
-
-            </div>
-
-
-            <div class="card coming-soon">
-
-                <span class="coming-badge">
-                    Coming Soon
-                </span>
-
-                <i class="fa-solid fa-eye"></i>
-
-                <h3>Spot the Difference</h3>
-
-                <p>
-                    Find all the hidden differences
-                </p>
-
-            </div>
-
-
-            <div class="card coming-soon">
-
-                <span class="coming-badge">
-                    Coming Soon
-                </span>
-
-                <i class="fa-solid fa-chess"></i>
-
-                <h3>Chess</h3>
-
-                <p>
-                    Challenge the AI or a friend
-                </p>
-
-            </div>
-
-
-            <div class="card coming-soon">
-
-                <span class="coming-badge">
-                    Coming Soon
-                </span>
-
-                <i class="fa-solid fa-car"></i>
-
-                <h3>Car Dodger</h3>
-
-                <p>
-                    Dodge traffic and survive
-                </p>
-
-            </div>
-
-
-            <div class="card coming-soon">
-
-                <span class="coming-badge">
-                    Coming Soon
-                </span>
-
-                <i class="fa-solid fa-bullseye"></i>
-
-                <h3>Archery</h3>
-
-                <p>
-                    Aim carefully and hit the bullseye
-                </p>
-
-            </div>
-
-
-            <div class="card coming-soon">
-
-                <span class="coming-badge">
-                    Coming Soon
-                </span>
-
-                <i class="fa-solid fa-basketball"></i>
-
-                <h3>Basketball Shoot</h3>
-
-                <p>
-                    Score as many baskets as you can
-                </p>
-
-            </div>
-
-
-            <div class="card coming-soon">
-
-                <span class="coming-badge">
-                    Coming Soon
-                </span>
-
-                <i class="fa-solid fa-bowling-ball"></i>
-
-                <h3>Bowling</h3>
-
-                <p>
-                    Knock down all the pins for a strike
-                </p>
-
-            </div>
+            <p>
+                Find the impostor before it's too late.
+            </p>
 
         </div>
 
-    </main>
 
 
-    <!-- ================= PROFILE DRAWER ================= -->
+        <!-- More Games -->
 
-    <aside
-        class="profile-menu"
-        id="profileMenu"
-        aria-hidden="true"
-    >
+        <div
+            class="card"
+            onclick="location.href='games.html'"
+        >
 
-       <!-- Profile Drawer -->
-<div class="profile-menu" id="profileMenu">
+            <i class="fa-solid fa-gamepad"></i>
 
-    <!-- Profile Header -->
+            <h3>
+                More Games
+            </h3>
+
+            <p>
+                Explore more exciting games.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =========================================================
+     PROFILE DRAWER
+     
+     IMPORTANT:
+     There is ONLY ONE #profileMenu.
+     ========================================================= -->
+
+<aside
+    class="profile-menu"
+    id="profileMenu"
+    aria-hidden="true"
+>
+
+
+    <!-- =====================================================
+         PROFILE HEADER
+         ===================================================== -->
+
     <div class="profile-header">
 
-        <div id="profileAvatar" class="avatar-circle">
-            D
+
+        <!-- Avatar -->
+
+        <div
+            id="profileAvatar"
+            class="avatar-circle"
+        >
+            P
         </div>
 
-        <h3 id="profileName">Loading...</h3>
 
-        <p id="profileEmail">Loading...</p>
+        <!-- Name -->
 
-        <div class="profile-points">
-            <i class="fa-solid fa-star"></i>
-            <span id="profilePoints">0</span> Points
-        </div>
-
-    </div>
+        <h3 id="profileName">
+            Loading...
+        </h3>
 
 
-    <!-- Player Stats -->
-    <div class="profile-stats">
+        <!-- Email -->
 
-        <div class="stat-box">
-            <i class="fa-solid fa-gamepad"></i>
-            <strong id="gamesPlayed">0</strong>
-            <span>Games</span>
-        </div>
-
-        <div class="stat-box">
-            <i class="fa-solid fa-trophy"></i>
-            <strong id="gamesWon">0</strong>
-            <span>Wins</span>
-        </div>
-
-    </div>
-
-
-    <hr>
-
-
-    <!-- Main Profile Options -->
-
-    <button id="viewProfileBtn">
-        <i class="fa-solid fa-user"></i>
-        <span>View Profile</span>
-        <i class="fa-solid fa-chevron-right arrow"></i>
-    </button>
-
-
-    <button id="editProfileBtn">
-        <i class="fa-solid fa-user-pen"></i>
-        <span>Edit Profile</span>
-        <i class="fa-solid fa-chevron-right arrow"></i>
-    </button>
-
-
-    <button id="achievementsBtn">
-        <i class="fa-solid fa-medal"></i>
-        <span>Achievements</span>
-        <i class="fa-solid fa-chevron-right arrow"></i>
-    </button>
-
-
-    <button id="settingsBtn">
-        <i class="fa-solid fa-gear"></i>
-        <span>Settings</span>
-        <i class="fa-solid fa-chevron-right arrow"></i>
-    </button>
-
-
-    <hr>
-
-
-    <!-- Information -->
-
-    <button onclick="location.href='terms.html'">
-        <i class="fa-solid fa-file-contract"></i>
-        <span>Terms & Conditions</span>
-        <i class="fa-solid fa-chevron-right arrow"></i>
-    </button>
-
-
-    <button onclick="location.href='privacy.html'">
-        <i class="fa-solid fa-shield-halved"></i>
-        <span>Privacy Policy</span>
-        <i class="fa-solid fa-chevron-right arrow"></i>
-    </button>
-
-
-    <button onclick="location.href='help.html'">
-        <i class="fa-solid fa-circle-question"></i>
-        <span>Help & Support</span>
-        <i class="fa-solid fa-chevron-right arrow"></i>
-    </button>
-
-
-    <hr>
-
-
-    <!-- Logout -->
-
-    <button id="logoutBtn" class="logout">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        <span>Logout</span>
-    </button>
-
-</div>
-
-    </aside>
-
-
-    <!-- ================= FOOTER ================= -->
-
-    <footer class="footer">
-
-        <div class="footer-logo">
-            🎮 <span>GameXD</span>
-        </div>
-
-        <p class="footer-tagline">
-            Play • Compete • Climb the Leaderboard
+        <p id="profileEmail">
+            Loading...
         </p>
 
 
-        <div class="footer-links">
+        <!-- Points -->
 
-            <a href="home.html">
-                Home
-            </a>
+        <div class="profile-points">
 
-            <a href="leaderboard.html">
-                Leaderboard
-            </a>
+            <i class="fa-solid fa-star"></i>
 
-            <a href="help.html">
-                Help
-            </a>
-
-            <a href="privacy.html">
-                Privacy Policy
-            </a>
-
-            <a href="terms.html">
-                Terms & Conditions
-            </a>
-
-        </div>
-
-
-        <div class="footer-online">
-
-            <i class="fa-solid fa-circle"></i>
-
-            <span id="onlinePlayers">
+            <span id="profilePoints">
                 0
             </span>
 
-            Players Online
+            <span>
+                Points
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         PLAYER STATISTICS
+         ===================================================== -->
+
+    <div class="profile-stats">
+
+
+        <!-- Games -->
+
+        <div class="stat-box">
+
+            <i class="fa-solid fa-gamepad"></i>
+
+            <strong id="profileGames">
+                0
+            </strong>
+
+            <span>
+                Games
+            </span>
 
         </div>
 
 
-        <div class="footer-social">
+        <!-- Wins -->
 
-            <a href="#" aria-label="GitHub">
-                <i class="fab fa-github"></i>
-            </a>
+        <div class="stat-box">
 
-            <a href="#" aria-label="Email">
-                <i class="fas fa-envelope"></i>
-            </a>
+            <i class="fa-solid fa-trophy"></i>
+
+            <strong id="profileWins">
+                0
+            </strong>
+
+            <span>
+                Wins
+            </span>
 
         </div>
 
+    </div>
 
-        <p class="footer-copy">
-            © 2026 GameXD. All rights reserved.
-        </p>
 
-        <p class="footer-version">
-            Version 1.7.3
-        </p>
 
-    </footer>
+    <!-- Divider -->
+
+    <hr>
+
+
+
+    <!-- =====================================================
+         PROFILE OPTIONS
+         ===================================================== -->
+
+
+    <!-- View Profile -->
+
+    <button
+        id="viewProfileBtn"
+        type="button"
+    >
+
+        <i class="fa-solid fa-user"></i>
+
+        <span>
+            View Profile
+        </span>
+
+        <i class="fa-solid fa-chevron-right arrow"></i>
+
+    </button>
+
+
+
+    <!-- Edit Profile -->
+
+    <button
+        id="editProfileBtn"
+        type="button"
+    >
+
+        <i class="fa-solid fa-user-pen"></i>
+
+        <span>
+            Edit Profile
+        </span>
+
+        <i class="fa-solid fa-chevron-right arrow"></i>
+
+    </button>
+
+
+
+    <!-- Achievements -->
+
+    <button
+        id="achievementsBtn"
+        type="button"
+    >
+
+        <i class="fa-solid fa-medal"></i>
+
+        <span>
+            Achievements
+        </span>
+
+        <i class="fa-solid fa-chevron-right arrow"></i>
+
+    </button>
+
+
+
+    <!-- Settings -->
+
+    <button
+        id="settingsBtn"
+        type="button"
+    >
+
+        <i class="fa-solid fa-gear"></i>
+
+        <span>
+            Settings
+        </span>
+
+        <i class="fa-solid fa-chevron-right arrow"></i>
+
+    </button>
+
+
+
+    <!-- Divider -->
+
+    <hr>
+
+
+
+    <!-- =====================================================
+         INFORMATION
+         ===================================================== -->
+
+
+    <!-- Terms -->
+
+    <button
+        id="termsBtn"
+        type="button"
+        onclick="location.href='terms.html'"
+    >
+
+        <i class="fa-solid fa-file-contract"></i>
+
+        <span>
+            Terms &amp; Conditions
+        </span>
+
+        <i class="fa-solid fa-chevron-right arrow"></i>
+
+    </button>
+
+
+
+    <!-- Privacy -->
+
+    <button
+        id="privacyBtn"
+        type="button"
+        onclick="location.href='privacy.html'"
+    >
+
+        <i class="fa-solid fa-shield-halved"></i>
+
+        <span>
+            Privacy Policy
+        </span>
+
+        <i class="fa-solid fa-chevron-right arrow"></i>
+
+    </button>
+
+
+
+    <!-- Help -->
+
+    <button
+        id="helpBtn"
+        type="button"
+        onclick="location.href='help.html'"
+    >
+
+        <i class="fa-solid fa-circle-question"></i>
+
+        <span>
+            Help &amp; Support
+        </span>
+
+        <i class="fa-solid fa-chevron-right arrow"></i>
+
+    </button>
+
+
+
+    <!-- Divider -->
+
+    <hr>
+
+
+
+    <!-- =====================================================
+         LOGOUT
+         ===================================================== -->
+
+    <button
+        id="logoutBtn"
+        class="logout"
+        type="button"
+    >
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        <span>
+            Logout
+        </span>
+
+    </button>
+
+
+</aside>
+
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="footer">
+
+    <span>
+        © 2026 GameXD
+    </span>
+
+    <span>
+        <i class="fa-solid fa-circle"></i>
+        <span id="onlinePlayers">
+            124
+        </span>
+        players online
+    </span>
+
+</footer>
+
 
 </body>
+
 </html>
