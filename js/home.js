@@ -15,73 +15,58 @@ import {
    ELEMENTS
    ========================================================= */
 
-const profileBtn =
-    document.getElementById("profileBtn");
-
-const profileMenu =
-    document.getElementById("profileMenu");
-
-const drawerBackdrop =
-    document.getElementById("drawerBackdrop");
-
-const logoutBtn =
-    document.getElementById("logoutBtn");
+const profileBtn = document.getElementById("profileBtn");
+const profileMenu = document.getElementById("profileMenu");
+const drawerBackdrop = document.getElementById("drawerBackdrop");
+const logoutBtn = document.getElementById("logoutBtn");
 
 
 /* =========================================================
-   OPEN DRAWER
+   DRAWER STATE
    ========================================================= */
 
 function openProfile() {
 
-    profileMenu.classList.add("show");
+    if (!profileMenu || !drawerBackdrop) return;
 
+    profileMenu.classList.add("show");
     drawerBackdrop.classList.add("show");
 
     document.body.classList.add("drawer-open");
 
-    profileMenu.setAttribute(
-        "aria-hidden",
-        "false"
-    );
+    profileMenu.setAttribute("aria-hidden", "false");
+
+    if (profileBtn) {
+        profileBtn.setAttribute("aria-expanded", "true");
+    }
 }
 
 
-/* =========================================================
-   CLOSE DRAWER
-   ========================================================= */
-
 function closeProfile() {
 
-    profileMenu.classList.remove("show");
+    if (!profileMenu || !drawerBackdrop) return;
 
+    profileMenu.classList.remove("show");
     drawerBackdrop.classList.remove("show");
 
     document.body.classList.remove("drawer-open");
 
-    profileMenu.setAttribute(
-        "aria-hidden",
-        "true"
-    );
+    profileMenu.setAttribute("aria-hidden", "true");
+
+    if (profileBtn) {
+        profileBtn.setAttribute("aria-expanded", "false");
+    }
 }
 
 
-/* =========================================================
-   TOGGLE DRAWER
-   ========================================================= */
-
 function toggleProfile() {
 
-    if (
-        profileMenu.classList.contains("show")
-    ) {
+    if (!profileMenu) return;
 
+    if (profileMenu.classList.contains("show")) {
         closeProfile();
-
     } else {
-
         openProfile();
-
     }
 }
 
@@ -90,25 +75,20 @@ function toggleProfile() {
    PROFILE BUTTON
    ========================================================= */
 
-profileBtn.addEventListener(
-    "click",
-    function (event) {
+if (profileBtn) {
+
+    profileBtn.addEventListener("click", (event) => {
 
         event.stopPropagation();
 
         toggleProfile();
 
-    }
-);
+    });
 
 
-/* =========================================================
-   KEYBOARD ACCESS TO PROFILE BUTTON
-   ========================================================= */
+    /* Keyboard support */
 
-profileBtn.addEventListener(
-    "keydown",
-    function (event) {
+    profileBtn.addEventListener("keydown", (event) => {
 
         if (
             event.key === "Enter" ||
@@ -121,218 +101,435 @@ profileBtn.addEventListener(
 
         }
 
-    }
-);
+    });
+
+}
 
 
 /* =========================================================
-   CLICK BACKDROP
+   BACKDROP
    ========================================================= */
 
-drawerBackdrop.addEventListener(
-    "click",
-    function () {
+/*
+   IMPORTANT:
+
+   Clicking outside the drawer means clicking
+   the backdrop.
+
+   It closes ONLY the drawer.
+
+   It does NOT trigger buttons underneath.
+*/
+
+if (drawerBackdrop) {
+
+    drawerBackdrop.addEventListener("click", (event) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        closeProfile();
+
+    });
+
+}
+
+
+/* =========================================================
+   DRAWER CLICK
+   ========================================================= */
+
+/*
+   Clicking inside the drawer should NOT close it.
+
+   However, we do NOT prevent normal button behavior.
+
+   So:
+   - Edit Profile works
+   - View Profile works
+   - Terms works
+   - Privacy works
+   - Help works
+   - Logout works
+*/
+
+if (profileMenu) {
+
+    profileMenu.addEventListener("click", (event) => {
+
+        event.stopPropagation();
+
+    });
+
+}
+
+
+/* =========================================================
+   ESCAPE KEY
+   ========================================================= */
+
+document.addEventListener("keydown", (event) => {
+
+    if (
+        event.key === "Escape" &&
+        profileMenu &&
+        profileMenu.classList.contains("show")
+    ) {
 
         closeProfile();
 
     }
-);
 
-
-/* =========================================================
-   CLICK INSIDE DRAWER
-   ========================================================= */
-
-profileMenu.addEventListener(
-    "click",
-    function (event) {
-
-        /*
-         * Stop the click from reaching
-         * document.
-         *
-         * This means clicking buttons
-         * INSIDE the drawer will not
-         * accidentally close it first.
-         */
-
-        event.stopPropagation();
-
-    }
-);
-
-
-/* =========================================================
-   ESC KEY
-   ========================================================= */
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-
-        if (
-            event.key === "Escape" &&
-            profileMenu.classList.contains("show")
-        ) {
-
-            closeProfile();
-
-        }
-
-    }
-);
+});
 
 
 /* =========================================================
    AUTHENTICATION
    ========================================================= */
 
-onAuthStateChanged(
-    auth,
-    async (user) => {
+onAuthStateChanged(auth, async (user) => {
 
-        if (!user) {
+    /* -----------------------------------------------------
+       USER NOT LOGGED IN
+       ----------------------------------------------------- */
 
-            window.location.href =
-                "index.html";
+    if (!user) {
 
-            return;
+        window.location.href = "index.html";
+
+        return;
+
+    }
+
+
+    try {
+
+        /* -------------------------------------------------
+           FIRESTORE USER DOCUMENT
+           ------------------------------------------------- */
+
+        const userRef = doc(
+            db,
+            "users",
+            user.uid
+        );
+
+        const userSnap = await getDoc(userRef);
+
+
+        /* -------------------------------------------------
+           DEFAULT USER DATA
+           ------------------------------------------------- */
+
+        let userData = {
+
+            name: "Player",
+
+            email: user.email || "",
+
+            points: 0,
+
+            gamesPlayed: 0,
+
+            wins: 0
+
+        };
+
+
+        /* -------------------------------------------------
+           GET FIRESTORE DATA
+           ------------------------------------------------- */
+
+        if (userSnap.exists()) {
+
+            const data = userSnap.data();
+
+            userData = {
+
+                ...userData,
+
+                ...data
+
+            };
+
         }
 
 
-        try {
+        /* =================================================
+           CLEAN VALUES
+           ================================================= */
 
-            const docRef =
-                doc(
-                    db,
-                    "users",
-                    user.uid
-                );
-
-            const docSnap =
-                await getDoc(docRef);
+        const name =
+            userData.name ||
+            "Player";
 
 
-            if (docSnap.exists()) {
-
-                const data =
-                    docSnap.data();
-
-
-                /* =========================
-                   NAVBAR
-                   ========================= */
-
-                document.getElementById(
-                    "userName"
-                ).textContent =
-                    `Hi, ${data.name}`;
+        const email =
+            userData.email ||
+            user.email ||
+            "";
 
 
-                document.getElementById(
-                    "userPoints"
-                ).innerHTML =
-                    `<i class="fa-solid fa-star"></i> ${data.points || 0} pts`;
+        const points =
+            Number(userData.points) || 0;
 
 
-                /* =========================
-                   PROFILE DRAWER
-                   ========================= */
-
-                document.getElementById(
-                    "profileName"
-                ).textContent =
-                    data.name || "Player";
+        const gamesPlayed =
+            Number(
+                userData.gamesPlayed ??
+                userData.games ??
+                0
+            ) || 0;
 
 
-                document.getElementById(
-                    "profileEmail"
-                ).textContent =
-                    data.email || user.email || "";
+        const wins =
+            Number(
+                userData.wins ??
+                userData.gameWins ??
+                0
+            ) || 0;
 
 
-                /* =========================
-                   AVATAR
-                   ========================= */
+        /* =================================================
+           NAVBAR
+           ================================================= */
 
-                const firstLetter =
-                    (data.name || "P")
+        const userName =
+            document.getElementById("userName");
+
+
+        const userPoints =
+            document.getElementById("userPoints");
+
+
+        if (userName) {
+
+            userName.textContent =
+                `Hi, ${name}`;
+
+        }
+
+
+        if (userPoints) {
+
+            userPoints.innerHTML =
+                `<i class="fa-solid fa-star"></i> ${points} pts`;
+
+        }
+
+
+        /* =================================================
+           PROFILE DRAWER
+           ================================================= */
+
+        const profileName =
+            document.getElementById("profileName");
+
+
+        const profileEmail =
+            document.getElementById("profileEmail");
+
+
+        const profileAvatar =
+            document.getElementById("profileAvatar");
+
+
+        const profilePoints =
+            document.getElementById("profilePoints");
+
+
+        const profileGames =
+            document.getElementById("profileGames");
+
+
+        const profileWins =
+            document.getElementById("profileWins");
+
+
+        /* -------------------------------------------------
+           NAME
+           ------------------------------------------------- */
+
+        if (profileName) {
+
+            profileName.textContent =
+                name;
+
+        }
+
+
+        /* -------------------------------------------------
+           EMAIL
+           ------------------------------------------------- */
+
+        if (profileEmail) {
+
+            profileEmail.textContent =
+                email;
+
+        }
+
+
+        /* -------------------------------------------------
+           AVATAR
+           ------------------------------------------------- */
+
+        if (profileAvatar) {
+
+            const firstLetter =
+                name
+                    .trim()
                     .charAt(0)
-                    .toUpperCase();
+                    .toUpperCase() || "P";
 
 
-                document.getElementById(
-                    "profileAvatar"
-                ).textContent =
-                    firstLetter;
+            profileAvatar.textContent =
+                firstLetter;
+
+        }
 
 
-            } else {
+        /* -------------------------------------------------
+           PROFILE POINTS
+           ------------------------------------------------- */
 
-                document.getElementById(
-                    "userName"
-                ).textContent =
-                    "Hi, Player";
+        if (profilePoints) {
 
+            profilePoints.textContent =
+                `⭐ ${points} Points`;
 
-                document.getElementById(
-                    "userPoints"
-                ).innerHTML =
-                    `<i class="fa-solid fa-star"></i> 0 pts`;
+        }
 
 
-                document.getElementById(
-                    "profileName"
-                ).textContent =
-                    "Player";
+        /* -------------------------------------------------
+           GAMES PLAYED
+           ------------------------------------------------- */
+
+        if (profileGames) {
+
+            profileGames.textContent =
+                gamesPlayed;
+
+        }
 
 
-                document.getElementById(
-                    "profileEmail"
-                ).textContent =
-                    user.email || "";
+        /* -------------------------------------------------
+           WINS
+           ------------------------------------------------- */
+
+        if (profileWins) {
+
+            profileWins.textContent =
+                wins;
+
+        }
 
 
-                document.getElementById(
-                    "profileAvatar"
-                ).textContent =
-                    "P";
+    } catch (error) {
 
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Error loading user:",
-                error
-            );
+        console.error(
+            "Error loading user profile:",
+            error
+        );
 
 
-            document.getElementById(
-                "userName"
-            ).textContent =
+        /* -------------------------------------------------
+           FALLBACK UI
+           ------------------------------------------------- */
+
+        const userName =
+            document.getElementById("userName");
+
+
+        const userPoints =
+            document.getElementById("userPoints");
+
+
+        if (userName) {
+
+            userName.textContent =
                 "Hi, Player";
 
         }
 
+
+        if (userPoints) {
+
+            userPoints.innerHTML =
+                `<i class="fa-solid fa-star"></i> 0 pts`;
+
+        }
+
+
+        const profileName =
+            document.getElementById("profileName");
+
+
+        const profileEmail =
+            document.getElementById("profileEmail");
+
+
+        const profileAvatar =
+            document.getElementById("profileAvatar");
+
+
+        if (profileName) {
+
+            profileName.textContent =
+                "Player";
+
+        }
+
+
+        if (profileEmail) {
+
+            profileEmail.textContent =
+                user.email || "";
+
+        }
+
+
+        if (profileAvatar) {
+
+            profileAvatar.textContent =
+                "P";
+
+        }
+
     }
-);
+
+});
 
 
 /* =========================================================
    LOGOUT
    ========================================================= */
 
-logoutBtn.addEventListener(
-    "click",
-    async function () {
+if (logoutBtn) {
+
+    logoutBtn.addEventListener("click", async (event) => {
+
+        event.preventDefault();
 
         try {
 
+            /*
+             * Close drawer before signing out
+             */
+
+            closeProfile();
+
+
             await signOut(auth);
+
+
+            /*
+             * Redirect after successful logout
+             */
 
             window.location.href =
                 "index.html";
+
 
         } catch (error) {
 
@@ -343,14 +540,29 @@ logoutBtn.addEventListener(
 
         }
 
-    }
-);
+    });
+
+}
 
 
 /* =========================================================
    ONLINE PLAYERS
    ========================================================= */
 
-document.getElementById(
-    "onlinePlayers"
-).textContent = "124";
+/*
+   Temporary value.
+
+   Later this can be replaced with
+   real-time Firebase presence.
+*/
+
+const onlinePlayers =
+    document.getElementById("onlinePlayers");
+
+
+if (onlinePlayers) {
+
+    onlinePlayers.textContent =
+        "124";
+
+}
